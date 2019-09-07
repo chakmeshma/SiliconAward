@@ -1,0 +1,41 @@
+﻿@model SiliconAward.Models.CompetitionBranch
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>جزئیات شاخه رقابت</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompetitionField)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompetitionField.Title)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">ویرایش</a> |
+    <a asp-action="Index">بازگشت به لیست</a>
+</div>

@@ -1,0 +1,114 @@
+﻿@model SiliconAward.Models.User
+
+@{
+    ViewData["Title"] = "جزئیات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box-header with-border">
+    <div class="col-sm-2" style="float:right;">
+        <h3 style="display: block;" class="box-title">
+            جزئیات کاربر
+        </h3>
+    </div>
+    <div class="col-sm-1" style="float:left;">
+        <a asp-action="@ViewData["ReturnUrl"]"><span class="k-button">بازگشت</span></a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">        
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="FullName" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.FullName)
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.PhoneNumber)
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            @Html.DisplayFor(model=>model.PhoneNumberConfirmed) @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.Email)
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            @Html.DisplayFor(model=>model.EmailConfirmed) @Html.DisplayNameFor(model => model.EmailConfirmed)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumberVerifyCode" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.PhoneNumberVerifyCode)
+                    <span asp-validation-for="PhoneNumberVerifyCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailVerifyCode" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.EmailVerifyCode)
+                    <span asp-validation-for="EmailVerifyCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-6">                
+                <div class="form-group">
+                    <label asp-for="Avatar" class="control-label"></label>
+                    <img src="@Model.Avatar" class="img-circle user-image col-sm-offset-4" width="150" />
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Role" class="control-label"></label>
+                    @if (Model.Role == "Participant")
+                    {
+                    <span>شرکت کننده</span>
+                    }
+
+                    @if (Model.Role == "Supporter")
+                    {
+                        <label class="control-label">حامی</label>
+                    }
+
+                    @if (Model.Role == "Expert")
+                    {
+                        <label class="control-label">کارشناس</label>
+                    }
+
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AccessFailedCount" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.AccessFailedCount)
+                    <span asp-validation-for="AccessFailedCount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreateTime" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.CreateTime)
+                    <span asp-validation-for="CreateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastUpdateTime" class="control-label"></label>
+                    @Html.DisplayFor(model=>model.LastUpdateTime)
+                    <span asp-validation-for="LastUpdateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            @Html.DisplayFor(model=>model.IsActive) @Html.DisplayNameFor(model => model.IsActive)
+                        </label>
+                    </div>
+                </div>                
+            </div>
+    </div>
+</div>
+

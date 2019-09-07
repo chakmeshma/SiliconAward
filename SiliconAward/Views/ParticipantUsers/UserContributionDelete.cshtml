@@ -1,0 +1,91 @@
+﻿@model SiliconAward.ViewModels.UserContributionDeleteViewModel
+
+@{
+    ViewData["Title"] = "جزئیات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    textarea {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+    }
+</style>
+<div class="box-header with-border">
+    <div class="col-sm-2" style="float:right;">
+        <h3 style="display: block;" class="box-title">
+            جزئیات
+        </h3>
+    </div>
+    <div class="col-sm-1" style="float:left;">
+        <a href="@Url.Action("UserContributions", "ParticipantUsers")/@Model.UserId"><span class="k-button">بازگشت</span></a>
+    </div>
+</div>
+
+<div class="box-body">
+    <div class="form-group col-sm-12">
+        <div class="col-sm-4 k-rtl">
+            <h4>حوزه رقابت</h4>
+            @Html.DisplayFor(m => m.CompetitionField)
+
+        </div>
+        <div class="col-sm-4 k-rtl">
+            <h4>شاخه های رقابت</h4>
+            @Html.DisplayFor(m => m.CompetitionBranch)
+
+        </div>
+        <div class="col-sm-4 k-rtl">
+            <h4>موضوع رقابت</h4>
+            @Html.DisplayFor(m => m.CompetitionSubject)
+
+            <style>
+                .k-readonly {
+                    color: gray;
+                }
+            </style>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group col-sm-12">
+            <label asp-for="Subject" class="col-sm-2 control-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="Subject" class="form-control" disabled />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label asp-for="Description" class="col-sm-2 control-label"></label>
+            <div class="col-sm-6">
+                <textarea rows="20" cols="250" asp-for="Description" disabled></textarea>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label">فایل ضمیمه</label>
+            <div class="col-sm-6">
+                <a href="@Model.UploadedFile">برای دانلود فایل ضمیمه کلیک کنید</a>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <form asp-action="UserContributionDelete">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="حذف" class="btn btn-default" /> |
+                    <a asp-action="Index">بازگشت</a>
+                </form>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+

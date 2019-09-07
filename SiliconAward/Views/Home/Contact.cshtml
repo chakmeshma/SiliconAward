@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<div class="k-rtl">
+    <div class="demo-section k-content">
+
+        @(Html.Kendo().Upload()
+                        .Name("other")
+                        .Async(a => a
+                            .Save("SaveAsync", "Upload")
+                            .Remove("Remove", "Upload")
+                            .SaveField("files")
+                            .AutoUpload(true)
+                        )
+                        .Events(events => events.Upload("onUpload3"))
+                        .Messages(message =>
+                            {
+                                message.Select("انتخاب فایل");
+                            })
+                        .Multiple(false)
+                        .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".zip" }))
+        )
+        <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت ZIP.</div>
+
+    </div>
+</div>
+@(Html.Kendo().MaskedTextBox()
+                      .Name("phone_number")
+                      .Mask("0 0 0 0")
+                      .Value("- - - -")
+)
+<input type="number" placeholder="_ _ _ _" />
+<script>
+    function onUpload3(e) {
+        e.data = {
+            data: 'other'
+        };
+    }
+</script>

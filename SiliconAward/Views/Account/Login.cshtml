@@ -1,0 +1,78 @@
+﻿@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+
+@model SiliconAward.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "ورود";
+    Layout = "~/Views/Shared/_LayoutAdminlteBlank.cshtml";
+}
+<style>
+    .material-icons {
+        font-size: 16px;
+    }
+</style>
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 style="display: block;" class="box-title">ورود</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form asp-controller="Account" asp-action="Login"
+          asp-route-returnurl="@ViewData["ReturnUrl"]"
+          method="post" class="form-horizontal" role="form">
+        @Html.AntiForgeryToken()
+        <div class="box-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Phone" class="col-sm-6 control-label">شماره همراه را وارد کنید</label>
+                <div class="col-sm-6">
+                    <input asp-for="Phone" style="text-align:center;" type="tel" class="form-control" placeholder="09122222222">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="col-sm-6 control-label">کلمه عبور را وارد کنید</label>
+                <div class="col-sm-6">                    
+                    <input style="text-align:left;" asp-for="Password" data-toggle="password"
+                           data-placement="before"
+                           class="form-control"
+                           type="password"                                                      
+                           data-eye-class="material-icons"
+                           data-eye-open-class="visibility"
+                           data-eye-close-class="visibility_off"
+                           data-eye-class-position-inside="true">                    
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <span class="text-danger">@ViewData["Message"]</span>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">ورود</button>
+            </div>
+            <div class="col-sm-12 text-center" style="padding-top:15px">
+                <a asp-controller="Account" asp-action="Register" class="text-center">ایجاد حساب کاربری جدید</a>
+                | <a asp-controller="Account" asp-action="ResetPassword" class="text-center">کلمه عبور را فراموش کرده ام</a>
+            </div>
+            
+        </div>
+        <!-- /.box-footer -->
+        @Html.Recaptcha(RecaptchaSettings.Value)
+    </form>
+</div>
+
+<!-- /.box-body -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>$('[data-attr="show-password"]').password({
+      placement: 'before',
+      eyeClass: 'material-icons',
+      eyeOpenClass: 'visibility',
+      eyeCloseClass: 'visibility_off',
+      eyeClassPositionInside: true
+    })</script>

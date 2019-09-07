@@ -1,0 +1,44 @@
+﻿@model SiliconAward.ViewModels.VerifyPhoneViewModel
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+@{
+    ViewData["Title"] = "VerifyPhone";
+    Layout = "~/Views/Shared/_LayoutAdminlteBlank.cshtml";
+}
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 style="display: block;" class="box-title">تایید شماره همراه</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form asp-controller="Account" asp-action="VerifyPhone">
+        @Html.AntiForgeryToken()
+        <div class="box-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VerifyCode" class="col-sm-5 control-label"></label>
+                <div class="col-sm-4">
+                    <input asp-for="VerifyCode" style="text-align:center;" type="tel" class="form-control direction-ltr" placeholder="_ _ _ _">
+                    <span asp-validation-for="VerifyCode" class="text-danger"></span>
+                </div>
+                <div class="col-sm-3">
+                    @*<button type="button" class="btn btn-primary btn-block btn-flat">ارسال مجدد</button>*@
+                </div>
+                @Html.HiddenFor(m => m.Phone)
+            </div>
+            <span class="text-danger">@ViewData["Message"]</span>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">ارسال</button>
+        </div>
+        <!-- /.box-footer -->
+        @Html.Recaptcha(RecaptchaSettings.Value)
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

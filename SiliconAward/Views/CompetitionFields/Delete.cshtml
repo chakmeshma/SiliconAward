@@ -1,0 +1,38 @@
+﻿@model SiliconAward.Models.CompetitionField
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>آیا برای حذف مطمئن هستید؟</h3>
+<div>
+    <h4>حوزه رقابت</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdateTime)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-default" /> |
+        <a asp-action="Index">بازگشت به لیست</a>
+    </form>
+</div>

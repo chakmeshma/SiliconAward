@@ -1,0 +1,44 @@
+﻿@model SiliconAward.ViewModels.StatusViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>آیا از حذف وضعیت مطمئن هستید؟</h3>
+<div>
+    <h4>Status</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Editable)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Editable)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="StatusId" />
+        <input type="submit" value="حذف" class="btn btn-default" /> |
+        <a asp-action="Index">بازگشت</a>
+    </form>
+</div>

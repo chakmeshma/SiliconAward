@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "فهرست حامیان";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    @@media only screen and (max-width: 600px) {
+        .k-grid, .k-listview {
+            position: relative;
+            zoom: 1;
+            width: 100%;
+            overflow-x: scroll;
+            position: relative;
+        }
+
+        .k-block, .k-draghandle, .k-grid-header, .k-grouping-header, .k-header, .k-pager-wrap, .k-treemap-tile, html .km-pane-wrapper .k-header {
+            background-color: #ffffff;
+        }
+
+            .k-header.k-grid-toolbar {
+                border: none;
+            }
+    }
+</style>
+
+<div class="box-header with-border">
+    <h3 style="display: block;" class="box-title">فهرست حامیان</h3>
+</div>
+<div class="k-rtl">
+    @(Html.Kendo().Grid<SiliconAward.ViewModels.ParticipantsViewModel>
+                    ()
+                    .Name("Grid")
+                //.ToolBar(toolBar => toolBar.ClientTemplate("<a class='k-button-blue' href='" + Url.Action("Index", "Participants") + "' " + ">جزئیات</a>"))
+                .ToolBar(toolbar =>
+                {
+
+                    //toolbar.ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Index", "Participants") + "' " + ">جزئیات</a>");
+                })
+                .Sortable()
+                .Pageable()
+                    .Columns(columns =>
+                    {
+                        columns.Bound(e => e.FullName);
+                        columns.Bound(e => e.PhoneNumber);
+                        columns.Bound(e => e.PhoneNumberConfirmed);
+                        columns.Bound(e => e.Email);
+                        columns.Bound(e => e.CreateTime);
+                        columns.Bound(p => p.Participants).ClientTemplate("<a class='k-button-blue' href='" + Url.Action("UserContributions", "ParticipantUsers") + "/#= Id #' " + ">جزئیات</a>");
+                        columns.Bound(p => p.Operations).Width(290).ClientTemplate("<a class='k-button' href='" + Url.Action("Edit", "ParticipantUsers") + "/#= Id #' " + ">ویرایش</a> | " +
+                        "<a class='k-button' href='" + Url.Action("Details", "ParticipantUsers") + "/#= Id #' " + ">جزئیات</a> | " +
+                        "<a class='k-button' href='" + Url.Action("Delete", "ParticipantUsers") + "/#= Id #' " + ">حذف</a>");
+                    })
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Read(read => read.Action("Read_Supporters", "ParticipantUsers"))
+                    )
+    )
+</div>

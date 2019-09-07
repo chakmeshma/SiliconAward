@@ -1,0 +1,476 @@
+﻿@model SiliconAward.ViewModels.EditParticipantViewModel
+
+@{
+    ViewData["Title"] = "ویرایش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* info (hed, dek, source, credit) */
+    .rg-container {
+        font-size: 16px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 1em 0.5em;
+        color: #222;
+    }
+
+    .rg-header {
+        margin-bottom: 1em;
+        text-align: center;
+    }
+
+        .rg-header > * {
+            display: block;
+        }
+
+    .rg-hed {
+        font-weight: bold;
+        font-size: 1.4em;
+    }
+
+    .rg-dek {
+        font-size: 1em;
+    }
+
+    .rg-source {
+        margin: 0;
+        font-size: 0.75em;
+        text-align: right;
+    }
+
+        .rg-source .pre-colon {
+            text-transform: uppercase;
+        }
+
+        .rg-source .post-colon {
+            font-weight: bold;
+        }
+
+    /* table */
+    table.rg-table {
+        width: 100%;
+        margin-bottom: 0.5em;
+        font-size: 1em;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+        table.rg-table tr {
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+            text-align: center;
+            color: #333;
+        }
+
+        table.rg-table thead {
+            border-bottom: 3px solid #ddd;
+        }
+
+        table.rg-table tr {
+            border-bottom: 1px solid #ddd;
+            color: #222;
+        }
+
+            table.rg-table tr.highlight {
+                background-color: #dcf1f0 !important;
+            }
+
+        table.rg-table.zebra tr:nth-child(even) {
+            background-color: #f6f6f6;
+        }
+
+        table.rg-table th {
+            font-weight: bold;
+            padding: 0.35em;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        table.rg-table td {
+            padding: 0.35em;
+            font-size: 0.9em;
+        }
+
+        table.rg-table .highlight td {
+            font-weight: bold;
+        }
+
+        table.rg-table th.number,
+        td.number {
+            text-align: right;
+        }
+
+    /* media queries */
+    @@media screen and (max-width: 600px) {
+        .rg-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        table.rg-table {
+            width: 100%;
+        }
+
+            table.rg-table tr.hide-mobile,
+            table.rg-table th.hide-mobile,
+            table.rg-table td.hide-mobile {
+                display: none;
+            }
+
+            table.rg-table thead {
+                display: none;
+            }
+
+            table.rg-table tbody {
+                width: 100%;
+            }
+
+            table.rg-table tr,
+            table.rg-table th,
+            table.rg-table td {
+                display: block;
+                padding: 0;
+            }
+
+            table.rg-table tr {
+                border-bottom: none;
+                margin: 0 0 1em 0;
+                padding: 0.5em;
+            }
+
+                table.rg-table tr.highlight {
+                    background-color: inherit !important;
+                }
+
+            table.rg-table.zebra tr:nth-child(even) {
+                background-color: transparent;
+            }
+
+            table.rg-table.zebra td:nth-child(even) {
+                background-color: #f6f6f6;
+            }
+
+            table.rg-table tr:nth-child(even) {
+                background-color: transparent;
+            }
+
+            table.rg-table td {
+                padding: 0.5em 0 0.25em 0;
+                border-bottom: 1px dotted #ccc;
+                text-align: left;
+            }
+
+                table.rg-table td[data-title]:before {
+                    content: attr(data-title);
+                    font-weight: bold;
+                    display: inline-block;
+                    content: attr(data-title);
+                    float: right;
+                    margin-right: 0.5em;
+                    font-size: 0.95em;
+                }
+
+                table.rg-table td:last-child {
+                    padding-right: 0;
+                    border-bottom: 2px solid #ccc;
+                }
+
+                table.rg-table td:empty {
+                    display: none;
+                }
+
+            table.rg-table .highlight td {
+                background-color: inherit;
+                font-weight: normal;
+            }
+    }
+
+    textarea {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+    }
+</style>
+
+<div class="box-header with-border">
+    <div class="col-sm-2" style="float:right;">
+        <h3 style="display: block;" class="box-title">
+            ویرایش
+        </h3>
+    </div>
+    <div class="col-sm-1" style="float:left;">
+        <a asp-action="Index"><span class="k-button">بازگشت</span></a>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class='rg-container'>
+        <table class='rg-table' summary='Hed'>
+            <caption class='rg-header'>
+                @*<span class='rg-hed'>جدول شماره 1 _ نوآوری در حوزه فناوری اطلاعات</span><br />*@
+                <h5>در صورتی که شما صاحب ایده یا طرح نوینی در حوزه های زیر هستید، می توانید موضوع موردنظرتان را انتخاب کرده و پروپوزال خود را برای ما ارسال کنید.</h5>
+            </caption>
+            <thead>
+                <tr>
+                    <th class='text '></th>
+                    <th class='text '>حمل و نقل</th>
+                    <th class='text '>سازه های شهری</th>
+                    <th class='text '>سلامت</th>
+                    <th class='text '>انرژی</th>
+                    <th class='text '>صنایع کوچک</th>
+                    <th class='text '>صنایع بزرگ</th>
+                    <th class='text '>تفریح و سرگرمی</th>
+                    <th class='text '>فرهنگ و ادبیات</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr class=''>
+                    <td class='text ' data-title=''>ایده پردازی</td>
+                    <td class='text ' data-title='حمل و نقل'>A1</td>
+                    <td class='text ' data-title='سازه های شهری'>A2</td>
+                    <td class='text ' data-title='سلامت'>A3</td>
+                    <td class='text ' data-title='انرژی'>A4</td>
+                    <td class='text ' data-title='صنایع کوچک'>A5</td>
+                    <td class='text ' data-title='صنایع بزرگ'>A6</td>
+                    <td class='text ' data-title='تفریح و سرگرمی'>A7</td>
+                    <td class='text ' data-title='فرهنگ و ادبیات'>A8</td>
+                </tr>
+
+
+                <tr class=''>
+                    <td class='text ' data-title=''>نظریه پردازی</td>
+                    <td class='text ' data-title='حمل و نقل'>B1</td>
+                    <td class='text ' data-title='سازه های شهری'>B2</td>
+                    <td class='text ' data-title='سلامت'>B3</td>
+                    <td class='text ' data-title='انرژی'>B4</td>
+                    <td class='text ' data-title='صنایع کوچک'>B5</td>
+                    <td class='text ' data-title='صنایع بزرگ'>B6</td>
+                    <td class='text ' data-title='تفریح و سرگرمی'>B7</td>
+                    <td class='text ' data-title='فرهنگ و ادبیات'>B8</td>
+                </tr>
+
+                <tr class=''>
+                    <td class='text ' data-title=''>اختراع</td>
+                    <td class='text ' data-title='حمل و نقل'>C1</td>
+                    <td class='text ' data-title='سازه های شهری'>C2</td>
+                    <td class='text ' data-title='سلامت'>C3</td>
+                    <td class='text ' data-title='انرژی'>C4</td>
+                    <td class='text ' data-title='صنایع کوچک'>C5</td>
+                    <td class='text ' data-title='صنایع بزرگ'>C6</td>
+                    <td class='text ' data-title='تفریح و سرگرمی'>C7</td>
+                    <td class='text ' data-title='فرهنگ و ادبیات'>C8</td>
+                </tr>
+
+                <tr class=''>
+                    <td class='text ' data-title=''>طراحی</td>
+                    <td class='text ' data-title='حمل و نقل'>D1</td>
+                    <td class='text ' data-title='سازه های شهری'>D2</td>
+                    <td class='text ' data-title='سلامت'>D3</td>
+                    <td class='text ' data-title='انرژی'>D4</td>
+                    <td class='text ' data-title='صنایع کوچک'>D5</td>
+                    <td class='text ' data-title='صنایع بزرگ'>D6</td>
+                    <td class='text ' data-title='تفریح و سرگرمی'>D7</td>
+                    <td class='text ' data-title='فرهنگ و ادبیات'>D8</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class='rg-source'>
+            @*<span class='pre-colon'>جدول شماره</span>: <span class='post-colon'>Sources</span>*@
+        </div>
+    </div>
+</div>
+
+<form asp-action="Edit" class="form-horizontal" role="form" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="box-body">
+
+        <div class="form-group col-sm-12">
+            <div class="col-sm-4 k-rtl">
+                <h4>حوزه رقابت</h4>
+                @(Html.Kendo().DropDownListFor(m => m.CompetitionFieldId)
+
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .OptionLabel("انتخاب کنید ...")
+                                                  .DataTextField("CompetitionField")
+                                                  .DataValueField("CompetitionFieldId")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetCascadeFields", "Participants");
+                                                      });
+                                                  })
+                )
+                @Html.ValidationMessageFor(model => model.CompetitionFieldId)
+            </div>
+            <div class="col-sm-4 k-rtl">
+                <h4>شاخه های رقابت</h4>
+                @(Html.Kendo().DropDownListFor(model => model.CompetitionBranchId)
+                                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                                  .OptionLabel("انتخاب کنید ...")
+                                                                  .DataTextField("BranchName")
+                                                                  .DataValueField("BranchID")
+                                                                  .DataSource(source =>
+                                                                  {
+                                                                      source.Read(read =>
+                                                                      {
+                                                                          read.Action("GetCascadeBranches", "Participants")
+                                                                              .Data("filterBranches");
+                                                                      })
+                                                                      .ServerFiltering(true);
+                                                                  })
+                                                                  .Enable(false)
+                                                                  .AutoBind(false)
+                                                                  .CascadeFrom("CompetitionFieldId")
+                )
+                @Html.ValidationMessageFor(model => model.CompetitionBranchId)
+                <script>
+                    function filterBranches() {
+                        return {
+                            fields: $("#CompetitionFieldId").val()
+                        };
+                    }
+                </script>
+            </div>
+            <div class="col-sm-4 k-rtl">
+                <h4>موضوع رقابت</h4>
+                @(Html.Kendo().DropDownListFor(model => model.CompetitionSubjectId)
+                                                          .HtmlAttributes(new { style = "width:100%" })
+                                                          .OptionLabel("انتخاب کنید ...")
+                                                          .DataTextField("SubjectTitle")
+                                                          .DataValueField("SubjectID")
+                                                          .DataSource(source =>
+                                                          {
+                                                              source.Read(read =>
+                                                              {
+                                                                  read.Action("GetCascadeSubjects", "Participants")
+                                                                      .Data("filterSubjects");
+                                                              })
+                                                              .ServerFiltering(true);
+                                                          })
+                                                          .Enable(false)
+                                                          .AutoBind(false)
+                                                          .CascadeFrom("CompetitionBranchId")
+                )
+                <script>
+                    function filterSubjects() {
+                        return {
+                            branches: $("#CompetitionBranchId").val()
+                        };
+                    }
+                </script>
+                <style>
+                    .k-readonly {
+                        color: gray;
+                    }
+                </style>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Subject" class="col-sm-2 control-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-sm-2 control-label"></label>
+            <div class="col-sm-6">
+                <textarea rows="20" cols="250" asp-for="Description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">فایل ضمیمه</label>
+            <div class="col-sm-6">
+                <div class="k-rtl">
+                    <div class="demo-section k-content">
+                        @(Html.Kendo().Upload()
+                                                    .Name("attach-file")
+                                                    .Events(events => events.Upload("onUpload"))
+                                                    .Messages(message =>
+                                                    {
+                                                        message.Select("انتخاب فایل");
+                                                    })
+                                                    .Multiple(false)
+                                                    .Validation(validation => validation.MaxFileSize(10000000)
+                                                    .AllowedExtensions(new string[] { ".jpg", ".jpeg", ".zip", ".pdf" }))
+                        )
+                        <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong></div>
+                    </div>
+                </div>
+                <a href="@Model.UploadedFile">برای دانلود فایل ضمیمه کلیک کنید</a>
+            </div>
+        </div>
+
+
+
+        <div class="box-footer">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">ارسال</button>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+
+                <div class="col-sm-4">
+                    <label class="col-sm-4">تعیین وضعیت</label>
+                    <div class="col-sm-8">                        
+                            @(Html.Kendo().DropDownListFor(model => model.StatusId)
+                                                                                          .HtmlAttributes(new { style = "width:100%" })
+                                                                                          .OptionLabel("انتخاب کنید ...")
+                                                                                          .DataTextField("StatusTitle")
+                                                                                          .DataValueField("StatusId")
+                                                                                          .DataSource(source =>
+                                                                                          {
+                                                                                              source.Read(read =>
+                                                                                              {
+                                                                                                  read.Action("GetStatuses", "Status"); ;
+                                                                                              })
+                                                                                              .ServerFiltering(true);
+                                                                                          })                                                                                          
+                            )
+
+                        
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</form>
+
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function onUpload(e) {
+        e.data = {
+            data: 'idea'
+        };
+    }
+
+    function onSuccess(e) {
+        e.data = {
+            data2: 'success'
+        };
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

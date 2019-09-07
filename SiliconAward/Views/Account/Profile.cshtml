@@ -1,0 +1,279 @@
+﻿@model SiliconAward.ViewModels.ProfileViewModel
+@using Kendo.Mvc.UI
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .k-upload-files .k-upload-status{
+        left:10px;
+    }
+</style>
+
+<div class="box-header with-border">
+    <h3 style="display: block;" class="box-title">پروفایل</h3>
+</div>
+<!-- /.box-header -->
+<!-- form start -->
+<form asp-controller="Account" asp-action="Profile"
+      asp-route-returnurl="@ViewData["ReturnUrl"]"
+      method="post" class="form-horizontal" role="form">
+    @Html.AntiForgeryToken()
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label asp-for="FullName" class="col-sm-2 control-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="FullName" style="text-align:center;" type="text" class="form-control" placeholder="نام و نام خانوادگی">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                    <span class="text-danger">@ViewData["Message"]</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="col-sm-2 control-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="Email" style="text-align:center;" type="email" class="form-control" placeholder="ایمیل">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <span class="text-danger">@ViewData["Message"]</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="col-sm-2 control-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="Phone" style="text-align:center;" type="tel" class="form-control" placeholder="09122222222" disabled>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                    <span class="text-danger">@ViewData["Message"]</span>
+                </div>
+            </div>
+            
+            
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">تصویر کارت ملی</label>
+                        <div class="col-sm-6 k-rtl">
+                            @(Html.Kendo().Upload()
+                                                                                        .Name("melli-card")
+                                                                                        .Events(events => events.Upload("onUpload1").Remove("onUpload1"))
+                                                                                        .Async(a => a
+                                                                                            .Save("SaveAsync", "Upload")
+                                                                                            .Remove("Remove", "Upload")
+                                                                                            .SaveField("files")
+                                                                                            .AutoUpload(true)
+                                                                                        )
+                                                                                        .Messages(message =>
+                                                                                        {
+                                                                                            message.Select("انتخاب فایل");
+                                                                                        })
+                                                                                        .Multiple(false)
+                                                                                        .Validation(validation => validation.MaxFileSize(1145728).AllowedExtensions(new string[] { ".jpg", ".jpeg" }))
+                            )
+                            <div class="demo-hint">حداکثر اندازه فایل <strong>1MB</strong>و با فرمت JPG.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        @if (User.IsInRole("Participant"))
+                        {
+                            <label class="col-sm-2 control-label">پروپوزال</label>
+                        }
+                        @if (User.IsInRole("Supporter"))
+                        {
+                            <label class="col-sm-2 control-label">اسناد مالی</label>
+                        }
+                        @if (User.IsInRole("Expert"))
+                        {
+                            <label class="col-sm-2 control-label">رزومه</label>
+                        }
+                        @if(User.IsInRole("Admin"))
+                        {
+                            <label class="col-sm-2 control-label">فایل</label>
+
+                        }
+
+                        <div class="col-sm-6 k-rtl">
+                            @(Html.Kendo().Upload()
+                                                                                                                        .Name("proposal")
+                                                                                                                        .Async(a => a
+                                                                                                                            .Save("SaveAsync", "Upload")
+                                                                                                                            .Remove("Remove", "Upload")
+                                                                                                                            .SaveField("files")
+                                                                                                                            .AutoUpload(true)
+                                                                                                                        )
+                                                                                                                        .Events(events => events.Upload("onUpload2"))
+                                                                                                                        .Messages(message =>
+                                                                                                                            {
+                                                                                                                                message.Select("انتخاب فایل");
+                                                                                                                            })
+                                                                                                                        .Multiple(false)
+                                                                                                                        .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".pdf" }))
+                            )
+                            <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت PDF.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">سایر فایل ها</label>
+                        <div class="col-sm-6 k-rtl">
+                            @(Html.Kendo().Upload()
+                                                                                        .Name("other")
+                                                                                        .Async(a => a
+                                                                                            .Save("SaveAsync", "Upload")
+                                                                                            .Remove("Remove", "Upload")
+                                                                                            .SaveField("files")
+                                                                                            .AutoUpload(true)                                                                                            
+                                                                                        )
+                                                                                        .Events(events => events.Upload("onUpload3"))
+                                                                                        .Messages(message =>
+                                                                                            {
+                                                                                                message.Select("انتخاب فایل");
+                                                                                            })
+                                                                                        .Multiple(false)
+                                                                                        .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".zip" }))
+                            )
+                            <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت ZIP.</div>
+                        </div>
+                    </div>
+                </div>
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                @if (User.Claims.FirstOrDefault(c => c.Type == "avatar") != null)
+                {
+                    <img id="avatar-img" src="@User.Claims.FirstOrDefault(c => c.Type == "avatar").Value" class="user-image" alt="User Image" style="border-radius:50%; width:50%;">
+                }
+                else
+                {
+                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                    <img id="avatar-img" class="col-sm-offset-3" src="~/dist/img/user.png" style="border-radius:50%; width:50%;" />
+
+
+                }
+            </div>
+            <div class="form-group">
+                <div class="k-rtl">
+                    <label class="control-label">تصویر پروفایل</label>
+
+                    <div class="k-rtl">
+                        @(Html.Kendo().Upload()
+                                                            .Name("avatar")
+                                                            .Events(events => events.Upload("onUpload4").Remove("onUpload4"))
+                                                            .Async(a => a
+                                                                .Save("SaveAsync", "Upload")
+                                                                .Remove("Remove", "Upload")
+                                                                .SaveField("files")
+                                                                .AutoUpload(true)
+                                                            )
+                                                            .Messages(message =>
+                                                            {
+                                                                message.Select("انتخاب فایل");
+                                                            })
+                                                            .Multiple(false)
+                                                            
+                                                            .Validation(validation => validation.MaxFileSize(3145728).AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" }))
+                        )
+                        <div style="font-size:12px;">حداکثر اندازه فایل <strong>1MB</strong>و با فرمت jpg</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <h4>فایل های آپلود شده</h4>
+                @foreach (var item in Model.Documents)
+                {
+                <ul>
+                    <li>
+                        @if (item.Tag == "mellicard")
+                        {
+                            <h5><a href="@item.File">تصویر کارت ملی</a></h5>
+
+                        }
+
+                        @if (item.Tag == "proposal")
+                        {
+                            @if (User.IsInRole("Participant"))
+                            {
+                                <h5><a href="@item.File">پروپوزال</a></h5>
+                            }
+                            @if (User.IsInRole("Supporter"))
+                            {
+                                <h5><a href="@item.File">اسناد مالی</a></h5>
+                            }
+                            @if (User.IsInRole("Expert"))
+                            {
+                                <h5><a href="@item.File">رزومه</a></h5>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <h5><a href="@item.File">فایل</a></h5>
+                            }
+
+
+                        }
+
+                        @if (item.Tag == "other")
+                        {
+                            <h5><a href="@item.File">فایل های دیگر</a></h5>
+                        }
+                    </li>
+                </ul>
+                }
+            </div>
+            </div>
+
+
+            </div>
+    <div class="box-footer">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">ارسال</button>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+    <!-- /.box-footer -->
+</form>
+
+
+<!-- /.box-body -->
+<script>    
+    function loadFile(e) {
+        var output = document.getElementById('avatar-img');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function onUpload1(e) {
+        e.data = {
+            data: 'mellicard'
+        };
+    }
+
+    function onUpload2(e) {
+        e.data = {
+            data: 'proposal'
+        };
+    }
+
+    function onUpload3(e) {
+        e.data = {
+            data: 'other'
+        };
+    }
+
+    function onUpload4(e) {
+        var output = document.getElementById('avatar-img');
+        output.src = URL.createObjectURL(event.target.files[0]);
+
+        e.data = {
+            data: 'avatar'
+        };
+    }
+
+</script>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

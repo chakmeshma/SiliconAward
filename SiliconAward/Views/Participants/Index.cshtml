@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "طرح های ارسالی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    @@media only screen and (max-width: 600px) {
+    .k-grid, .k-listview {
+        position: relative;
+        zoom: 1;
+        width: 100%;
+        overflow-x: scroll;
+        position: relative;
+    }
+    .k-block, .k-draghandle, .k-grid-header, .k-grouping-header, .k-header, .k-pager-wrap, .k-treemap-tile, html .km-pane-wrapper .k-header {
+        background-color: #ffffff;
+    }
+        .k-header.k-grid-toolbar{
+            border:none;
+        }
+    }
+</style>
+<div class="box-header with-border">
+    @if (User.IsInRole("Participant"))
+    {
+        <h3 style="display: block;" class="box-title">طرح های ارسالی</h3>
+    }
+    @if (User.IsInRole("Expert"))
+    {
+        <h3 style="display: block;" class="box-title">موضوعات انتخاب شده</h3>
+    }
+    @if (User.IsInRole("Supporter"))
+    {
+        <h3 style="display: block;" class="box-title">موضوعات انتخاب شده</h3>
+    }
+
+</div>
+<div class="">
+    <p>
+    <div class="k-rtl">
+        @(Html.Kendo().Grid<SiliconAward.ViewModels.ParticipantViewModel>
+    ()
+    .Name("Grid")
+    .ToolBar(toolbar =>
+    {
+        if (User.IsInRole("Participant") || User.IsInRole("Supporter") || User.IsInRole("Expert"))
+            toolbar.ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Create", "Participants") + "' " + "><span class='k-icon k-i-plus'></span>افزودن</a>");
+    })
+    .Sortable()
+
+    .Columns(columns =>
+    {
+        columns.Bound(e => e.Subject);
+        columns.Bound(e => e.CreateTime).Format("{0:dd/MM/yyyy}")/*.HeaderHtmlAttributes(new { @class = "hidden-xs" }).HtmlAttributes(new { @class = "hidden-xs" })*/;
+        columns.Bound(e => e.LastUpdateTime).Format("{0:dd/MM/yyyy}");
+        columns.Bound(e => e.Status);
+        columns.Bound(e => e.LastStatusTime).Format("{0:dd/MM/yyyy}");
+        if (User.IsInRole("Admin"))
+        {
+            columns.Bound(p => p.Operations).Width(290).ClientTemplate("<a class='k-button' href='" + Url.Action("Edit", "Participants") + "/#= Id #' " + ">ویرایش</a> | " +
+        "<a class='k-button' href='" + Url.Action("Details", "Participants") + "/#= Id #' " + ">جزئیات</a> | " +
+        "<a class='k-button' href='" + Url.Action("Delete", "Participants") + "/#= Id #' " + ">حذف</a>");
+
+        }
+        else
+        {
+
+            columns.Bound(o => o.Operations).Width(290).ClientTemplate("# if (Editable == true) { #"
+            + "<a class='k-button' href='" + Url.Action("Edit", "Participants") + "/#= Id #' " + ">ویرایش</a> | " +
+        "<a class='k-button' href='" + Url.Action("Details", "Participants") + "/#= Id #' " + ">جزئیات</a> | " +
+        "<a class='k-button' href='" + Url.Action("Delete", "Participants") + "/#= Id #' " + ">حذف</a>"
+            + "# }else {#" +
+    "<a class='k-button' href='" + Url.Action("Details", "Participants") + "/#= Id #' " + ">جزئیات</a>"
+            + "#} #");
+        }
+        
+    })
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .Read(read => read.Action("Read", "Participants").Data("additionalInfo"))
+
+    )
+    )
+</div>
+</div>
+<script>
+    var url = $(location).attr('href'),
+        parts = url.split("/"),
+        last_part = parts[parts.length - 1];
+
+    function additionalInfo() {
+        return {            
+            id: last_part
+        }
+    }
+</script>

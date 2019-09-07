@@ -1,0 +1,49 @@
+﻿<ul class="sidebar-menu" data-widget="tree">
+    @*<li class="header">منو</li>*@
+    <!-- Optionally, you can add icons to the links -->
+
+    <li><a asp-area="" asp-controller="Account" asp-action="Profile"><i class="fa fa-link"></i> <span>پروفایل</span></a></li>
+    @if (!User.IsInRole("Admin"))
+    {
+        if (User.IsInRole("Participant"))
+        {
+
+            <li><a asp-area="" asp-controller="Participants" asp-action="Index"><i class="fa fa-link"></i> <span>شرکت در رقابت</span></a></li>
+
+        }
+        if (User.IsInRole("Expert"))
+        {
+
+            <li><a asp-area="" asp-controller="Participants" asp-action="Index"><i class="fa fa-link"></i> <span>ارسال مدارک کارشناسی</span></a></li>
+
+        }
+        if (User.IsInRole("Supporter"))
+        {
+
+            <li><a asp-area="" asp-controller="Participants" asp-action="Index"><i class="fa fa-link"></i> <span>ارسال مدارک حامی</span></a></li>
+
+        }
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        <li><a asp-area="" asp-controller="Status" asp-action="Index"><i class="fa fa-link"></i> <span>وضعیت ها</span></a></li>
+        <li><a asp-area="" asp-controller="ParticipantUsers" asp-action="Participants"><i class="fa fa-link"></i> <span>شرکت کننده ها</span></a></li>
+        <li><a asp-area="" asp-controller="ParticipantUsers" asp-action="Experts"><i class="fa fa-link"></i> <span>کارشناسان</span></a></li>
+        <li><a asp-area="" asp-controller="ParticipantUsers" asp-action="Supporters"><i class="fa fa-link"></i> <span>حامیان</span></a></li>
+        @*<li><a asp-area="" asp-controller="Tickets" asp-action="Index"><i class="fa fa-link"></i> <span>تیکت</span></a></li>*@
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-link"></i> <span>موضوعات مسابقه</span>
+                <span class="pull-left-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a asp-area="" asp-controller="CompetitionFields" asp-action="Index">حوزه ها</a></li>
+                <li><a asp-area="" asp-controller="CompetitionBranches" asp-action="Index">شاخه ها</a></li>
+                <li><a asp-area="" asp-controller="CompetitionSubjects" asp-action="Index">موضوعات</a></li>
+            </ul>
+        </li>
+    }
+</ul>
