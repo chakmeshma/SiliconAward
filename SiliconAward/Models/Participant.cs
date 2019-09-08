@@ -36,7 +36,7 @@ namespace SiliconAward.Models
         public string Description { get; set; }
 
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         [ForeignKey("CompetitionSubject")]

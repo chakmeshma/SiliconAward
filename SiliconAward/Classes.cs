@@ -13,7 +13,7 @@ namespace SiliconAward
 {
     public class Classes
     {
-        public static string FileUrl(Guid? id, string filename)
+        public static string FileUrl(string id, string filename)
         {
             return "/uploads/" + id + "/" + filename;
         }

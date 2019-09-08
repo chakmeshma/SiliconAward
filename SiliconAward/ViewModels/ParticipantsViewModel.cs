@@ -8,7 +8,7 @@ namespace SiliconAward.ViewModels
 {
     public class ParticipantsViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Display(Name ="نام کامل")]
         public string FullName { get; set; }

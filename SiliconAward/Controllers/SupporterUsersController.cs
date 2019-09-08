@@ -30,7 +30,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: SupporterUsers/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -91,7 +91,7 @@ namespace SiliconAward.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,Role,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,Role,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user)
         {
             if (id != user.Id)
             {
@@ -122,7 +122,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: SupporterUsers/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -142,7 +142,7 @@ namespace SiliconAward.Controllers
         // POST: SupporterUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
@@ -150,12 +150,12 @@ namespace SiliconAward.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(Guid id)
+        private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> ParticipantDetails(Guid? id)
+        public async Task<IActionResult> ParticipantDetails(string id)
         {
 
             var result = (from p in _context.Participants
