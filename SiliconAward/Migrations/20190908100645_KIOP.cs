@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiliconAward.Migrations
 {
-    public partial class YOT : Migration
+    public partial class KIOP : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -67,7 +67,7 @@ namespace SiliconAward.Repository
             {
                 User userToAdd = new User()
                 {
-                    Id = (new Guid()).ToString(),
+                    Id = (Guid.NewGuid()).ToString(),
                     Role = registerUser.ParticipantType,
                     PhoneNumber = registerUser.PhoneNumber,
                     AccessFailedCount = 0,
@@ -89,7 +89,7 @@ namespace SiliconAward.Repository
                 Classes.SendSmsAsync(registerUser.PhoneNumber, user.PhoneNumberVerifyCode, "10award");
                 return "confirm";
             }
-            else if (user.Password == null)
+            else if (user.PasswordHash == null)
             {
                 return "password";
             }
@@ -121,7 +121,7 @@ namespace SiliconAward.Repository
                 var user = (from u in _dbContext.Users
                             where u.PhoneNumber == setPassword.Phone
                             select u).FirstOrDefault();
-                user.Password = Classes.SimpleHash.ComputeHash(setPassword.Password, "sha256", null);
+                user.PasswordHash = Classes.SimpleHash.ComputeHash(setPassword.Password, "sha256", null);
                 _dbContext.Update(user);
                 _dbContext.SaveChangesAsync();
 
@@ -254,12 +254,12 @@ namespace SiliconAward.Repository
             {
                 if (user.PhoneNumberConfirmed == true)
                 {
-                    if (user.Password == null)
+                    if (user.PasswordHash == null)
                     {
                         loginResult.Message = "fail";
                         return loginResult;
                     }
-                    else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.Password))
+                    else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.PasswordHash))
                     {
                         loginResult.Id = user.Id;
                         loginResult.Role = user.Role;
@@ -319,7 +319,7 @@ namespace SiliconAward.Repository
                 {
                     CreateTime = DateTime.Now.ToString(),
                     File = document.DocumentUrl,
-                    Id = (new Guid()).ToString(),
+                    Id = (Guid.NewGuid()).ToString(),
                     UserId = document.UserId,
                     DocumentType = document.Type
                 };

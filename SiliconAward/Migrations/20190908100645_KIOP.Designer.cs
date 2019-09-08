@@ -10,8 +10,8 @@ using SiliconAward.Data;
 namespace SiliconAward.Migrations
 {
     [DbContext(typeof(EFDataContext))]
-    [Migration("20190908095749_YOT")]
-    partial class YOT
+    [Migration("20190908100645_KIOP")]
+    partial class KIOP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
