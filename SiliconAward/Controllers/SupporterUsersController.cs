@@ -71,7 +71,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: SupporterUsers/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {

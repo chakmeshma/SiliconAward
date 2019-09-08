@@ -20,7 +20,7 @@ using DNTPersianUtils.Core;
 
 namespace SiliconAward.Controllers
 {
-    [Authorize(Roles ="Admin, Participant, Expert, Supporter")]
+    [Authorize(Roles = "Admin, Participant, Expert, Supporter")]
     public class ParticipantsController : Controller
     {
         private readonly EFDataContext _context;
@@ -70,11 +70,11 @@ namespace SiliconAward.Controllers
             //}
 
             return View();
-        }        
+        }
 
         public ActionResult Read([DataSourceRequest] DataSourceRequest request, string id)
         {
-            if (id !=null)
+            if (id != null)
             {
                 if (id == "Participants" || id == "Expert" || id == "Supporter")
                     id = null;
@@ -92,19 +92,19 @@ namespace SiliconAward.Controllers
                               Id = p.Id,
                               Subject = p.Subject,
                               CompetitionSubject = cs.Title,
-                              CreateTime =p.CreateTime.ToShortPersianDateTimeString(),
+                              CreateTime = p.CreateTime.ToShortPersianDateTimeString(),
                               LastUpdateTime = p.LastUpdateTime.ToShortPersianDateTimeString(),
                               LastStatusTime = p.LastStatusTime.ToShortPersianDateTimeString(),
                               Status = s.Title,
                               Editable = s.Editable
                           }).ToList();
 
-            
+
             return Json(result.ToDataSourceResult(request));
         }
 
         // GET: Participants/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -125,7 +125,7 @@ namespace SiliconAward.Controllers
                                          CompetitionBranch = cb.Title,
                                          CompetitionSubject = cs.Title,
                                          UploadedFile = "/uploads/" + p.UserId + "/" + p.AttachedFile,
-                                         StatusId = p.StatusId                                         
+                                         StatusId = p.StatusId
                                      }).FirstOrDefaultAsync();
 
             if (participant == null)
@@ -153,8 +153,8 @@ namespace SiliconAward.Controllers
             Participant participantToAdd = new Participant();
 
             if (ModelState.IsValid)
-            {                                
-                participantToAdd.Id = Guid.NewGuid();
+            {
+                participantToAdd.Id = (Guid.NewGuid()).ToString();
                 participantToAdd.CreateTime = DateTime.Now;
                 participantToAdd.Subject = participant.Subject;
                 participantToAdd.StatusId = 1;
@@ -174,13 +174,13 @@ namespace SiliconAward.Controllers
                         var format = Path.GetExtension(fileContent.FileName.ToString().Trim('"'));
                         var filename = Guid.NewGuid().ToString() + format;
                         var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads\" + HttpContext.User.Identity.Name, filename);
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads\"+ HttpContext.User.Identity.Name);
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads\" + HttpContext.User.Identity.Name);
 
                         bool exists = Directory.Exists(path);
 
                         if (!exists)
                             Directory.CreateDirectory(path);
-                        
+
                         using (var fileStream = new FileStream(physicalPath, FileMode.Create))
                         {
                             await file.CopyToAsync(fileStream);
@@ -191,15 +191,15 @@ namespace SiliconAward.Controllers
                 }
 
                 _context.Add(participantToAdd);
-                await _context.SaveChangesAsync();                                
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-            }            
+            }
             return View(participantToAdd);
         }
 
         // GET: Participants/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -212,24 +212,24 @@ namespace SiliconAward.Controllers
                     return Redirect("/Participants");
             }
 
-            var participant =await (from p in _context.Participants
-                       where p.Id == id
-                       join cs in _context.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
-                       join cb in _context.CompetitionBranchs on cs.CompetitionBranchId equals cb.Id
-                       join cf in _context.CompetitionFields on cb.CompetitionFieldId equals cf.Id
-                       select new EditParticipantViewModel
-                       {
-                           Id = p.Id,
-                           Subject = p.Subject,
-                           Description = p.Description,
-                           CompetitionFieldId = cf.Id,
-                           CompetitionBranchId = cb.Id,
-                           CompetitionSubjectId = cs.Id,                           
-                           UploadedFile = "/uploads/" + p.UserId + "/" + p.AttachedFile,
-                           StatusId = p.StatusId,                           
-                           CreateTime = p.CreateTime                           
-                       }).FirstOrDefaultAsync();
-            
+            var participant = await (from p in _context.Participants
+                                     where p.Id == id
+                                     join cs in _context.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
+                                     join cb in _context.CompetitionBranchs on cs.CompetitionBranchId equals cb.Id
+                                     join cf in _context.CompetitionFields on cb.CompetitionFieldId equals cf.Id
+                                     select new EditParticipantViewModel
+                                     {
+                                         Id = p.Id,
+                                         Subject = p.Subject,
+                                         Description = p.Description,
+                                         CompetitionFieldId = cf.Id,
+                                         CompetitionBranchId = cb.Id,
+                                         CompetitionSubjectId = cs.Id,
+                                         UploadedFile = "/uploads/" + p.UserId + "/" + p.AttachedFile,
+                                         StatusId = p.StatusId,
+                                         CreateTime = p.CreateTime
+                                     }).FirstOrDefaultAsync();
+
             if (participant == null)
             {
                 return NotFound();
@@ -243,7 +243,7 @@ namespace SiliconAward.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EditParticipantViewModel participant, IFormCollection formCollection)
+        public async Task<IActionResult> Edit(string id, EditParticipantViewModel participant, IFormCollection formCollection)
         {
             if (id != participant.Id)
             {
@@ -253,12 +253,12 @@ namespace SiliconAward.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {                    
+                {
                     var participantToUpdate = await _context.Participants.FindAsync(id);
                     participantToUpdate.LastUpdateTime = DateTime.Now;
                     participantToUpdate.CompetitionSubjectId = participant.CompetitionSubjectId;
                     participantToUpdate.Description = participant.Description;
-                    participantToUpdate.Subject = participant.Subject;                    
+                    participantToUpdate.Subject = participant.Subject;
 
                     if (formCollection.Files != null)
                     {
@@ -304,12 +304,12 @@ namespace SiliconAward.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(participant);
         }
 
         // GET: Participants/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -323,22 +323,22 @@ namespace SiliconAward.Controllers
             }
 
             var participant = await (from p in _context.Participants
-                                      where p.Id == id
-                                      join cs in _context.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
-                                      join cb in _context.CompetitionBranchs on cs.CompetitionBranchId equals cb.Id
-                                      join cf in _context.CompetitionFields on cb.CompetitionFieldId equals cf.Id
-                                      select new DetailParticipantViewModel
-                                      {
-                                          Id = p.Id,
-                                          Subject = p.Subject,
-                                          Description = p.Description,
-                                          CompetitionField = cf.Title,
-                                          CompetitionBranch = cb.Title,
-                                          CompetitionSubject = cs.Title,
-                                          UploadedFile = "/uploads/" + p.UserId + "/" + p.AttachedFile,
-                                          StatusId = p.StatusId
-                                      }).FirstOrDefaultAsync();
-                
+                                     where p.Id == id
+                                     join cs in _context.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
+                                     join cb in _context.CompetitionBranchs on cs.CompetitionBranchId equals cb.Id
+                                     join cf in _context.CompetitionFields on cb.CompetitionFieldId equals cf.Id
+                                     select new DetailParticipantViewModel
+                                     {
+                                         Id = p.Id,
+                                         Subject = p.Subject,
+                                         Description = p.Description,
+                                         CompetitionField = cf.Title,
+                                         CompetitionBranch = cb.Title,
+                                         CompetitionSubject = cs.Title,
+                                         UploadedFile = "/uploads/" + p.UserId + "/" + p.AttachedFile,
+                                         StatusId = p.StatusId
+                                     }).FirstOrDefaultAsync();
+
             if (participant == null)
             {
                 return NotFound();
@@ -350,7 +350,7 @@ namespace SiliconAward.Controllers
         // POST: Participants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var participant = await _context.Participants.FindAsync(id);
             _context.Participants.Remove(participant);
@@ -358,7 +358,7 @@ namespace SiliconAward.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParticipantExists(Guid id)
+        private bool ParticipantExists(string id)
         {
             return _context.Participants.Any(e => e.Id == id);
         }
@@ -372,34 +372,34 @@ namespace SiliconAward.Controllers
         {
             var fields = _context.CompetitionFields
                     .Select(c => new { CompetitionFieldId = c.Id, CompetitionField = c.Title }).ToList();
-                return Json(fields);            
+            return Json(fields);
         }
 
         public JsonResult GetCascadeBranches(int? fields)
         {
-            
-                var branches = _context.CompetitionBranchs.AsQueryable();
 
-                if (fields != null)
-                {
+            var branches = _context.CompetitionBranchs.AsQueryable();
+
+            if (fields != null)
+            {
                 branches = branches.Where(p => p.CompetitionFieldId == fields);
-                }
+            }
 
-                return Json(branches.Select(p => new { BranchID = p.Id, BranchName = p.Title }).ToList());
-            
+            return Json(branches.Select(p => new { BranchID = p.Id, BranchName = p.Title }).ToList());
+
         }
 
         public JsonResult GetCascadeSubjects(int? branches)
-        {            
-                var subjects = _context.CompetitionSubjects.AsQueryable();
+        {
+            var subjects = _context.CompetitionSubjects.AsQueryable();
 
-                if (branches != null)
-                {
+            if (branches != null)
+            {
                 subjects = subjects.Where(o => o.CompetitionBranchId == branches);
-                }
+            }
 
-                return Json(subjects.Select(o => new { SubjectID = o.Id, SubjectTitle = o.Title }).ToList());
-            
-        }        
+            return Json(subjects.Select(o => new { SubjectID = o.Id, SubjectTitle = o.Title }).ToList());
+
+        }
     }
 }

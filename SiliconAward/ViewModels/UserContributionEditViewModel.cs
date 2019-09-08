@@ -8,7 +8,7 @@ namespace SiliconAward.ViewModels
 {
     public class UserContributionEditViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [Display(Name = "عنوان")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Subject { get; set; }

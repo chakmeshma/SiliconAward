@@ -11,14 +11,14 @@ namespace SiliconAward.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }        
+        public string Id { get; set; }        
         
         public string File { get; set; }      
         
         public string CreateTime { get; set; }                
 
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         [ForeignKey("Status")]

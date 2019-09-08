@@ -11,7 +11,7 @@ namespace SiliconAward.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Display(Name = "توضیحات")]
@@ -25,11 +25,11 @@ namespace SiliconAward.Models
         public string CreateTime { get; set; }
 
         [ForeignKey("Ticket")]
-        public Guid TicketId { get; set; }
+        public string TicketId { get; set; }
         public Ticket Ticket { get; set; }
 
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -63,7 +63,7 @@ namespace SiliconAward.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticket.Id = Guid.NewGuid();
+                ticket.Id = (Guid.NewGuid()).ToString();
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -73,7 +73,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: Tickets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -94,7 +94,7 @@ namespace SiliconAward.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Subject,StatusId")] Ticket ticket)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Subject,StatusId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -126,7 +126,7 @@ namespace SiliconAward.Controllers
         }
 
         // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -147,7 +147,7 @@ namespace SiliconAward.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
             _context.Tickets.Remove(ticket);
@@ -155,7 +155,7 @@ namespace SiliconAward.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TicketExists(Guid id)
+        private bool TicketExists(string id)
         {
             return _context.Tickets.Any(e => e.Id == id);
         }

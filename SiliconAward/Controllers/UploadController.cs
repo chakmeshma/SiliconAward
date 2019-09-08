@@ -60,7 +60,7 @@ namespace SiliconAward.Controllers
                     {
                         DocumentViewModel document = new DocumentViewModel()
                         {
-                            Id = new Guid(),
+                            Id = (new Guid()).ToString(),
                             DocumentUrl = filename,
                             Type = data,
                             UserId = userId

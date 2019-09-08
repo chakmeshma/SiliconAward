@@ -11,7 +11,7 @@ namespace SiliconAward.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Display(Name = "موضوع")]

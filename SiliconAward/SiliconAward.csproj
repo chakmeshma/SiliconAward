@@ -1,9 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-SiliconAward-D403198C-03EA-466E-87A9-DE1590627B7C</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Data\Migrations\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Data\Migrations\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Migrations\20190908095749_YOT.cs" />
+    <Compile Include="Migrations\20190908095749_YOT.Designer.cs" />
+    <Compile Include="Migrations\EFDataContextModelSnapshot.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
@@ -20,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="wwwroot\bower_components\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>

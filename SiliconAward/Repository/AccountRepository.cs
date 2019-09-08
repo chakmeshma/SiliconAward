@@ -13,7 +13,7 @@ namespace SiliconAward.Repository
     {
         private readonly EFDataContext _dbContext = new EFDataContext();
 
-        public string GetCreateEditAccess(Guid? id)
+        public string GetCreateEditAccess(string id)
         {
             var result = (from p in _dbContext.Participants
                           where id == p.Id
@@ -152,7 +152,7 @@ namespace SiliconAward.Repository
         public ProfileViewModel GetProfile(string id)
         {
             var user = (from u in _dbContext.Users
-                        where u.Id ==id
+                        where u.Id == id
                         select u).FirstOrDefault();
 
             //var tmp = (from d in _dbContext.Documents
@@ -170,7 +170,7 @@ namespace SiliconAward.Repository
                 FullName = user.FullName,
                 Phone = user.PhoneNumber,
                 Documents = (from d in _dbContext.Documents
-                             where d.UserId == Guid.Parse(id)
+                             where d.UserId == id
                              select new DocumentsViewModel
                              {
                                  Id = d.Id,
@@ -307,7 +307,7 @@ namespace SiliconAward.Repository
             try
             {
                 var doc = (from d in _dbContext.Documents
-                           where d.UserId == Guid.Parse(document.UserId) && d.DocumentType == document.Type
+                           where d.UserId == document.UserId && d.DocumentType == document.Type
                            select d).FirstOrDefault();
                 if (doc != null)
                 {
@@ -319,8 +319,8 @@ namespace SiliconAward.Repository
                 {
                     CreateTime = DateTime.Now.ToString(),
                     File = document.DocumentUrl,
-                    Id = new Guid(),
-                    UserId = Guid.Parse(document.UserId),
+                    Id = (new Guid()).ToString(),
+                    UserId = document.UserId,
                     DocumentType = document.Type
                 };
                 _dbContext.Documents.Add(documentToAdd);
@@ -337,7 +337,7 @@ namespace SiliconAward.Repository
         public string GetDocuments(DocumentViewModel document)
         {
             var result = (from d in _dbContext.Documents
-                          where d.UserId == Guid.Parse(document.UserId) && d.DocumentType == document.Type
+                          where d.UserId == document.UserId && d.DocumentType == document.Type
                           select d).FirstOrDefault();
             return result.File;
         }

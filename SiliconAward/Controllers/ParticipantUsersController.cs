@@ -96,7 +96,7 @@ namespace SiliconAward.Controllers
         //}
 
         // GET: ParticipantUsers/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -200,7 +200,7 @@ namespace SiliconAward.Controllers
         // POST: ParticipantUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
@@ -270,7 +270,7 @@ namespace SiliconAward.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UserContributionDetails(Guid? id)
+        public async Task<IActionResult> UserContributionDetails(string id)
         {
             if (id == null)
             {
@@ -303,7 +303,7 @@ namespace SiliconAward.Controllers
             return View(participant);
         }
 
-        public async Task<IActionResult> UserContributionEdit(Guid? id)
+        public async Task<IActionResult> UserContributionEdit(string id)
         {
             if (id == null)
             {
@@ -348,7 +348,7 @@ namespace SiliconAward.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserContributionEdit(Guid id, UserContributionEditViewModel participant, IFormCollection formCollection)
+        public async Task<IActionResult> UserContributionEdit(string id, UserContributionEditViewModel participant, IFormCollection formCollection)
         {
             if (id != participant.Id)
             {
@@ -423,12 +423,12 @@ namespace SiliconAward.Controllers
             return View(participant);
         }
 
-        private bool ParticipantExists(Guid id)
+        private bool ParticipantExists(string id)
         {
             return _context.Participants.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> UserContributionDelete(Guid? id)
+        public async Task<IActionResult> UserContributionDelete(string id)
         {
             if (id == null)
             {
@@ -470,7 +470,7 @@ namespace SiliconAward.Controllers
         // POST: Participants/Delete/5
         [HttpPost, ActionName("UserContributionDelete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserContributionDeleteConfirmed(Guid id)
+        public async Task<IActionResult> UserContributionDeleteConfirmed(string id)
         {
             var participant = await _context.Participants.FindAsync(id);
             _context.Participants.Remove(participant);

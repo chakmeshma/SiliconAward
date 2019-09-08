@@ -10,7 +10,7 @@ namespace SiliconAward.ViewModels
 {
     public class ParticipantViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Display(Name="عنوان")]
         public string Subject { get; set; }
