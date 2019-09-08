@@ -15,7 +15,7 @@ namespace SiliconAward.Repository
         public IEnumerable<ParticipantViewModel> GetUserContributions(string id)
         {
             var userContributions = (from p in _dbContext.Participants
-                                     where p.UserId == Guid.Parse(id)
+                                     where p.UserId == id
                                      join cs in _dbContext.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
                                      join s in _dbContext.Statues on p.StatusId equals s.StatusId
                                      select new ParticipantViewModel

@@ -28,7 +28,7 @@ namespace SiliconAward.Repository
         public string GetUser(string userId, string avatarUrl)
         {
             var user = (from u in _dbContext.Users
-                        where u.Id == Guid.Parse(userId)
+                        where u.Id == userId
                         select u).FirstOrDefault();
             if (user != null)
             {
@@ -52,7 +52,7 @@ namespace SiliconAward.Repository
         public string GetAvatarUrl(string id)
         {
             return (from u in _dbContext.Users
-                    where u.Id == Guid.Parse(id)
+                    where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
         public string AddUser(RegisterViewModel registerUser)
@@ -67,7 +67,7 @@ namespace SiliconAward.Repository
             {
                 User userToAdd = new User()
                 {
-                    Id = new Guid(),
+                    Id = (new Guid()).ToString(),
                     Role = registerUser.ParticipantType,
                     PhoneNumber = registerUser.PhoneNumber,
                     AccessFailedCount = 0,
@@ -152,7 +152,7 @@ namespace SiliconAward.Repository
         public ProfileViewModel GetProfile(string id)
         {
             var user = (from u in _dbContext.Users
-                        where u.Id == Guid.Parse(id)
+                        where u.Id ==id
                         select u).FirstOrDefault();
 
             //var tmp = (from d in _dbContext.Documents

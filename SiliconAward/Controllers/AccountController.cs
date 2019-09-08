@@ -179,7 +179,7 @@ namespace SiliconAward.Controllers
         public async Task<IActionResult> Profile(ProfileViewModel profile)
         {
             var id = HttpContext.User.Identity.Name;
-            profile.Id = Guid.Parse(id);
+            profile.Id = id;
             var result = _repository.EditProfile(profile);
             
             if (result.Message == "success")

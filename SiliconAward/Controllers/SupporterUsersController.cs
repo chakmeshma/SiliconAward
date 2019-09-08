@@ -62,7 +62,7 @@ namespace SiliconAward.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.Id = Guid.NewGuid();
+                user.Id = Guid.NewGuid().ToString();
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

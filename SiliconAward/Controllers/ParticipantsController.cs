@@ -84,7 +84,7 @@ namespace SiliconAward.Controllers
                 id = HttpContext.User.Identity.Name;
 
             var result = (from p in _context.Participants
-                          where p.UserId == Guid.Parse(id)
+                          where p.UserId == id
                           join cs in _context.CompetitionSubjects on p.CompetitionSubjectId equals cs.Id
                           join s in _context.Statues on p.StatusId equals s.StatusId
                           select new ParticipantViewModel
@@ -159,7 +159,7 @@ namespace SiliconAward.Controllers
                 participantToAdd.Subject = participant.Subject;
                 participantToAdd.StatusId = 1;
                 participantToAdd.Description = participant.Description;
-                participantToAdd.UserId = Guid.Parse(HttpContext.User.Identity.Name);
+                participantToAdd.UserId = HttpContext.User.Identity.Name;
                 participantToAdd.CompetitionSubjectId = participant.CompetitionSubjectId;
 
                 if (formCollection.Files != null)
