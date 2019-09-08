@@ -53,12 +53,12 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            var recaptcha = await _recaptcha.Validate(Request);
-            if (!recaptcha.success)
-            {
-                ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
-                return View(!ModelState.IsValid ? register : new RegisterViewModel());
-            }
+            //var recaptcha = await _recaptcha.Validate(Request);
+            //if (!recaptcha.success)
+            //{
+            //    ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
+            //    return View(!ModelState.IsValid ? register : new RegisterViewModel());
+            //}
 
             if (ModelState.IsValid)
             {
@@ -96,12 +96,12 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyPhone(VerifyPhoneViewModel verifyPhone)
         {
-            var recaptcha = await _recaptcha.Validate(Request);
-            if (!recaptcha.success)
-            {
-                ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
-                return View(!ModelState.IsValid ? verifyPhone : new VerifyPhoneViewModel());
-            }
+            //var recaptcha = await _recaptcha.Validate(Request);
+            //if (!recaptcha.success)
+            //{
+            //    ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
+            //    return View(!ModelState.IsValid ? verifyPhone : new VerifyPhoneViewModel());
+            //}
 
             if (ModelState.IsValid)
             {
@@ -238,12 +238,12 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
-            var recaptcha = await _recaptcha.Validate(Request);
-            if (!recaptcha.success)
-            {
-                ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
-                return View(!ModelState.IsValid ? login : new LoginViewModel());
-            }
+            //var recaptcha = await _recaptcha.Validate(Request);
+            //if (!recaptcha.success)
+            //{
+            //    ModelState.AddModelError("Recaptcha", "There was an error validating recatpcha. Please try again!");
+            //    return View(!ModelState.IsValid ? login : new LoginViewModel());
+            //}
 
             var result = _repository.Login(login);
 

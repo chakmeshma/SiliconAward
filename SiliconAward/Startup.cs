@@ -39,7 +39,7 @@ namespace SiliconAward
             });
             
             services.AddDbContext<EFDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddIdentity<Models.User, IdentityRole>().AddEntityFrameworkStores<EFDataContext>().AddDefaultTokenProviders();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options => {
                 options.LoginPath = "/Account/Login/";

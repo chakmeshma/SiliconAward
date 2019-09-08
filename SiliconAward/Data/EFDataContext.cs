@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SiliconAward.Models;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SiliconAward.Data
 {
-    public class EFDataContext:DbContext
+    public class EFDataContext : IdentityDbContext<Models.User>
     {
         public EFDataContext(DbContextOptions<EFDataContext> options)
             : base(options)
@@ -20,7 +21,7 @@ namespace SiliconAward.Data
         {
         }
 
-        
+
         public DbSet<Status> Statues { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketDetails> TicketDetails { get; set; }
@@ -28,22 +29,22 @@ namespace SiliconAward.Data
         public DbSet<CompetitionField> CompetitionFields { get; set; }
         public DbSet<CompetitionSubject> CompetitionSubjects { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<Participant> Participants { get; set; }             
-        public DbSet<User> Users { get; set; }
+        public DbSet<Participant> Participants { get; set; }
+        //public DbSet<User> Users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer(@"data source=(local); initial catalog=myprogra_10award_db;persist security info=True;user id=ahm604dbuser;pwd=!s78c4xO");
         //}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<Status>()
-            //    .HasMany<Participant>(g => g.Participants)
-            //    .WithOne(s => s.Status)
-            //    .HasForeignKey(s => s.StatusId)
-            //    .OnDelete(DeleteBehavior.SetNull);
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    //modelBuilder.Entity<Status>()
+        //    //    .HasMany<Participant>(g => g.Participants)
+        //    //    .WithOne(s => s.Status)
+        //    //    .HasForeignKey(s => s.StatusId)
+        //    //    .OnDelete(DeleteBehavior.SetNull);
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
