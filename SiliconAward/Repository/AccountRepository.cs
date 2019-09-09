@@ -56,7 +56,7 @@ namespace SiliconAward.Repository
                     where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
-        public string AddUser(RegisterViewModel registerUser, UserManager<Models.User> userManager)
+        public async Task<string> AddUserAsync(RegisterViewModel registerUser, UserManager<Models.User> userManager)
         {
             ResultViewModel result = new ResultViewModel();
 
@@ -77,11 +77,13 @@ namespace SiliconAward.Repository
                     PhoneNumberConfirmed = false,
                     EmailConfirmed = false,
                     PhoneNumberVerifyCode = Classes.CreateVerifyCode(),
-                    CreateTime = DateTime.Now
+                    CreateTime = DateTime.Now,
+                    UserName = registerUser.PhoneNumber
                 };
 
-                _dbContext.Users.Add(userToAdd);
-                _dbContext.SaveChangesAsync();
+                IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+                //_dbContext.Users.Add(userToAdd);
+                //_dbContext.SaveChangesAsync();
                 Classes.SendSmsAsync(userToAdd.PhoneNumber, userToAdd.PhoneNumberVerifyCode, "10award");
                 return "added";
             }
@@ -114,7 +116,7 @@ namespace SiliconAward.Repository
                 return "fail";
         }
 
-        public ResetPasswordResultViewModel SetPassword(SetPasswordViewModel setPassword, UserManager<Models.User> userManager)
+        public async Task<ResetPasswordResultViewModel> SetPassword(SetPasswordViewModel setPassword, UserManager<Models.User> userManager)
         {
             ResetPasswordResultViewModel result = new ResetPasswordResultViewModel();
             try
@@ -122,9 +124,11 @@ namespace SiliconAward.Repository
                 var user = (from u in _dbContext.Users
                             where u.PhoneNumber == setPassword.Phone
                             select u).FirstOrDefault();
-                user.PasswordHash = Classes.SimpleHash.ComputeHash(setPassword.Password, "sha256", null);
-                _dbContext.Update(user);
-                _dbContext.SaveChangesAsync();
+
+                IdentityResult identityResult = await userManager.AddPasswordAsync(await userManager.FindByIdAsync(user.Id), setPassword.Password);
+                //user.PasswordHash = Classes.SimpleHash.ComputeHash(setPassword.Password, "sha256", null);
+                //_dbContext.Update(user);
+                //_dbContext.SaveChangesAsync();
 
                 result.Id = user.Id.ToString();
                 if (user.Avatar == null)

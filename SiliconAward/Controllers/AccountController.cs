@@ -68,7 +68,7 @@ namespace SiliconAward.Controllers
                 {
                     VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
 
-                    var result = _repository.AddUser(register, _userManager);
+                    var result = await _repository.AddUserAsync(register, _userManager);
                     if (result == "added" || result == "confirm")
                     {
                         verifyPhoneNumber.Phone = register.PhoneNumber;
@@ -115,7 +115,7 @@ namespace SiliconAward.Controllers
                     };
 
                     return View("SetPassword", setPassword);
-                }                    
+                }
                 else
                     ViewData["Message"] = "کد وارد شده صحیح نمی باشد";
                 return View();
@@ -129,9 +129,9 @@ namespace SiliconAward.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(setPassword.Password == setPassword.ConfirmPassword)
+                if (setPassword.Password == setPassword.ConfirmPassword)
                 {
-                    var result = _repository.SetPassword(setPassword, _userManager);
+                    var result = await _repository.SetPassword(setPassword, _userManager);
 
                     var claims = new List<Claim>
                     {
@@ -168,7 +168,7 @@ namespace SiliconAward.Controllers
         public IActionResult Profile()
         {
             var id = HttpContext.User.Identity.Name;
-            if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -183,7 +183,7 @@ namespace SiliconAward.Controllers
             var id = HttpContext.User.Identity.Name;
             profile.Id = id;
             var result = _repository.EditProfile(profile, _userManager);
-            
+
             if (result.Message == "success")
             {
                 var claims = new List<Claim>
@@ -193,7 +193,7 @@ namespace SiliconAward.Controllers
                         new Claim("fullname" , result.FullName),
                         new Claim("avatar" , result.Avatar),
                         new Claim("id" , id)
-                    };                
+                    };
                 var userIdentity = new ClaimsIdentity(claims, "login");
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
@@ -201,12 +201,12 @@ namespace SiliconAward.Controllers
 
                 return RedirectToAction("Profile");
             }
-                
+
             else
                 ViewData["Message"] = "مجدد تلاش کنید";
             return View();
         }
-        
+
         public IActionResult Login()
         {
             return View();
@@ -222,7 +222,7 @@ namespace SiliconAward.Controllers
         public IActionResult ResetPassword(string phoneNumber)
         {
             var result = _repository.ResetPassword(phoneNumber, _userManager);
-            if(result == "confirm")
+            if (result == "confirm")
             {
                 VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
                 verifyPhoneNumber.Phone = phoneNumber;
@@ -233,7 +233,7 @@ namespace SiliconAward.Controllers
                 ViewData["Message"] = "شماره همراه وارد شده وجود ندارد";
                 return View();
             }
-            
+
         }
 
         [HttpPost]
@@ -272,20 +272,20 @@ namespace SiliconAward.Controllers
                 default:
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, result.Id.ToString()),                        
+                        new Claim(ClaimTypes.Name, result.Id.ToString()),
                         new Claim(ClaimTypes.Role, result.Role),
                         new Claim("fullname" , result.FullName),
                         new Claim("avatar" , result.Avatar),
-                        new Claim("id" , result.Id.ToString())                                                
+                        new Claim("id" , result.Id.ToString())
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");
 
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                     await HttpContext.SignInAsync(principal);
-                    
+
                     return RedirectToAction("Profile", "Account");
-            }            
+            }
         }
     }
 }

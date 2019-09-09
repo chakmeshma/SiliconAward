@@ -37,15 +37,22 @@ namespace SiliconAward
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
+
             services.AddDbContext<EFDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<Models.User, IdentityRole>().AddEntityFrameworkStores<EFDataContext>().AddDefaultTokenProviders();
+            services.AddIdentity<Models.User, IdentityRole>(
+                opts =>
+                {
+                    opts.Password.RequireNonAlphanumeric = false;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                }).AddEntityFrameworkStores<EFDataContext>().AddDefaultTokenProviders();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => {
+            .AddCookie(options =>
+            {
                 options.LoginPath = "/Account/Login/";
                 options.AccessDeniedPath = "/Account/Login/";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.SlidingExpiration = true;            
+                options.SlidingExpiration = true;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
