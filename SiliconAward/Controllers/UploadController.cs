@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using SiliconAward.Repository;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SiliconAward.Controllers
 {
-    [Authorize(Roles= "Admin, Participant, Expert, Supporter")]
+    [Authorize(Roles = "Admin, Participant, Expert, Supporter")]
     public class UploadController : Controller
     {
         private readonly AccountRepository _accountRepository = new AccountRepository();
@@ -24,7 +25,7 @@ namespace SiliconAward.Controllers
             return View();
         }
 
-        public async Task<ActionResult> SaveAsync(IEnumerable<IFormFile> files, string data)
+        public async Task<ActionResult> SaveAsync(IEnumerable<IFormFile> files, string data, UserManager<Models.User> _userManager)
         {
             // The Name of the Upload component is "files"
             if (files != null)
@@ -37,7 +38,7 @@ namespace SiliconAward.Controllers
                     // Some browsers send file names with full path.
                     // We are only interested in the file name.
                     var format = Path.GetExtension(fileContent.FileName.ToString().Trim('"'));
-                    var filename = Guid.NewGuid().ToString()+format;
+                    var filename = Guid.NewGuid().ToString() + format;
                     var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads\" + userId, filename);
                     var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads\" + userId);
 
@@ -52,9 +53,9 @@ namespace SiliconAward.Controllers
                         await file.CopyToAsync(fileStream);
                     }
 
-                    if(data == "avatar")
+                    if (data == "avatar")
                     {
-                        var user = _accountRepository.GetUser(userId, filename);
+                        var user = _accountRepository.GetUser(userId, filename, _userManager);
                     }
                     else
                     {
@@ -67,7 +68,7 @@ namespace SiliconAward.Controllers
                         };
 
                         _accountRepository.AddDoument(document);
-                    }                    
+                    }
                 }
             }
 
@@ -75,7 +76,7 @@ namespace SiliconAward.Controllers
             return Content("");
         }
 
-        public ActionResult Remove(string[] fileNames, string data)
+        public ActionResult Remove(string[] fileNames, string data, UserManager<Models.User> _userManager)
         {
             // The parameter of the Remove action must be called "fileNames"
             var id = HttpContext.User.Identity.Name;
@@ -84,11 +85,11 @@ namespace SiliconAward.Controllers
             {
                 foreach (var file in fileNames)
                 {
-                    var fileName="";
+                    var fileName = "";
 
                     if (data == "avatar")
                     {
-                        fileName = _accountRepository.GetAvatarUrl(id);
+                        fileName = _accountRepository.GetAvatarUrl(id, _userManager);
                     }
                     else
                     {
@@ -109,10 +110,10 @@ namespace SiliconAward.Controllers
                     if (System.IO.File.Exists(physicalPath))
                     {
                         // The files are not actually removed in this demo
-                         System.IO.File.Delete(physicalPath);
+                        System.IO.File.Delete(physicalPath);
                     }
 
-                    
+
                 }
             }
 

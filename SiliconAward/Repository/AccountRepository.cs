@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using SiliconAward.Data;
 using SiliconAward.Models;
 using SiliconAward.ViewModels;
@@ -25,7 +26,7 @@ namespace SiliconAward.Repository
             else
                 return "no-access";
         }
-        public string GetUser(string userId, string avatarUrl)
+        public string GetUser(string userId, string avatarUrl, UserManager<Models.User> userManager)
         {
             var user = (from u in _dbContext.Users
                         where u.Id == userId
@@ -49,13 +50,13 @@ namespace SiliconAward.Repository
             return "success";
         }
 
-        public string GetAvatarUrl(string id)
+        public string GetAvatarUrl(string id, UserManager<Models.User> userManager)
         {
             return (from u in _dbContext.Users
                     where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
-        public string AddUser(RegisterViewModel registerUser)
+        public string AddUser(RegisterViewModel registerUser, UserManager<Models.User> userManager)
         {
             ResultViewModel result = new ResultViewModel();
 
@@ -97,7 +98,7 @@ namespace SiliconAward.Repository
                 return "exist";
         }
 
-        public string VerifyPhone(VerifyPhoneViewModel verifyPhone)
+        public string VerifyPhone(VerifyPhoneViewModel verifyPhone, UserManager<Models.User> userManager)
         {
             var user = (from u in _dbContext.Users
                         where u.PhoneNumber == verifyPhone.Phone
@@ -113,7 +114,7 @@ namespace SiliconAward.Repository
                 return "fail";
         }
 
-        public ResetPasswordResultViewModel SetPassword(SetPasswordViewModel setPassword)
+        public ResetPasswordResultViewModel SetPassword(SetPasswordViewModel setPassword, UserManager<Models.User> userManager)
         {
             ResetPasswordResultViewModel result = new ResetPasswordResultViewModel();
             try
@@ -149,7 +150,7 @@ namespace SiliconAward.Repository
             }
         }
 
-        public ProfileViewModel GetProfile(string id)
+        public ProfileViewModel GetProfile(string id, UserManager<Models.User> userManager)
         {
             var user = (from u in _dbContext.Users
                         where u.Id == id
@@ -182,7 +183,7 @@ namespace SiliconAward.Repository
 
             return profile;
         }
-        public string ResetPassword(string phoneNumber)
+        public string ResetPassword(string phoneNumber, UserManager<Models.User> userManager)
         {
             var user = (from u in _dbContext.Users
                         where u.PhoneNumber == phoneNumber
@@ -203,7 +204,7 @@ namespace SiliconAward.Repository
 
 
         }
-        public ResultViewModel EditProfile(ProfileViewModel profile)
+        public ResultViewModel EditProfile(ProfileViewModel profile, UserManager<Models.User> userManager)
         {
             ResultViewModel result = new ResultViewModel();
             try
@@ -244,7 +245,7 @@ namespace SiliconAward.Repository
             }
         }
 
-        public LoginResultViewModel Login(LoginViewModel login)
+        public LoginResultViewModel Login(LoginViewModel login, UserManager<Models.User> userManager)
         {
             LoginResultViewModel loginResult = new LoginResultViewModel();
             var user = (from u in _dbContext.Users

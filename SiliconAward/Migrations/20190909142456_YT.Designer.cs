@@ -10,8 +10,8 @@ using SiliconAward.Data;
 namespace SiliconAward.Migrations
 {
     [DbContext(typeof(EFDataContext))]
-    [Migration("20190908100645_KIOP")]
-    partial class KIOP
+    [Migration("20190909142456_YT")]
+    partial class YT
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -368,8 +368,6 @@ namespace SiliconAward.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
-
-                    b.Property<string>("Password");
 
                     b.Property<string>("PasswordHash");
 

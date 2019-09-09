@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiliconAward.Migrations
 {
-    public partial class KIOP : Migration
+    public partial class YT : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,7 +29,6 @@ namespace SiliconAward.Migrations
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
@@ -43,7 +42,7 @@ namespace SiliconAward.Migrations
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PhoneNumberVerifyCode = table.Column<string>(nullable: true),
                     EmailVerifyCode = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true),
                     AccessFailedCount = table.Column<int>(nullable: false),

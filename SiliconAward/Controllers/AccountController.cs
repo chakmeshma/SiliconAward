@@ -18,10 +18,12 @@ namespace SiliconAward.Controllers
     public class AccountController : Controller
     {
         private IRecaptchaService _recaptcha;
+        private UserManager<Models.User> _userManager;
 
-        public AccountController(IRecaptchaService recaptcha)
+        public AccountController(IRecaptchaService recaptcha, UserManager<Models.User> userManager)
         {
             _recaptcha = recaptcha;
+            _userManager = userManager;
         }
 
         private readonly AccountRepository _repository = new AccountRepository();
@@ -66,7 +68,7 @@ namespace SiliconAward.Controllers
                 {
                     VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
 
-                    var result = _repository.AddUser(register);
+                    var result = _repository.AddUser(register, _userManager);
                     if (result == "added" || result == "confirm")
                     {
                         verifyPhoneNumber.Phone = register.PhoneNumber;
@@ -105,7 +107,7 @@ namespace SiliconAward.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_repository.VerifyPhone(verifyPhone) == "success")
+                if (_repository.VerifyPhone(verifyPhone, _userManager) == "success")
                 {
                     SetPasswordViewModel setPassword = new SetPasswordViewModel()
                     {
@@ -129,7 +131,7 @@ namespace SiliconAward.Controllers
             {
                 if(setPassword.Password == setPassword.ConfirmPassword)
                 {
-                    var result = _repository.SetPassword(setPassword);
+                    var result = _repository.SetPassword(setPassword, _userManager);
 
                     var claims = new List<Claim>
                     {
@@ -170,7 +172,7 @@ namespace SiliconAward.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var user = _repository.GetProfile(id);
+            var user = _repository.GetProfile(id, _userManager);
             return View(user);
         }
 
@@ -180,7 +182,7 @@ namespace SiliconAward.Controllers
         {
             var id = HttpContext.User.Identity.Name;
             profile.Id = id;
-            var result = _repository.EditProfile(profile);
+            var result = _repository.EditProfile(profile, _userManager);
             
             if (result.Message == "success")
             {
@@ -219,7 +221,7 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(string phoneNumber)
         {
-            var result = _repository.ResetPassword(phoneNumber);
+            var result = _repository.ResetPassword(phoneNumber, _userManager);
             if(result == "confirm")
             {
                 VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
@@ -245,7 +247,7 @@ namespace SiliconAward.Controllers
             //    return View(!ModelState.IsValid ? login : new LoginViewModel());
             //}
 
-            var result = _repository.Login(login);
+            var result = _repository.Login(login, _userManager);
 
             switch (result.Message)
             {

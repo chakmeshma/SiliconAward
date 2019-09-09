@@ -39,9 +39,9 @@ namespace SiliconAward.Models
         [Display(Name = " کد تایید ایمیل")]
         public string EmailVerifyCode { get; set; }
 
-        //[Display(Name = "کلمه عبور")]
-        //[DataType(DataType.Password)]
-        //public string Password { get; set; }
+        [Display(Name = "کلمه عبور")]
+        [DataType(DataType.Password)]
+        public override string PasswordHash { get; set; }
 
         [Display(Name = "آپلود آواتار")]
         [DataType(DataType.ImageUrl)]

@@ -10,6 +10,7 @@ using SiliconAward.Data;
 using SiliconAward.Models;
 using SiliconAward.ViewModels;
 using DNTPersianUtils.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace SiliconAward.Controllers
 {
@@ -17,16 +18,18 @@ namespace SiliconAward.Controllers
     public class SupporterUsersController : Controller
     {
         private readonly EFDataContext _context;
+        private readonly UserManager<Models.User> _userManager;
 
-        public SupporterUsersController(EFDataContext context)
+        public SupporterUsersController(EFDataContext context, UserManager<Models.User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: SupporterUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.Where(u=>u.Role == "Supporter").ToListAsync());
+            return View(await _context.Users.Where(u => u.Role == "Supporter").ToListAsync());
         }
 
         // GET: SupporterUsers/Details/5
@@ -173,8 +176,8 @@ namespace SiliconAward.Controllers
                               Status = s.Title,
                               Editable = s.Editable
                           }).ToListAsync();
-                    
-            return View("/Participants/Index",await result);
+
+            return View("/Participants/Index", await result);
         }
     }
 }

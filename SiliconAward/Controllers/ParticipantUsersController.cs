@@ -16,22 +16,25 @@ using System.Net.Http.Headers;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using DNTPersianUtils.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace SiliconAward.Controllers
-{    
-    [Authorize(Roles ="Admin")]
+{
+    [Authorize(Roles = "Admin")]
     public class ParticipantUsersController : Controller
-    {        
+    {
         private readonly ParticipantRepository _participantRepository = new ParticipantRepository();
 
         private readonly AccountRepository _accountRepository = new AccountRepository();
 
 
         private readonly EFDataContext _context;
+        private readonly UserManager<Models.User> _userManager;
 
-        public ParticipantUsersController(EFDataContext context)
+        public ParticipantUsersController(EFDataContext context, UserManager<Models.User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: ParticipantUsers
@@ -124,7 +127,7 @@ namespace SiliconAward.Controllers
             if (user == null)
             {
                 return NotFound();
-            }           
+            }
 
             ViewData["ReturnUrl"] = user.Role + "s";
             return View(user);
@@ -149,7 +152,7 @@ namespace SiliconAward.Controllers
             userToEdit.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
             userToEdit.EmailConfirmed = user.EmailConfirmed;
             userToEdit.LastUpdateTime = DateTime.Now;
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -168,12 +171,12 @@ namespace SiliconAward.Controllers
                         throw;
                     }
                 }
-                if(user.Role == "Participant")
+                if (user.Role == "Participant")
                     return RedirectToAction(nameof(Participants));
-                else if(user.Role == "Expert")
+                else if (user.Role == "Expert")
                     return RedirectToAction(nameof(Experts));
                 else
-                return RedirectToAction(nameof(Supporters));
+                    return RedirectToAction(nameof(Supporters));
             }
             return View(user);
         }
@@ -238,35 +241,35 @@ namespace SiliconAward.Controllers
                           }).ToListAsync();
 
             return View(await result);
-        }        
+        }
 
         public ActionResult Read([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Participant");
+            var tmp = _participantRepository.GetAll("Participant", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
         public ActionResult Read_Participants([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Participant");
+            var tmp = _participantRepository.GetAll("Participant", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
         public ActionResult Read_Experts([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Expert");
+            var tmp = _participantRepository.GetAll("Expert", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
         public ActionResult Read_Supporters([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Supporter");
+            var tmp = _participantRepository.GetAll("Supporter", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
         public IActionResult UserContributions(string id)
         {
-            _participantRepository.GetUserContributions(id);            
+            _participantRepository.GetUserContributions(id);
             return View();
         }
 
@@ -290,7 +293,7 @@ namespace SiliconAward.Controllers
                                          CompetitionField = cf.Title,
                                          CompetitionBranch = cb.Title,
                                          CompetitionSubject = cs.Title,
-                                         UploadedFile = Classes.FileUrl(p.UserId , p.AttachedFile),
+                                         UploadedFile = Classes.FileUrl(p.UserId, p.AttachedFile),
                                          StatusId = p.StatusId,
                                          UserId = p.UserId
                                      }).FirstOrDefaultAsync();
@@ -298,7 +301,7 @@ namespace SiliconAward.Controllers
             if (participant == null)
             {
                 return NotFound();
-            }            
+            }
 
             return View(participant);
         }
@@ -363,7 +366,7 @@ namespace SiliconAward.Controllers
                     participantToUpdate.LastUpdateTime = DateTime.Now;
                     participantToUpdate.CompetitionSubjectId = participant.CompetitionSubjectId;
                     participantToUpdate.Description = participant.Description;
-                    participantToUpdate.Subject = participant.Subject;                    
+                    participantToUpdate.Subject = participant.Subject;
                     participantToUpdate.StatusId = participant.StatusId;
                     participantToUpdate.LastStatusTime = DateTime.Now;
 
@@ -398,12 +401,12 @@ namespace SiliconAward.Controllers
                     _context.Update(participantToUpdate);
                     await _context.SaveChangesAsync();
                     var userPhoneNumber = (from u in _context.Users
-                                where u.Id == participantToUpdate.UserId
-                                select u.PhoneNumber).FirstOrDefault();
+                                           where u.Id == participantToUpdate.UserId
+                                           select u.PhoneNumber).FirstOrDefault();
                     var statusTitle = (from s in _context.Statues
-                                  where s.StatusId == participant.StatusId
-                                  select s.Title).FirstOrDefault();
-                    Classes.SendSmsAsync(userPhoneNumber, "مشارکت",statusTitle, "changestatus");
+                                       where s.StatusId == participant.StatusId
+                                       select s.Title).FirstOrDefault();
+                    Classes.SendSmsAsync(userPhoneNumber, "مشارکت", statusTitle, "changestatus");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -415,7 +418,7 @@ namespace SiliconAward.Controllers
                     {
                         throw;
                     }
-                }                
+                }
                 var url = "/ParticipantUsers/UserContributions/" + participant.UserId;
                 return Redirect(url);
             }

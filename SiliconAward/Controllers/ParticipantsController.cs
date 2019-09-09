@@ -17,6 +17,7 @@ using SiliconAward.Models;
 using SiliconAward.Repository;
 using SiliconAward.ViewModels;
 using DNTPersianUtils.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace SiliconAward.Controllers
 {
@@ -24,10 +25,12 @@ namespace SiliconAward.Controllers
     public class ParticipantsController : Controller
     {
         private readonly EFDataContext _context;
+        private readonly UserManager<Models.User> _userManager;
 
-        public ParticipantsController(EFDataContext context)
+        public ParticipantsController(EFDataContext context, UserManager<Models.User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         private readonly AccountRepository _accountRepository = new AccountRepository();

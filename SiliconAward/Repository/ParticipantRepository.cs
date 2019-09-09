@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SiliconAward.ViewModels;
 using DNTPersianUtils.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace SiliconAward.Repository
 {
@@ -31,7 +32,7 @@ namespace SiliconAward.Repository
                                      }).ToList();
             return userContributions;
         }
-        public IEnumerable<ParticipantsViewModel> GetAll(string role)
+        public IEnumerable<ParticipantsViewModel> GetAll(string role, UserManager<Models.User> userManager)
         {
             var tmp = (from u in _dbContext.Users
                       where u.Role == role
