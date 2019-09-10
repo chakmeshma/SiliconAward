@@ -19,11 +19,14 @@ namespace SiliconAward.Controllers
     {
         private IRecaptchaService _recaptcha;
         private UserManager<Models.User> _userManager;
+        private SignInManager<Models.User> _signInManager;
 
-        public AccountController(IRecaptchaService recaptcha, UserManager<Models.User> userManager)
+        public AccountController(IRecaptchaService recaptcha, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
             _recaptcha = recaptcha;
             _userManager = userManager;
+            _signInManager = signInManager;
+
         }
 
         private readonly AccountRepository _repository = new AccountRepository();
@@ -46,7 +49,7 @@ namespace SiliconAward.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             return View();
         }
@@ -68,7 +71,7 @@ namespace SiliconAward.Controllers
                 {
                     VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
 
-                    var result = await _repository.AddUserAsync(register, _userManager);
+                    var result = await _repository.AddUserAsync(register, _userManager, _signInManager);
                     if (result == "added" || result == "confirm")
                     {
                         verifyPhoneNumber.Phone = register.PhoneNumber;
@@ -131,7 +134,7 @@ namespace SiliconAward.Controllers
             {
                 if (setPassword.Password == setPassword.ConfirmPassword)
                 {
-                    var result = await _repository.SetPassword(setPassword, _userManager);
+                    var result = await _repository.SetPassword(setPassword, _userManager, _signInManager);
 
                     var claims = new List<Claim>
                     {
@@ -145,7 +148,8 @@ namespace SiliconAward.Controllers
                     var userIdentity = new ClaimsIdentity(claims, "login");
 
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                    await HttpContext.SignInAsync(principal);
+                    //_signInManager.SignInAsync()
+                    //await HttpContext.SignInAsync(principal);
                     return RedirectToAction("Profile", "Account");
                 }
                 else
@@ -161,18 +165,18 @@ namespace SiliconAward.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             var id = HttpContext.User.Identity.Name;
             if (id == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-            var user = _repository.GetProfile(id, _userManager);
+            var user = await _repository.GetProfile(id, _userManager);
             return View(user);
         }
 
@@ -182,7 +186,7 @@ namespace SiliconAward.Controllers
         {
             var id = HttpContext.User.Identity.Name;
             profile.Id = id;
-            var result = _repository.EditProfile(profile, _userManager);
+            var result = await _repository.EditProfile(profile, _userManager, _signInManager);
 
             if (result.Message == "success")
             {
@@ -197,7 +201,7 @@ namespace SiliconAward.Controllers
                 var userIdentity = new ClaimsIdentity(claims, "login");
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                await HttpContext.SignInAsync(principal);
+                //await HttpContext.SignInAsync(principal);
 
                 return RedirectToAction("Profile");
             }
@@ -247,7 +251,7 @@ namespace SiliconAward.Controllers
             //    return View(!ModelState.IsValid ? login : new LoginViewModel());
             //}
 
-            var result = _repository.Login(login, _userManager);
+            var result = await _repository.LoginAsync(login, _userManager, _signInManager);
 
             switch (result.Message)
             {
@@ -282,7 +286,8 @@ namespace SiliconAward.Controllers
                     var userIdentity = new ClaimsIdentity(claims, "login");
 
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                    await HttpContext.SignInAsync(principal);
+
+                    //await HttpContext.SignInAsync(principal);
 
                     return RedirectToAction("Profile", "Account");
             }

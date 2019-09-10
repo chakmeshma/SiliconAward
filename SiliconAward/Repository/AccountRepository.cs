@@ -56,7 +56,7 @@ namespace SiliconAward.Repository
                     where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
-        public async Task<string> AddUserAsync(RegisterViewModel registerUser, UserManager<Models.User> userManager)
+        public async Task<string> AddUserAsync(RegisterViewModel registerUser, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
             ResultViewModel result = new ResultViewModel();
 
@@ -66,9 +66,11 @@ namespace SiliconAward.Repository
 
             if (user == null)
             {
+                string id = (Guid.NewGuid()).ToString();
+
                 User userToAdd = new User()
                 {
-                    Id = (Guid.NewGuid()).ToString(),
+                    Id = id,
                     Role = registerUser.ParticipantType,
                     PhoneNumber = registerUser.PhoneNumber,
                     AccessFailedCount = 0,
@@ -78,10 +80,12 @@ namespace SiliconAward.Repository
                     EmailConfirmed = false,
                     PhoneNumberVerifyCode = Classes.CreateVerifyCode(),
                     CreateTime = DateTime.Now,
-                    UserName = registerUser.PhoneNumber
+                    UserName = id
                 };
 
                 IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+
+
                 //_dbContext.Users.Add(userToAdd);
                 //_dbContext.SaveChangesAsync();
                 Classes.SendSmsAsync(userToAdd.PhoneNumber, userToAdd.PhoneNumberVerifyCode, "10award");
@@ -116,7 +120,7 @@ namespace SiliconAward.Repository
                 return "fail";
         }
 
-        public async Task<ResetPasswordResultViewModel> SetPassword(SetPasswordViewModel setPassword, UserManager<Models.User> userManager)
+        public async Task<ResetPasswordResultViewModel> SetPassword(SetPasswordViewModel setPassword, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
             ResetPasswordResultViewModel result = new ResetPasswordResultViewModel();
             try
@@ -145,6 +149,7 @@ namespace SiliconAward.Repository
                     result.FullName = "نام و نام خانوادگی";
                 else
                     result.FullName = user.FullName;
+                await signInManager.SignInAsync(user, false);
                 return result;
             }
             catch
@@ -154,11 +159,13 @@ namespace SiliconAward.Repository
             }
         }
 
-        public ProfileViewModel GetProfile(string id, UserManager<Models.User> userManager)
+        public async Task<ProfileViewModel> GetProfile(string id, UserManager<Models.User> userManager)
         {
             var user = (from u in _dbContext.Users
                         where u.Id == id
                         select u).FirstOrDefault();
+
+            //var user = await userManager.FindByIdAsync(id);
 
             //var tmp = (from d in _dbContext.Documents
             //           where d.UserId == Guid.Parse(id)
@@ -208,7 +215,7 @@ namespace SiliconAward.Repository
 
 
         }
-        public ResultViewModel EditProfile(ProfileViewModel profile, UserManager<Models.User> userManager)
+        public async Task<ResultViewModel> EditProfile(ProfileViewModel profile, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
             ResultViewModel result = new ResultViewModel();
             try
@@ -239,6 +246,7 @@ namespace SiliconAward.Repository
                     result.FullName = userToEdit.FullName;
 
                 result.Message = "success";
+                await signInManager.SignInAsync(userToEdit, false);
                 return result;
             }
             catch (Exception)
@@ -249,7 +257,7 @@ namespace SiliconAward.Repository
             }
         }
 
-        public LoginResultViewModel Login(LoginViewModel login, UserManager<Models.User> userManager)
+        public async Task<LoginResultViewModel> LoginAsync(LoginViewModel login, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
             LoginResultViewModel loginResult = new LoginResultViewModel();
             var user = (from u in _dbContext.Users
@@ -259,12 +267,14 @@ namespace SiliconAward.Repository
             {
                 if (user.PhoneNumberConfirmed == true)
                 {
+
                     if (user.PasswordHash == null)
                     {
                         loginResult.Message = "fail";
                         return loginResult;
                     }
-                    else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.PasswordHash))
+                    else if ((await signInManager.PasswordSignInAsync(user, login.Password, false, false)).Succeeded)
+                    //else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.PasswordHash))
                     {
                         loginResult.Id = user.Id;
                         loginResult.Role = user.Role;
