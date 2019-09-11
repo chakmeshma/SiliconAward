@@ -145,9 +145,16 @@ namespace SiliconAward.Controllers
                         new Claim("id" , result.Id)
                     };
 
-                    var userIdentity = new ClaimsIdentity(claims, "login");
+                    //var userIdentity = new ClaimsIdentity(claims, "login");
 
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    //ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+
+                    Models.User user = await _userManager.FindByIdAsync(result.Id);
+
+                    IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+
+                    await _signInManager.SignInAsync(user, false);
+
                     //_signInManager.SignInAsync()
                     //await HttpContext.SignInAsync(principal);
                     return RedirectToAction("Profile", "Account");
@@ -198,9 +205,14 @@ namespace SiliconAward.Controllers
                         new Claim("avatar" , result.Avatar),
                         new Claim("id" , id)
                     };
-                var userIdentity = new ClaimsIdentity(claims, "login");
+                //var userIdentity = new ClaimsIdentity(claims, "login");
 
-                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                //ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                Models.User user = await _userManager.FindByIdAsync(id);
+
+                IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+
+                await _signInManager.SignInAsync(user, false);
                 //await HttpContext.SignInAsync(principal);
 
                 return RedirectToAction("Profile");
@@ -283,9 +295,15 @@ namespace SiliconAward.Controllers
                         new Claim("id" , result.Id.ToString())
                     };
 
-                    var userIdentity = new ClaimsIdentity(claims, "login");
+                    //var userIdentity = new ClaimsIdentity(claims, "login");
 
-                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    //ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+
+                    Models.User user = await _userManager.FindByIdAsync(result.Id);
+
+                    IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+
+                    await _signInManager.SignInAsync(user, false);
 
                     //await HttpContext.SignInAsync(principal);
 
