@@ -30,11 +30,13 @@ namespace SiliconAward.Controllers
 
         private readonly EFDataContext _context;
         private readonly UserManager<Models.User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ParticipantUsersController(EFDataContext context, UserManager<Models.User> userManager)
+        public ParticipantUsersController(EFDataContext context, UserManager<Models.User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: ParticipantUsers
@@ -70,7 +72,10 @@ namespace SiliconAward.Controllers
 
             user.Avatar = Classes.FileUrl(user.Id, user.Avatar);
 
-            ViewData["ReturnUrl"] = user.Role + "s";
+            string roleString = ((await _userManager.GetRolesAsync(user)).First() ?? "");
+
+            ViewData["ReturnUrl"] = roleString + "s";
+            ViewData["Role"] = roleString;
 
             return View(user);
         }
@@ -120,7 +125,7 @@ namespace SiliconAward.Controllers
                 LastUpdateTime = userToEdit.LastUpdateTime.ToShortPersianDateTimeString(),
                 PhoneNumber = userToEdit.PhoneNumber,
                 PhoneNumberConfirmed = userToEdit.PhoneNumberConfirmed,
-                Role = userToEdit.Role,
+                Role = ((await _userManager.GetRolesAsync(userToEdit)).First() ?? ""),
                 PhoneNumberVerifyCode = userToEdit.PhoneNumberVerifyCode
             };
 
@@ -196,7 +201,11 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
             user.Avatar = Classes.FileUrl(id, user.Avatar);
-            ViewData["ReturnUrl"] = user.Role + "s";
+
+            string roleString = ((await _userManager.GetRolesAsync(user)).First() ?? "");
+
+            ViewData["ReturnUrl"] = roleString + "s";
+            ViewData["Role"] = roleString;
             return View(user);
         }
 
@@ -206,11 +215,13 @@ namespace SiliconAward.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.FindAsync(id);
+            var role = ((await _userManager.GetRolesAsync(user)).First() ?? "");
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            if (user.Role == "Participants")
+            if (role == "Participants")
                 return RedirectToAction(nameof(Participant));
-            else if (user.Role == "Experts")
+            else if (role == "Experts")
                 return RedirectToAction(nameof(Experts));
             else
                 return RedirectToAction(nameof(Supporters));
@@ -243,27 +254,27 @@ namespace SiliconAward.Controllers
             return View(await result);
         }
 
-        public ActionResult Read([DataSourceRequest] DataSourceRequest request)
+        public async Task<ActionResult> Read([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Participant", _userManager);
+            var tmp = await _participantRepository.GetAll("Participant", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
-        public ActionResult Read_Participants([DataSourceRequest] DataSourceRequest request)
+        public async Task<ActionResult> Read_Participants([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Participant", _userManager);
+            var tmp = await _participantRepository.GetAll("Participant", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
-        public ActionResult Read_Experts([DataSourceRequest] DataSourceRequest request)
+        public async Task<ActionResult> Read_Experts([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Expert", _userManager);
+            var tmp = await _participantRepository.GetAll("Expert", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 
-        public ActionResult Read_Supporters([DataSourceRequest] DataSourceRequest request)
+        public async Task<ActionResult> Read_Supporters([DataSourceRequest] DataSourceRequest request)
         {
-            var tmp = _participantRepository.GetAll("Supporter", _userManager);
+            var tmp = await _participantRepository.GetAll("Supporter", _userManager);
             return Json(tmp.ToDataSourceResult(request));
         }
 

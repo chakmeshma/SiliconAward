@@ -29,7 +29,24 @@ namespace SiliconAward.Controllers
         // GET: SupporterUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.Where(u => u.Role == "Supporter").ToListAsync());
+
+            //return View(await _context.Users.Where(u => u.Role == "Supporter").ToListAsync());
+
+
+            List<User> supporters = new List<User>();
+
+            foreach (User user in _userManager.Users)
+            {
+                bool isInRole = await _userManager.IsInRoleAsync(user, "Supporter");
+                if (isInRole)
+                    supporters.Add(user);
+
+                ViewData[user.Id] = ((await _userManager.GetRolesAsync(user)).First() ?? "");
+            }
+
+
+
+            return View(supporters);
         }
 
         // GET: SupporterUsers/Details/5
@@ -47,12 +64,15 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
+            ViewData["Role"] = (await _userManager.GetRolesAsync(user)).First() ?? "";
+
             return View(user);
         }
 
         // GET: SupporterUsers/Create
         public IActionResult Create()
         {
+            ViewData["Role"] = "";
             return View();
         }
 
@@ -61,8 +81,10 @@ namespace SiliconAward.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,Role,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user)
+        public async Task<IActionResult> Create([Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user, string Role)
         {
+            ViewData["Role"] = Role;
+
             if (ModelState.IsValid)
             {
                 user.Id = Guid.NewGuid().ToString();
@@ -86,6 +108,9 @@ namespace SiliconAward.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["Role"] = (await _userManager.GetRolesAsync(user)).First() ?? "";
+
             return View(user);
         }
 
@@ -94,7 +119,7 @@ namespace SiliconAward.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,Role,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FullName,PhoneNumber,PhoneNumberConfirmed,Email,EmailConfirmed,PhoneNumberVerifyCode,EmailVerifyCode,Password,Avatar,AccessFailedCount,CreateTime,LastUpdateTime,IsDeleted,IsActive")] User user, string Role)
         {
             if (id != user.Id)
             {
@@ -107,6 +132,10 @@ namespace SiliconAward.Controllers
                 {
                     _context.Update(user);
                     await _context.SaveChangesAsync();
+
+                    await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+
+                    await _userManager.AddToRoleAsync(user, Role);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,6 +150,9 @@ namespace SiliconAward.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Role"] = Role;
+
             return View(user);
         }
 
@@ -138,6 +170,8 @@ namespace SiliconAward.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["Role"] = (await _userManager.GetRolesAsync(user)).First() ?? "";
 
             return View(user);
         }

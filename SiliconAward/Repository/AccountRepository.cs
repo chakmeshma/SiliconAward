@@ -71,7 +71,7 @@ namespace SiliconAward.Repository
                 User userToAdd = new User()
                 {
                     Id = id,
-                    Role = registerUser.ParticipantType,
+                    //Role = registerUser.ParticipantType,
                     PhoneNumber = registerUser.PhoneNumber,
                     AccessFailedCount = 0,
                     IsActive = false,
@@ -82,6 +82,8 @@ namespace SiliconAward.Repository
                     CreateTime = DateTime.Now,
                     UserName = id
                 };
+
+                await userManager.AddToRoleAsync(userToAdd, registerUser.ParticipantType);
 
                 IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
 
@@ -144,7 +146,7 @@ namespace SiliconAward.Repository
                     result.Avatar = "/uploads/" + user.Id + "/" + user.Avatar;
                 }
                 result.Message = "success";
-                result.Role = user.Role;
+                result.Role = (await userManager.GetRolesAsync(user)).First() ?? "";
                 if (user.FullName == null)
                     result.FullName = "نام و نام خانوادگی";
                 else
@@ -231,7 +233,7 @@ namespace SiliconAward.Repository
                 _dbContext.Update(userToEdit);
                 _dbContext.SaveChangesAsync();
 
-                result.Role = userToEdit.Role;
+                result.Role = ((await userManager.GetRolesAsync(userToEdit)).First() ?? "");
                 if (userToEdit.Avatar == null)
                 {
                     result.Avatar = "/dist/img/avatar5.png";
@@ -257,7 +259,10 @@ namespace SiliconAward.Repository
             }
         }
 
-        public async Task<LoginResultViewModel> LoginAsync(LoginViewModel login, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
+        public async Task<LoginResultViewModel> LoginAsync(
+            LoginViewModel login,
+            UserManager<Models.User> userManager,
+            SignInManager<Models.User> signInManager)
         {
             LoginResultViewModel loginResult = new LoginResultViewModel();
             var user = (from u in _dbContext.Users
@@ -277,7 +282,8 @@ namespace SiliconAward.Repository
                     //else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.PasswordHash))
                     {
                         loginResult.Id = user.Id;
-                        loginResult.Role = user.Role;
+                        loginResult.Role = (await userManager.GetRolesAsync(user)).First() ?? "";
+                        //loginResult.Role = user.Role;
 
                         if (user.FullName == "" || user.FullName == null)
                             loginResult.FullName = "نام و نام خانوادگی";

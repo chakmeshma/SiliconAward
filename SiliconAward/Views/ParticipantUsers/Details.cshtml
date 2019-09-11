@@ -68,23 +68,23 @@
                     <span asp-validation-for="Avatar" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Role" class="control-label"></label>
-                    @if (Model.Role == "Participant")
+                    <label class="control-label">نقش</label>
+                    @if ((string)ViewData["Role"] == "Participant")
                     {
                     <span>شرکت کننده</span>
                     }
 
-                    @if (Model.Role == "Supporter")
+                    @if ((string)ViewData["Role"]  == "Supporter")
                     {
                         <label class="control-label">حامی</label>
                     }
 
-                    @if (Model.Role == "Expert")
+                    @if ((string)ViewData["Role"]  == "Expert")
                     {
                         <label class="control-label">کارشناس</label>
                     }
 
-                    <span asp-validation-for="Role" class="text-danger"></span>
+                    @*<span asp-validation-for="Role" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="AccessFailedCount" class="control-label"></label>

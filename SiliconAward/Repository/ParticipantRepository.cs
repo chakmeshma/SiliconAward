@@ -11,7 +11,7 @@ namespace SiliconAward.Repository
 {
     public class ParticipantRepository
     {
-        private readonly EFDataContext _dbContext = new EFDataContext();        
+        private readonly EFDataContext _dbContext = new EFDataContext();
 
         public IEnumerable<ParticipantViewModel> GetUserContributions(string id)
         {
@@ -21,7 +21,7 @@ namespace SiliconAward.Repository
                                      join s in _dbContext.Statues on p.StatusId equals s.StatusId
                                      select new ParticipantViewModel
                                      {
-                                         Id=p.Id,
+                                         Id = p.Id,
                                          Subject = p.Subject,
                                          CreateTime = p.CreateTime.ToShortPersianDateTimeString(),
                                          LastUpdateTime = p.LastUpdateTime.ToShortPersianDateTimeString(),
@@ -32,21 +32,56 @@ namespace SiliconAward.Repository
                                      }).ToList();
             return userContributions;
         }
-        public IEnumerable<ParticipantsViewModel> GetAll(string role, UserManager<Models.User> userManager)
+        public async Task<IEnumerable<ParticipantsViewModel>> GetAll(string role, UserManager<Models.User> userManager)
         {
-            var tmp = (from u in _dbContext.Users
-                      where u.Role == role
-                      select new ParticipantsViewModel
-                      {
-                          Id = u.Id,
-                          FullName = u.FullName,
-                          PhoneNumber = u.PhoneNumber,
-                          PhoneNumberConfirmed = u.PhoneNumberConfirmed,
-                          Email = u.Email,
-                          CreateTime = u.CreateTime.ToShortPersianDateTimeString(),
-                          Operations = "",
-                          Participants = ""
-                      }).ToList();
+
+
+
+            //List<User> supporters = new List<User>();
+
+            //foreach (User user in _userManager.Users)
+            //{
+            //    bool isInRole = await _userManager.IsInRoleAsync(user, "Supporter");
+            //    if (isInRole)
+            //        supporters.Add(user);
+            //}
+
+            //return View(supporters);
+
+
+
+            List<ParticipantsViewModel> tmp = new List<ParticipantsViewModel>();
+
+            foreach (Models.User u in _dbContext.Users)
+            {
+                if (((await userManager.GetRolesAsync(u)).First() ?? "") == role)
+                    tmp.Add(new ParticipantsViewModel
+                    {
+                        Id = u.Id,
+                        FullName = u.FullName,
+                        PhoneNumber = u.PhoneNumber,
+                        PhoneNumberConfirmed = u.PhoneNumberConfirmed,
+                        Email = u.Email,
+                        CreateTime = u.CreateTime.ToShortPersianDateTimeString(),
+                        Operations = "",
+                        Participants = ""
+                    });
+            }
+
+
+            //var tmp = (from u in _dbContext.Users
+            //               //where u.Role == role
+            //           select new ParticipantsViewModel
+            //           {
+            //               Id = u.Id,
+            //               FullName = u.FullName,
+            //               PhoneNumber = u.PhoneNumber,
+            //               PhoneNumberConfirmed = u.PhoneNumberConfirmed,
+            //               Email = u.Email,
+            //               CreateTime = u.CreateTime.ToShortPersianDateTimeString(),
+            //               Operations = "",
+            //               Participants = ""
+            //           }).ToList();
 
             return tmp;
         }

@@ -41,7 +41,7 @@
                 @Html.DisplayNameFor(model => model.Avatar)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                نقش
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AccessFailedCount)
@@ -92,7 +92,7 @@
                 @Html.DisplayFor(modelItem => item.Avatar)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Role)
+                @ViewData[item.Id]
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AccessFailedCount)

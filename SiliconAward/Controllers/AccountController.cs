@@ -139,7 +139,7 @@ namespace SiliconAward.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, result.Id),
-                        new Claim(ClaimTypes.Role, result.Role),
+                        //new Claim(ClaimTypes.Role, result.Role),
                         new Claim("fullname" , result.FullName),
                         new Claim("avatar" , result.Avatar),
                         new Claim("id" , result.Id)
@@ -152,6 +152,7 @@ namespace SiliconAward.Controllers
                     Models.User user = await _userManager.FindByIdAsync(result.Id);
 
                     IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+                    identityResult = await _userManager.AddToRoleAsync(user, result.Role);
 
                     await _signInManager.SignInAsync(user, false);
 
@@ -200,7 +201,7 @@ namespace SiliconAward.Controllers
                 var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, id),
-                        new Claim(ClaimTypes.Role, result.Role),
+                        //new Claim(ClaimTypes.Role, result.Role),
                         new Claim("fullname" , result.FullName),
                         new Claim("avatar" , result.Avatar),
                         new Claim("id" , id)
@@ -211,6 +212,7 @@ namespace SiliconAward.Controllers
                 Models.User user = await _userManager.FindByIdAsync(id);
 
                 IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+                identityResult = await _userManager.AddToRoleAsync(user, result.Role);
 
                 await _signInManager.SignInAsync(user, false);
                 //await HttpContext.SignInAsync(principal);
@@ -289,7 +291,7 @@ namespace SiliconAward.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, result.Id.ToString()),
-                        new Claim(ClaimTypes.Role, result.Role),
+                        //new Claim(ClaimTypes.Role, result.Role),
                         new Claim("fullname" , result.FullName),
                         new Claim("avatar" , result.Avatar),
                         new Claim("id" , result.Id.ToString())
@@ -302,6 +304,7 @@ namespace SiliconAward.Controllers
                     Models.User user = await _userManager.FindByIdAsync(result.Id);
 
                     IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+                    identityResult = await _userManager.AddToRoleAsync(user, result.Role);
 
                     await _signInManager.SignInAsync(user, false);
 

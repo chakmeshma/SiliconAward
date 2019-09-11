@@ -47,8 +47,8 @@ namespace SiliconAward.Models
         [DataType(DataType.ImageUrl)]
         public string Avatar { get; set; }
 
-        [Display(Name = "نقش")]
-        public string Role { get; set; }
+        //[Display(Name = "نقش")]
+        //public string Role { get; set; }
 
         [Display(Name = "تعداد ورود نا موفق")]
         public override int AccessFailedCount { get; set; }
