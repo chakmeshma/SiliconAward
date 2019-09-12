@@ -208,7 +208,10 @@ namespace SiliconAward.Controllers
             {
                 return NotFound();
             }
-            if (!User.IsInRole("Admin"))
+            var user = await _userManager.GetUserAsync(User);
+
+            //if (!User.IsInRole("Admin"))
+            if (!await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 var result = _accountRepository.GetCreateEditAccess(id);
                 if (result == "no-access")
@@ -318,7 +321,9 @@ namespace SiliconAward.Controllers
             {
                 return NotFound();
             }
-            if (!User.IsInRole("Admin"))
+            var user = await _userManager.GetUserAsync(User);
+
+            if (!await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 var result = _accountRepository.GetCreateEditAccess(id);
                 if (result == "no-access")

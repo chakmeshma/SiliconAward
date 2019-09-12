@@ -1,8 +1,15 @@
-﻿@model SiliconAward.ViewModels.UserContributionEditViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@model SiliconAward.ViewModels.UserContributionEditViewModel
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "ویرایش";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewData["user"] = await UserManager.GetUserAsync(User);
+
 }
 
 <style>
@@ -294,7 +301,7 @@
 <form asp-action="UserContributionEdit" asp-controller="ParticipantUsers" class="form-horizontal" role="form" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="box-body">
-        @Html.HiddenFor(model=>model.UserId)
+        @Html.HiddenFor(model => model.UserId)
         <div class="form-group col-sm-12">
             <div class="col-sm-4 k-rtl">
                 <h4>حوزه رقابت</h4>
@@ -421,7 +428,8 @@
             <div class="col-sm-4">
                 <button type="submit" class="btn btn-primary btn-block btn-flat">ارسال</button>
             </div>
-            @if (User.IsInRole("Admin"))
+            @*@if (User.IsInRole("Admin"))*@
+            @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Admin"))
             {
 
                 <div class="col-sm-4">

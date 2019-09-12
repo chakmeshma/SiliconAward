@@ -1,13 +1,19 @@
 ﻿@model SiliconAward.ViewModels.ProfileViewModel
 @using Kendo.Mvc.UI
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewData["user"] = await UserManager.GetUserAsync(User);
 }
 <style>
-    .k-upload-files .k-upload-status{
-        left:10px;
+    .k-upload-files .k-upload-status {
+        left: 10px;
     }
 </style>
 
@@ -49,94 +55,98 @@
                     <span class="text-danger">@ViewData["Message"]</span>
                 </div>
             </div>
-            
-            
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">تصویر کارت ملی</label>
-                        <div class="col-sm-6 k-rtl">
-                            @(Html.Kendo().Upload()
-                                                                                        .Name("melli-card")
-                                                                                        .Events(events => events.Upload("onUpload1").Remove("onUpload1"))
-                                                                                        .Async(a => a
-                                                                                            .Save("SaveAsync", "Upload")
-                                                                                            .Remove("Remove", "Upload")
-                                                                                            .SaveField("files")
-                                                                                            .AutoUpload(true)
-                                                                                        )
-                                                                                        .Messages(message =>
-                                                                                        {
-                                                                                            message.Select("انتخاب فایل");
-                                                                                        })
-                                                                                        .Multiple(false)
-                                                                                        .Validation(validation => validation.MaxFileSize(1145728).AllowedExtensions(new string[] { ".jpg", ".jpeg" }))
-                            )
-                            <div class="demo-hint">حداکثر اندازه فایل <strong>1MB</strong>و با فرمت JPG.</div>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
 
-                        @if (User.IsInRole("Participant"))
-                        {
-                            <label class="col-sm-2 control-label">پروپوزال</label>
-                        }
-                        @if (User.IsInRole("Supporter"))
-                        {
-                            <label class="col-sm-2 control-label">اسناد مالی</label>
-                        }
-                        @if (User.IsInRole("Expert"))
-                        {
-                            <label class="col-sm-2 control-label">رزومه</label>
-                        }
-                        @if(User.IsInRole("Admin"))
-                        {
-                            <label class="col-sm-2 control-label">فایل</label>
-
-                        }
-
-                        <div class="col-sm-6 k-rtl">
-                            @(Html.Kendo().Upload()
-                                                                                                                        .Name("proposal")
-                                                                                                                        .Async(a => a
-                                                                                                                            .Save("SaveAsync", "Upload")
-                                                                                                                            .Remove("Remove", "Upload")
-                                                                                                                            .SaveField("files")
-                                                                                                                            .AutoUpload(true)
-                                                                                                                        )
-                                                                                                                        .Events(events => events.Upload("onUpload2"))
-                                                                                                                        .Messages(message =>
-                                                                                                                            {
-                                                                                                                                message.Select("انتخاب فایل");
-                                                                                                                            })
-                                                                                                                        .Multiple(false)
-                                                                                                                        .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".pdf" }))
-                            )
-                            <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت PDF.</div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">سایر فایل ها</label>
-                        <div class="col-sm-6 k-rtl">
-                            @(Html.Kendo().Upload()
-                                                                                        .Name("other")
-                                                                                        .Async(a => a
-                                                                                            .Save("SaveAsync", "Upload")
-                                                                                            .Remove("Remove", "Upload")
-                                                                                            .SaveField("files")
-                                                                                            .AutoUpload(true)                                                                                            
-                                                                                        )
-                                                                                        .Events(events => events.Upload("onUpload3"))
-                                                                                        .Messages(message =>
-                                                                                            {
-                                                                                                message.Select("انتخاب فایل");
-                                                                                            })
-                                                                                        .Multiple(false)
-                                                                                        .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".zip" }))
-                            )
-                            <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت ZIP.</div>
-                        </div>
-                    </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">تصویر کارت ملی</label>
+                <div class="col-sm-6 k-rtl">
+                    @(Html.Kendo().Upload()
+                                                                                .Name("melli-card")
+                                                                                .Events(events => events.Upload("onUpload1").Remove("onUpload1"))
+                                                                                .Async(a => a
+                                                                                    .Save("SaveAsync", "Upload")
+                                                                                    .Remove("Remove", "Upload")
+                                                                                    .SaveField("files")
+                                                                                    .AutoUpload(true)
+                                                                                )
+                                                                                .Messages(message =>
+                                                                                {
+                                                                                    message.Select("انتخاب فایل");
+                                                                                })
+                                                                                .Multiple(false)
+                                                                                .Validation(validation => validation.MaxFileSize(1145728).AllowedExtensions(new string[] { ".jpg", ".jpeg" }))
+                    )
+                    <div class="demo-hint">حداکثر اندازه فایل <strong>1MB</strong>و با فرمت JPG.</div>
                 </div>
+            </div>
+
+            <div class="form-group">
+
+                @*@if (User.IsInRole("Participant"))*@
+                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Participant"))
+                {
+                    <label class="col-sm-2 control-label">پروپوزال</label>
+                }
+                @*@if (User.IsInRole("Supporter"))*@
+                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Supporter"))
+                {
+                    <label class="col-sm-2 control-label">اسناد مالی</label>
+                }
+                @*@if (User.IsInRole("Expert"))*@
+                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Expert"))
+                {
+                    <label class="col-sm-2 control-label">رزومه</label>
+                }
+                @*@if (User.IsInRole("Admin"))*@
+                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Admin"))
+                {
+                    <label class="col-sm-2 control-label">فایل</label>
+
+                }
+
+                <div class="col-sm-6 k-rtl">
+                    @(Html.Kendo().Upload()
+                                                                                                                .Name("proposal")
+                                                                                                                .Async(a => a
+                                                                                                                    .Save("SaveAsync", "Upload")
+                                                                                                                    .Remove("Remove", "Upload")
+                                                                                                                    .SaveField("files")
+                                                                                                                    .AutoUpload(true)
+                                                                                                                )
+                                                                                                                .Events(events => events.Upload("onUpload2"))
+                                                                                                                .Messages(message =>
+                                                                                                                    {
+                                                                                                                        message.Select("انتخاب فایل");
+                                                                                                                    })
+                                                                                                                .Multiple(false)
+                                                                                                                .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".pdf" }))
+                    )
+                    <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت PDF.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">سایر فایل ها</label>
+                <div class="col-sm-6 k-rtl">
+                    @(Html.Kendo().Upload()
+                                                                                .Name("other")
+                                                                                .Async(a => a
+                                                                                    .Save("SaveAsync", "Upload")
+                                                                                    .Remove("Remove", "Upload")
+                                                                                    .SaveField("files")
+                                                                                    .AutoUpload(true)
+                                                                                )
+                                                                                .Events(events => events.Upload("onUpload3"))
+                                                                                .Messages(message =>
+                                                                                    {
+                                                                                        message.Select("انتخاب فایل");
+                                                                                    })
+                                                                                .Multiple(false)
+                                                                                .Validation(validation => validation.MaxFileSize(10000000).AllowedExtensions(new string[] { ".zip" }))
+                    )
+                    <div class="demo-hint">حداکثر اندازه فایل <strong>10MB</strong>و با فرمت ZIP.</div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -171,7 +181,7 @@
                                                                 message.Select("انتخاب فایل");
                                                             })
                                                             .Multiple(false)
-                                                            
+
                                                             .Validation(validation => validation.MaxFileSize(3145728).AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" }))
                         )
                         <div style="font-size:12px;">حداکثر اندازه فایل <strong>1MB</strong>و با فرمت jpg</div>
@@ -183,48 +193,52 @@
                 <h4>فایل های آپلود شده</h4>
                 @foreach (var item in Model.Documents)
                 {
-                <ul>
-                    <li>
-                        @if (item.Tag == "mellicard")
-                        {
-                            <h5><a href="@item.File">تصویر کارت ملی</a></h5>
+                    <ul>
+                        <li>
+                            @if (item.Tag == "mellicard")
+                            {
+                                <h5><a href="@item.File">تصویر کارت ملی</a></h5>
 
-                        }
-
-                        @if (item.Tag == "proposal")
-                        {
-                            @if (User.IsInRole("Participant"))
-                            {
-                                <h5><a href="@item.File">پروپوزال</a></h5>
-                            }
-                            @if (User.IsInRole("Supporter"))
-                            {
-                                <h5><a href="@item.File">اسناد مالی</a></h5>
-                            }
-                            @if (User.IsInRole("Expert"))
-                            {
-                                <h5><a href="@item.File">رزومه</a></h5>
-                            }
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <h5><a href="@item.File">فایل</a></h5>
                             }
 
+                            @if (item.Tag == "proposal")
+                            {
+                                @*@if (User.IsInRole("Participant"))*@
+                                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Participant"))
+                                {
+                                    <h5><a href="@item.File">پروپوزال</a></h5>
+                                }
+                                @*@if (User.IsInRole("Supporter"))*@
+                                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Supporter"))
+                                {
+                                    <h5><a href="@item.File">اسناد مالی</a></h5>
+                                }
+                                @*@if (User.IsInRole("Expert"))*@
+                                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Expert"))
+                                {
+                                    <h5><a href="@item.File">رزومه</a></h5>
+                                }
+                                @*@if (User.IsInRole("Admin"))*@
+                                @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Admin"))
+                                {
+                                    <h5><a href="@item.File">فایل</a></h5>
+                                }
 
-                        }
 
-                        @if (item.Tag == "other")
-                        {
-                            <h5><a href="@item.File">فایل های دیگر</a></h5>
-                        }
-                    </li>
-                </ul>
+                            }
+
+                            @if (item.Tag == "other")
+                            {
+                                <h5><a href="@item.File">فایل های دیگر</a></h5>
+                            }
+                        </li>
+                    </ul>
                 }
             </div>
-            </div>
+        </div>
 
 
-            </div>
+    </div>
     <div class="box-footer">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
@@ -237,7 +251,8 @@
 
 
 <!-- /.box-body -->
-<script>    
+<script>
+
     function loadFile(e) {
         var output = document.getElementById('avatar-img');
         output.src = URL.createObjectURL(event.target.files[0]);

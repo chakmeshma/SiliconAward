@@ -1,8 +1,17 @@
 ﻿@model SiliconAward.ViewModels.EditParticipantViewModel
 
+@using Microsoft.AspNetCore.Identity
+
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 @{
     ViewData["Title"] = "ویرایش";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewData["user"] = await UserManager.GetUserAsync(User);
+
 }
 
 <style>
@@ -421,28 +430,30 @@
             <div class="col-sm-4">
                 <button type="submit" class="btn btn-primary btn-block btn-flat">ارسال</button>
             </div>
-            @if (User.IsInRole("Admin"))
+            @*@if (User.IsInRole("Admin"))*@
+            @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Admin"))
+
             {
 
                 <div class="col-sm-4">
                     <label class="col-sm-4">تعیین وضعیت</label>
-                    <div class="col-sm-8">                        
-                            @(Html.Kendo().DropDownListFor(model => model.StatusId)
-                                                                                          .HtmlAttributes(new { style = "width:100%" })
-                                                                                          .OptionLabel("انتخاب کنید ...")
-                                                                                          .DataTextField("StatusTitle")
-                                                                                          .DataValueField("StatusId")
-                                                                                          .DataSource(source =>
+                    <div class="col-sm-8">
+                        @(Html.Kendo().DropDownListFor(model => model.StatusId)
+                                                                                      .HtmlAttributes(new { style = "width:100%" })
+                                                                                      .OptionLabel("انتخاب کنید ...")
+                                                                                      .DataTextField("StatusTitle")
+                                                                                      .DataValueField("StatusId")
+                                                                                      .DataSource(source =>
+                                                                                      {
+                                                                                          source.Read(read =>
                                                                                           {
-                                                                                              source.Read(read =>
-                                                                                              {
-                                                                                                  read.Action("GetStatuses", "Status"); ;
-                                                                                              })
-                                                                                              .ServerFiltering(true);
-                                                                                          })                                                                                          
-                            )
+                                                                                              read.Action("GetStatuses", "Status"); ;
+                                                                                          })
+                                                                                          .ServerFiltering(true);
+                                                                                      })
+                        )
 
-                        
+
                     </div>
                 </div>
             }

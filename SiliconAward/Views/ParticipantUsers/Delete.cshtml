@@ -69,17 +69,17 @@
             </div>
             <div class="form-group">
                 <label class="control-label">نقش</label>
-                @if (ViewData["Role"] == "Participant")
+                @if ((string)ViewData["Role"] == "Participant")
                 {
                     <span>شرکت کننده</span>
                 }
 
-                @if (ViewData["Role"] == "Supporter")
+                @if ((string)ViewData["Role"] == "Supporter")
                 {
                     <label class="control-label">حامی</label>
                 }
 
-                @if (ViewData["Role"] == "Expert")
+                @if ((string)ViewData["Role"] == "Expert")
                 {
                     <label class="control-label">کارشناس</label>
                 }

@@ -83,9 +83,10 @@ namespace SiliconAward.Repository
                     UserName = id
                 };
 
-                await userManager.AddToRoleAsync(userToAdd, registerUser.ParticipantType);
 
                 IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+
+                await userManager.AddToRoleAsync(userToAdd, registerUser.ParticipantType);
 
 
                 //_dbContext.Users.Add(userToAdd);

@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Kendo.Mvc.UI
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["user"] = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -90,7 +100,7 @@
                                 <li class="user-header">
                                     @if (User.Claims.FirstOrDefault(c => c.Type == "avatar") != null)
                                     {
-                                        <img class="img-circle user-image" 
+                                        <img class="img-circle user-image"
                                              src="@User.Claims.FirstOrDefault(c => c.Type == "avatar").Value" alt="User Image" style="float:none;">
                                     }
                                     else
@@ -98,35 +108,39 @@
                                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                         <img src="~/dist/img/avatar5.png" class="img-circle" alt="User Image">
 
-                                    }                                    
-                                        <p class="col-sm-12">
-                                            @if (@User.Claims.FirstOrDefault(c => c.Type == "fullname") != null)
-                                            {
+                                    }
+                                <p class="col-sm-12">
+                                    @if (@User.Claims.FirstOrDefault(c => c.Type == "fullname") != null)
+                                    {
 
-                                                @User.Claims.FirstOrDefault(c => c.Type == "fullname").Value
-                                            }
+                                        @User.Claims.FirstOrDefault(c => c.Type == "fullname").Value
+                                    }
 
-                                            @if (@User.IsInRole("Admin"))
-                                            {
+                                    @*@if (@User.IsInRole("Admin"))*@
+                                    @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Admin"))
+                                    {
 
-                                                <small>مدیر</small>
-                                            }
-                                            @if (@User.IsInRole("Participant"))
-                                            {
+                                        <small>مدیر</small>
+                                    }
+                                    @*@if (@User.IsInRole("Participant"))*@
+                                    @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Participant"))
+                                    {
 
-                                                <small>شرکت کننده</small>
-                                            }
-                                            @if (@User.IsInRole("Expert"))
-                                            {
+                                        <small>شرکت کننده</small>
+                                    }
+                                    @*@if (@User.IsInRole("Expert"))*@
+                                    @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Expert"))
+                                    {
 
-                                                <small>کارشناس</small>
-                                            }
-                                            @if (@User.IsInRole("Supporter"))
-                                            {
+                                        <small>کارشناس</small>
+                                    }
+                                    @*@if (@User.IsInRole("Supporter"))*@
+                                    @if (await UserManager.IsInRoleAsync((User)ViewData["user"], "Supporter"))
+                                    {
 
-                                                <small>حامی</small>
-                                            }
-                                        </p>
+                                        <small>حامی</small>
+                                    }
+                                </p>
                                 </li>
 
                                 <!-- Menu Footer-->
@@ -177,15 +191,15 @@
                 </div>
                 <!-- search form (Optional) -->
                 @*<form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>*@
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>*@
                 <!-- /.search form -->
                 <!-- Sidebar Menu -->
                 @Html.Partial("_MainMenu")
@@ -199,19 +213,18 @@
                 <!-- Content Header (Page header) -->
                 @RenderBody()
                 <!-- /.content -->
-                </div>
             </div>
-            <!-- /.content-wrapper -->
-            <!-- Main Footer -->
-            <footer class="main-footer">
-                <!-- Default to the left -->
-                <strong>کلیه حقوق این سایت متعلق به <a href="http://www.tv4.ir"> شبکه چهار سیما </a>می باشد.</strong>
-            </footer>
         </div>
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- Default to the left -->
+            <strong>کلیه حقوق این سایت متعلق به <a href="http://www.tv4.ir"> شبکه چهار سیما </a>می باشد.</strong>
+        </footer>
+    </div>
     <!-- ./wrapper -->
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 3 -->
-    
     <!-- Bootstrap 3.3.7 -->
     <script src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
