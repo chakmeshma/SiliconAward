@@ -63,8 +63,11 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            //var user = await _context.Users
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _userManager.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (user == null)
             {
                 return NotFound();
@@ -111,7 +114,8 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var userToEdit = await _context.Users.FindAsync(id);
+            //var userToEdit = await _context.Users.FindAsync(id);
+            var userToEdit = await _userManager.FindByIdAsync(id);
             UserViewModel user = new UserViewModel
             {
                 Id = userToEdit.Id,
@@ -149,7 +153,8 @@ namespace SiliconAward.Controllers
             {
                 return NotFound();
             }
-            var userToEdit = _context.Users.Find(user.Id);
+            //var userToEdit = _context.Users.Find(user.Id);
+            var userToEdit = await _userManager.FindByIdAsync(user.Id);
             userToEdit.FullName = user.FullName;
             userToEdit.PhoneNumber = user.PhoneNumber;
             userToEdit.IsActive = user.IsActive;
@@ -162,7 +167,8 @@ namespace SiliconAward.Controllers
             {
                 try
                 {
-                    _context.Update(userToEdit);
+                    await _userManager.UpdateAsync(userToEdit);
+                    //_context.Update(userToEdit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -195,8 +201,11 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            //var user = await _context.Users
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _userManager.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (user == null)
             {
                 return NotFound();
@@ -215,10 +224,12 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
+            //var user = await _context.Users.FindAsync(id);
             var role = ((await _userManager.GetRolesAsync(user)).First() ?? "");
 
-            _context.Users.Remove(user);
+            //_context.Users.Remove(user);
+            await _userManager.DeleteAsync(user);
             await _context.SaveChangesAsync();
             if (role == "Participants")
                 return RedirectToAction(nameof(Participant));
@@ -230,7 +241,8 @@ namespace SiliconAward.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            //return _context.Users.Any(e => e.Id == id);
+            return _userManager.Users.Any(e => e.Id == id);
         }
 
         public async Task<IActionResult> ParticipantDetails(string id)
@@ -415,7 +427,7 @@ namespace SiliconAward.Controllers
                     }
                     _context.Update(participantToUpdate);
                     await _context.SaveChangesAsync();
-                    var userPhoneNumber = (from u in _context.Users
+                    var userPhoneNumber = (from u in _userManager.Users
                                            where u.Id == participantToUpdate.UserId
                                            select u.PhoneNumber).FirstOrDefault();
                     var statusTitle = (from s in _context.Statues

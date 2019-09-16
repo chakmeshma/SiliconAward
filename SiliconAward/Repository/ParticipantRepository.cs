@@ -52,7 +52,8 @@ namespace SiliconAward.Repository
 
             List<ParticipantsViewModel> tmp = new List<ParticipantsViewModel>();
 
-            foreach (Models.User u in _dbContext.Users)
+            //foreach (Models.User u in _dbContext.Users)
+            foreach (Models.User u in userManager.Users)
             {
                 if (((await userManager.GetRolesAsync(u)).First() ?? "") == role)
                     tmp.Add(new ParticipantsViewModel

@@ -26,15 +26,20 @@ namespace SiliconAward.Repository
             else
                 return "no-access";
         }
-        public string GetUser(string userId, string avatarUrl, UserManager<Models.User> userManager)
+        public async Task<string> GetUser(string userId, string avatarUrl, UserManager<Models.User> userManager)
         {
-            var user = (from u in _dbContext.Users
+            //var user = (from u in _dbContext.Users
+            //            where u.Id == userId
+            //            select u).FirstOrDefault();
+
+            var user = (from u in userManager.Users
                         where u.Id == userId
                         select u).FirstOrDefault();
             if (user != null)
             {
                 user.Avatar = avatarUrl;
-                _dbContext.Update(user);
+                //_dbContext.Update(user);
+                await userManager.UpdateAsync(user);
                 _dbContext.SaveChangesAsync();
                 return "success";
             }
@@ -52,7 +57,11 @@ namespace SiliconAward.Repository
 
         public string GetAvatarUrl(string id, UserManager<Models.User> userManager)
         {
-            return (from u in _dbContext.Users
+            //return (from u in _dbContext.Users
+            //        where u.Id == id
+            //        select u.Avatar).FirstOrDefault();
+
+            return (from u in userManager.Users
                     where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
@@ -60,7 +69,11 @@ namespace SiliconAward.Repository
         {
             ResultViewModel result = new ResultViewModel();
 
-            var user = (from u in _dbContext.Users
+            //var user = (from u in _dbContext.Users
+            //            where u.PhoneNumber == registerUser.PhoneNumber
+            //            select u).FirstOrDefault();
+
+            var user = (from u in userManager.Users
                         where u.PhoneNumber == registerUser.PhoneNumber
                         select u).FirstOrDefault();
 
@@ -107,15 +120,20 @@ namespace SiliconAward.Repository
                 return "exist";
         }
 
-        public string VerifyPhone(VerifyPhoneViewModel verifyPhone, UserManager<Models.User> userManager)
+        public async Task<string> VerifyPhone(VerifyPhoneViewModel verifyPhone, UserManager<Models.User> userManager)
         {
-            var user = (from u in _dbContext.Users
+            //var user = (from u in _dbContext.Users
+            //            where u.PhoneNumber == verifyPhone.Phone
+            //            select u).FirstOrDefault();
+            var user = (from u in userManager.Users
                         where u.PhoneNumber == verifyPhone.Phone
                         select u).FirstOrDefault();
+
             if (user != null && user.PhoneNumberVerifyCode == verifyPhone.VerifyCode)
             {
                 user.PhoneNumberConfirmed = true;
-                _dbContext.Update(user);
+                //_dbContext.Update(user);
+                await userManager.UpdateAsync(user);
                 _dbContext.SaveChangesAsync();
                 return "success";
             }
@@ -128,10 +146,15 @@ namespace SiliconAward.Repository
             ResetPasswordResultViewModel result = new ResetPasswordResultViewModel();
             try
             {
-                var user = (from u in _dbContext.Users
+                //var user = (from u in _dbContext.Users
+                //            where u.PhoneNumber == setPassword.Phone
+                //            select u).FirstOrDefault();
+
+                var user = (from u in userManager.Users
                             where u.PhoneNumber == setPassword.Phone
                             select u).FirstOrDefault();
 
+                await userManager.RemovePasswordAsync(user);
                 IdentityResult identityResult = await userManager.AddPasswordAsync(await userManager.FindByIdAsync(user.Id), setPassword.Password);
                 //user.PasswordHash = Classes.SimpleHash.ComputeHash(setPassword.Password, "sha256", null);
                 //_dbContext.Update(user);
@@ -164,6 +187,9 @@ namespace SiliconAward.Repository
 
         public async Task<ProfileViewModel> GetProfile(string id, UserManager<Models.User> userManager)
         {
+            //var user = (from u in _dbContext.Users
+            //            where u.Id == id
+            //            select u).FirstOrDefault();
             var user = (from u in _dbContext.Users
                         where u.Id == id
                         select u).FirstOrDefault();
@@ -197,9 +223,13 @@ namespace SiliconAward.Repository
 
             return profile;
         }
-        public string ResetPassword(string phoneNumber, UserManager<Models.User> userManager)
+        public async Task<string> ResetPassword(string phoneNumber, UserManager<Models.User> userManager)
         {
-            var user = (from u in _dbContext.Users
+            //var user = (from u in _dbContext.Users
+            //            where u.PhoneNumber == phoneNumber
+            //            select u).FirstOrDefault();
+
+            var user = (from u in userManager.Users
                         where u.PhoneNumber == phoneNumber
                         select u).FirstOrDefault();
             if (user == null)
@@ -209,7 +239,8 @@ namespace SiliconAward.Repository
             else
             {
                 user.PhoneNumberVerifyCode = Classes.CreateVerifyCode();
-                _dbContext.Users.Update(user);
+                //_dbContext.Users.Update(user);
+                await userManager.UpdateAsync(user);
                 _dbContext.SaveChangesAsync();
                 Classes.SendSmsAsync(user.PhoneNumber, user.PhoneNumberVerifyCode, "10award");
 
@@ -223,7 +254,10 @@ namespace SiliconAward.Repository
             ResultViewModel result = new ResultViewModel();
             try
             {
-                var userToEdit = (from u in _dbContext.Users
+                //var userToEdit = (from u in _dbContext.Users
+                //                  where u.Id == profile.Id
+                //                  select u).FirstOrDefault();
+                var userToEdit = (from u in userManager.Users
                                   where u.Id == profile.Id
                                   select u).FirstOrDefault();
 
@@ -231,7 +265,8 @@ namespace SiliconAward.Repository
                 userToEdit.Email = profile.Email;
                 userToEdit.LastUpdateTime = DateTime.Now;
 
-                _dbContext.Update(userToEdit);
+                await userManager.UpdateAsync(userToEdit);
+                //_dbContext.Update(userToEdit);
                 _dbContext.SaveChangesAsync();
 
                 result.Role = ((await userManager.GetRolesAsync(userToEdit)).First() ?? "");
@@ -266,7 +301,10 @@ namespace SiliconAward.Repository
             SignInManager<Models.User> signInManager)
         {
             LoginResultViewModel loginResult = new LoginResultViewModel();
-            var user = (from u in _dbContext.Users
+            //var user = (from u in _dbContext.Users
+            //            where u.PhoneNumber == login.Phone
+            //            select u).FirstOrDefault();
+            var user = (from u in userManager.Users
                         where u.PhoneNumber == login.Phone
                         select u).FirstOrDefault();
             if (user != null)

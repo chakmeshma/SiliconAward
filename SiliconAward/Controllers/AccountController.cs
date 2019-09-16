@@ -110,7 +110,7 @@ namespace SiliconAward.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_repository.VerifyPhone(verifyPhone, _userManager) == "success")
+                if (await _repository.VerifyPhone(verifyPhone, _userManager) == "success")
                 {
                     SetPasswordViewModel setPassword = new SetPasswordViewModel()
                     {
@@ -237,9 +237,9 @@ namespace SiliconAward.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ResetPassword(string phoneNumber)
+        public async Task<IActionResult> ResetPassword(string phoneNumber)
         {
-            var result = _repository.ResetPassword(phoneNumber, _userManager);
+            var result = await _repository.ResetPassword(phoneNumber, _userManager);
             if (result == "confirm")
             {
                 VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();

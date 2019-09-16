@@ -57,7 +57,9 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            //var user = await _context.Users
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _userManager.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
@@ -88,7 +90,8 @@ namespace SiliconAward.Controllers
             if (ModelState.IsValid)
             {
                 user.Id = Guid.NewGuid().ToString();
-                _context.Add(user);
+                //_context.Add(user);
+                await _userManager.CreateAsync(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -103,7 +106,8 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            //var user = await _context.Users.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -130,7 +134,8 @@ namespace SiliconAward.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    //_context.Update(user);
+                    await _userManager.UpdateAsync(user);
                     await _context.SaveChangesAsync();
 
                     await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
@@ -164,8 +169,10 @@ namespace SiliconAward.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var user = await _userManager.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
+            //var user = await _context.Users
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -181,15 +188,17 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
+            //var user = await _context.Users.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
+            await _userManager.DeleteAsync(user);
+            //_context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _userManager.Users.Any(e => e.Id == id);
         }
 
         public async Task<IActionResult> ParticipantDetails(string id)
