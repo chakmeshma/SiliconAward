@@ -92,7 +92,7 @@ namespace SiliconAward.Controllers
                 user.Id = Guid.NewGuid().ToString();
                 //_context.Add(user);
                 await _userManager.CreateAsync(user);
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -136,7 +136,7 @@ namespace SiliconAward.Controllers
                 {
                     //_context.Update(user);
                     await _userManager.UpdateAsync(user);
-                    await _context.SaveChangesAsync();
+                    //await _context.SaveChangesAsync();
 
                     await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
 
@@ -192,7 +192,7 @@ namespace SiliconAward.Controllers
             var user = await _userManager.FindByIdAsync(id);
             await _userManager.DeleteAsync(user);
             //_context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

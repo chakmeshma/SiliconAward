@@ -40,7 +40,7 @@ namespace SiliconAward.Repository
                 user.Avatar = avatarUrl;
                 //_dbContext.Update(user);
                 await userManager.UpdateAsync(user);
-                _dbContext.SaveChangesAsync();
+                //_dbContext.SaveChangesAsync();
                 return "success";
             }
             else
@@ -134,7 +134,7 @@ namespace SiliconAward.Repository
                 user.PhoneNumberConfirmed = true;
                 //_dbContext.Update(user);
                 await userManager.UpdateAsync(user);
-                _dbContext.SaveChangesAsync();
+                //_dbContext.SaveChangesAsync();
                 return "success";
             }
             else
@@ -241,7 +241,7 @@ namespace SiliconAward.Repository
                 user.PhoneNumberVerifyCode = Classes.CreateVerifyCode();
                 //_dbContext.Users.Update(user);
                 await userManager.UpdateAsync(user);
-                _dbContext.SaveChangesAsync();
+                //_dbContext.SaveChangesAsync();
                 Classes.SendSmsAsync(user.PhoneNumber, user.PhoneNumberVerifyCode, "10award");
 
                 return "confirm";
@@ -267,7 +267,7 @@ namespace SiliconAward.Repository
 
                 await userManager.UpdateAsync(userToEdit);
                 //_dbContext.Update(userToEdit);
-                _dbContext.SaveChangesAsync();
+                //await _dbContext.SaveChangesAsync();
 
                 result.Role = ((await userManager.GetRolesAsync(userToEdit)).First() ?? "");
                 if (userToEdit.Avatar == null)

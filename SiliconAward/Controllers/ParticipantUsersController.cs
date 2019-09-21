@@ -169,7 +169,7 @@ namespace SiliconAward.Controllers
                 {
                     await _userManager.UpdateAsync(userToEdit);
                     //_context.Update(userToEdit);
-                    await _context.SaveChangesAsync();
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -230,7 +230,7 @@ namespace SiliconAward.Controllers
 
             //_context.Users.Remove(user);
             await _userManager.DeleteAsync(user);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             if (role == "Participants")
                 return RedirectToAction(nameof(Participant));
             else if (role == "Experts")
