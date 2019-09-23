@@ -6,70 +6,39 @@
 
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_LayoutAdminlteBlank.cshtml";
+    Layout = null;
 }
 
-<div class="box box-info">
-    <div class="box-header with-border">
-        <h3 style="display: block;" class="box-title">عضویت</h3>
+<!doctype html>
+<html class="blurred-background">
+
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+
+<body onLoad="init()">
+    <div id="loginContainer" class="loginContainer">
+        <div class="loginContainerRightSide">
+            <div class="registerSideText">Hello!</div>
+            <div class="registerSidePic">
+                <img src="images/Group 937.svg" alt="coffee" />
+            </div>
+        </div>
+        <form method="post" asp-action="Register" class="loginContainerLeftSide">
+            @Html.AntiForgeryToken()
+            <div class="leftSideLogo"></div>
+            <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
+            <input asp-for="Username" class="registerField" placeholder="Username" type="text" />
+            <input asp-for="Password" class="registerField" id="passwordField" placeholder="Password" type="password" />
+            <img onClick="togglePasswordView()" id="passwordEyeToggle" src="images/password eye.svg" />
+            <input class="registerButton" value="Join now" type="button" />
+            <div class="registerLoginText">Already a member? <a href="971 [Converted].svg">Log in</a></div>
+        </form>
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
-    <form asp-controller="Account" asp-action="Register"
-          asp-route-returnurl="@ViewData["ReturnUrl"]"
-          method="post" class="form-horizontal" role="form">
-        @Html.AntiForgeryToken()
-        <div class="box-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="col-sm-6 control-label">شماره همراه را وارد کنید</label>
-                <div class="col-sm-6">
-                    <input asp-for="PhoneNumber" style="text-align:center;" type="tel" class="form-control direction-ltr" placeholder="09122222222">
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    <span class="text-danger">@ViewData["Message"]</span>
-                </div>
-            </div>
+</body>
 
-            <div class="form-group">
-                <span asp-validation-for="ParticipantType" class="text-danger"></span>
-                <div class="radio">
-                    <label>
-                        @Html.RadioButtonFor(m => m.ParticipantType, "Participant")
-                        شرکت کننده : در رقابت ها شرکت می کنم
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        @Html.RadioButtonFor(m => m.ParticipantType, "Supporter")
-                        حامی مالی : از طرح ها و ایده ها حمایت می کنم
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        @Html.RadioButtonFor(m => m.ParticipantType, "Expert")
-                        کارشناس : می توانم طرح ها  و مهارت ها  را داوری کنم
-                    </label>
-                </div>
-            </div>
-
-
-
-        </div>
-        <div class="box-footer">
-            <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary btn-block btn-flat">عضویت</button>
-            </div>
-            <div class="col-sm-12 text-center" style="padding-top:15px">
-                <a asp-controller="Account" asp-action="Login" class="text-center">اگر حساب کاربری دارید اینجا کلیک کنید</a>
-            </div>
-            
-        </div>
-        @Html.Recaptcha(RecaptchaSettings.Value)
-        <!-- /.box-footer -->
-    </form>
-</div>
-<!-- /.box-body -->
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</html>

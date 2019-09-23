@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace SiliconAward.ViewModels
 {
-    public class VerifyPhoneViewModel
+    public class VerifyEmailViewModel
     {
         [Required]
-        public string Phone { get; set; }
+        public string Email { get; set; }
 
-        [Display(Name = "کد تایید را وارد کنید")]
-        [Required(ErrorMessage ="لطفا کد تایید را وارد کنید")]
+        [Display(Name = "Verify Email")]
+        [Required(ErrorMessage ="Missing Verify Code")]
         public string VerifyCode { get; set; }
     }
 }

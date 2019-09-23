@@ -130,7 +130,7 @@ namespace SiliconAward.Controllers
                 PhoneNumber = userToEdit.PhoneNumber,
                 PhoneNumberConfirmed = userToEdit.PhoneNumberConfirmed,
                 Role = ((await _userManager.GetRolesAsync(userToEdit)).First() ?? ""),
-                PhoneNumberVerifyCode = userToEdit.PhoneNumberVerifyCode
+                EmailVerifyCode = userToEdit.EmailVerifyCode
             };
 
             if (user == null)

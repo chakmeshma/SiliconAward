@@ -11,7 +11,7 @@ namespace SiliconAward.ViewModels
         [Required(ErrorMessage = "لطفا شماره همراه را وارد کنید")]
         [Display(Name="شماره همراه")]
         [DataType(DataType.PhoneNumber)]        
-        public string Phone { get; set; }
+        public string Email { get; set; }
 
         [Required(ErrorMessage ="کلمه عبور را وارد کنید")]
         [Display(Name = "کلمه عبور")]

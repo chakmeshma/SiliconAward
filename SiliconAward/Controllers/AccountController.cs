@@ -49,7 +49,7 @@ namespace SiliconAward.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return View();
         }
@@ -67,39 +67,56 @@ namespace SiliconAward.Controllers
 
             if (ModelState.IsValid)
             {
-                if (register.ParticipantType == "Participant" || register.ParticipantType == "Supporter" || register.ParticipantType == "Expert")
+                VerifyEmailViewModel verifyEmailAddress = new VerifyEmailViewModel();
+
+                var result = await _repository.AddUserAsync(register, "Participant", _userManager, _signInManager);
+                if (result == "added" || result.Contains("verify"))
                 {
-                    VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
+                    Models.User user = null;
 
-                    var result = await _repository.AddUserAsync(register, _userManager, _signInManager);
-                    if (result == "added" || result == "confirm")
+                    switch (result)
                     {
-                        verifyPhoneNumber.Phone = register.PhoneNumber;
-                        return View("VerifyPhone", verifyPhoneNumber);
-                    }
-                    else if (result == "password")
-                    {
-                        SetPasswordViewModel setPassword = new SetPasswordViewModel();
-                        setPassword.Phone = register.PhoneNumber;
-                        return View("SetPassword", setPassword);
+                        case "verify username":
+                            user = await _userManager.FindByNameAsync(register.Username);
+                            break;
+                        case "verify email":
+                            user = await _userManager.FindByEmailAsync(register.Email);
+                            break;
+                        case "added":
+                            user = await _userManager.FindByEmailAsync(register.Email);
+                            break;
                     }
 
-                    else
-                        ViewData["Message"] = "این شماره ثبت شده است.";
-                    return View();
+                    verifyEmailAddress.Email = register.Email;
+                    return View("VerifyEmail", verifyEmailAddress);
                 }
                 else
                 {
-                    ViewData["Message"] = "خطایی رخ داده مجدد سعی نمایید";
-                    return View();
+                    switch (result)
+                    {
+                        case "both exist":
+                            ModelState.AddModelError("Email", "Email Not Available");
+                            ModelState.AddModelError("Username", "Username Not Available");
+                            break;
+                        case "username exists":
+                            ModelState.AddModelError("Username", "Username Not Available");
+                            break;
+                        case "email exists":
+                            ModelState.AddModelError("Email", "Email Not Available");
+                            break;
+                    }
                 }
+
+                return View();
+
             }
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyPhone(VerifyPhoneViewModel verifyPhone)
+        public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel verifyEmail)
         {
             //var recaptcha = await _recaptcha.Validate(Request);
             //if (!recaptcha.success)
@@ -110,17 +127,13 @@ namespace SiliconAward.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await _repository.VerifyPhone(verifyPhone, _userManager) == "success")
+                if (await _repository.VerifyEmail(verifyEmail, _userManager) == "success")
                 {
-                    SetPasswordViewModel setPassword = new SetPasswordViewModel()
-                    {
-                        Phone = verifyPhone.Phone
-                    };
-
-                    return View("SetPassword", setPassword);
+                    return View("Success");
                 }
                 else
-                    ViewData["Message"] = "کد وارد شده صحیح نمی باشد";
+                    ModelState.AddModelError(null, "Invalid Code");
+
                 return View();
             }
             return View();
@@ -237,14 +250,14 @@ namespace SiliconAward.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(string phoneNumber)
+        public async Task<IActionResult> ResetPassword(string email)
         {
-            var result = await _repository.ResetPassword(phoneNumber, _userManager);
+            var result = await _repository.ResetPassword(email, _userManager);
             if (result == "confirm")
             {
-                VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
-                verifyPhoneNumber.Phone = phoneNumber;
-                return View("VerifyPhone", verifyPhoneNumber);
+                VerifyEmailViewModel verifyEmail = new VerifyEmailViewModel();
+                verifyEmail.Email = email;
+                return View("VerifyEmail", verifyEmail);
             }
             else
             {
@@ -271,13 +284,13 @@ namespace SiliconAward.Controllers
             {
                 case "password":
                     SetPasswordViewModel setPassword = new SetPasswordViewModel();
-                    setPassword.Phone = login.Phone;
+                    setPassword.Phone = login.Email;
                     return View("SetPassword", setPassword);
 
                 case "confirm":
-                    VerifyPhoneViewModel verifyPhoneNumber = new VerifyPhoneViewModel();
-                    verifyPhoneNumber.Phone = login.Phone;
-                    return View("VerifyPhone", verifyPhoneNumber);
+                    VerifyEmailViewModel verifyEmail = new VerifyEmailViewModel();
+                    verifyEmail.Email = login.Email;
+                    return View("VerifyPhone", verifyEmail);
 
                 case "fail":
                     ViewData["Message"] = "نام کاربری یا کلمه عبور اشتباه است";

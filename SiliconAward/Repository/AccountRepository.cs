@@ -65,73 +65,101 @@ namespace SiliconAward.Repository
                     where u.Id == id
                     select u.Avatar).FirstOrDefault();
         }
-        public async Task<string> AddUserAsync(RegisterViewModel registerUser, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
+        public async Task<string> AddUserAsync(RegisterViewModel registerUser, string participantType, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
         {
-            ResultViewModel result = new ResultViewModel();
-
+            //ResultViewModel result = new ResultViewModel();
             //var user = (from u in _dbContext.Users
             //            where u.PhoneNumber == registerUser.PhoneNumber
             //            select u).FirstOrDefault();
 
-            var user = (from u in userManager.Users
-                        where u.PhoneNumber == registerUser.PhoneNumber
-                        select u).FirstOrDefault();
+            var emailUser = await userManager.FindByEmailAsync(registerUser.Email);
+            var usernameUser = await userManager.FindByNameAsync(registerUser.Username);
 
-            if (user == null)
+            if (emailUser != null && usernameUser != null)
             {
-                string id = (Guid.NewGuid()).ToString();
-
-                User userToAdd = new User()
+                if (emailUser.EmailConfirmed && usernameUser.EmailConfirmed)
                 {
-                    Id = id,
-                    //Role = registerUser.ParticipantType,
-                    PhoneNumber = registerUser.PhoneNumber,
-                    AccessFailedCount = 0,
-                    IsActive = false,
-                    IsDeleted = false,
-                    PhoneNumberConfirmed = false,
-                    EmailConfirmed = false,
-                    PhoneNumberVerifyCode = Classes.CreateVerifyCode(),
-                    CreateTime = DateTime.Now,
-                    UserName = id
-                };
-
-
-                IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
-
-                await userManager.AddToRoleAsync(userToAdd, registerUser.ParticipantType);
-
-
-                //_dbContext.Users.Add(userToAdd);
-                //_dbContext.SaveChangesAsync();
-                Classes.SendSmsAsync(userToAdd.PhoneNumber, userToAdd.PhoneNumberVerifyCode, "10award");
-                return "added";
+                    return "both exist";
+                }
+                else if (!emailUser.EmailConfirmed && usernameUser.EmailConfirmed)
+                {
+                    return "verify email";
+                }
+                else if (emailUser.EmailConfirmed && !usernameUser.EmailConfirmed)
+                {
+                    return "verify username";
+                }
+                else
+                {
+                    return "verify email";
+                }
             }
-            else if (user.PhoneNumberConfirmed == false)
+            else if (emailUser == null && usernameUser != null)
             {
-                Classes.SendSmsAsync(registerUser.PhoneNumber, user.PhoneNumberVerifyCode, "10award");
-                return "confirm";
+                if (usernameUser.EmailConfirmed)
+                {
+                    return "username exists";
+                }
+                else
+                {
+                    return "verify username";
+                }
+
             }
-            else if (user.PasswordHash == null)
+            else if (emailUser != null && usernameUser == null)
             {
-                return "password";
+                if (emailUser.EmailConfirmed)
+                {
+                    return "email exists";
+                }
+                else
+                {
+                    return "verify email";
+                }
             }
-            else
-                return "exist";
+
+
+            string id = (Guid.NewGuid()).ToString();
+
+            User userToAdd = new User()
+            {
+                Id = id,
+                AccessFailedCount = 0,
+                IsActive = false,
+                IsDeleted = false,
+                EmailConfirmed = false,
+                EmailVerifyCode = Classes.CreateVerifyCode(),
+                CreateTime = DateTime.Now,
+                UserName = registerUser.Username,
+                Email = registerUser.Email
+            };
+
+
+            IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+
+            await userManager.AddToRoleAsync(userToAdd, participantType);
+
+
+            //_dbContext.Users.Add(userToAdd);
+            //_dbContext.SaveChangesAsync();
+            Classes.SendSmsAsync("09309242741", userToAdd.EmailVerifyCode, "10award");
+
+            return "added";
         }
 
-        public async Task<string> VerifyPhone(VerifyPhoneViewModel verifyPhone, UserManager<Models.User> userManager)
+        public async Task<string> VerifyEmail(VerifyEmailViewModel verifyEmail, UserManager<Models.User> userManager)
         {
             //var user = (from u in _dbContext.Users
             //            where u.PhoneNumber == verifyPhone.Phone
             //            select u).FirstOrDefault();
-            var user = (from u in userManager.Users
-                        where u.PhoneNumber == verifyPhone.Phone
-                        select u).FirstOrDefault();
+            var user = await userManager.FindByEmailAsync(verifyEmail.Email);
+            //var user = (from u in userManager.Users
+            //            where u.Email == verifyEmail.Email
+            //            select u).FirstOrDefault();
 
-            if (user != null && user.PhoneNumberVerifyCode == verifyPhone.VerifyCode)
+            if (user != null && user.EmailVerifyCode == verifyEmail.VerifyCode)
             {
-                user.PhoneNumberConfirmed = true;
+                user.EmailConfirmed = true;
                 //_dbContext.Update(user);
                 await userManager.UpdateAsync(user);
                 //_dbContext.SaveChangesAsync();
@@ -238,11 +266,11 @@ namespace SiliconAward.Repository
             }
             else
             {
-                user.PhoneNumberVerifyCode = Classes.CreateVerifyCode();
+                user.EmailVerifyCode = Classes.CreateVerifyCode();
                 //_dbContext.Users.Update(user);
                 await userManager.UpdateAsync(user);
                 //_dbContext.SaveChangesAsync();
-                Classes.SendSmsAsync(user.PhoneNumber, user.PhoneNumberVerifyCode, "10award");
+                Classes.SendSmsAsync(user.PhoneNumber, user.EmailVerifyCode, "10award");
 
                 return "confirm";
             }
@@ -305,7 +333,7 @@ namespace SiliconAward.Repository
             //            where u.PhoneNumber == login.Phone
             //            select u).FirstOrDefault();
             var user = (from u in userManager.Users
-                        where u.PhoneNumber == login.Phone
+                        where u.PhoneNumber == login.Email
                         select u).FirstOrDefault();
             if (user != null)
             {

@@ -22,8 +22,8 @@ namespace SiliconAward.Models
         [Display(Name = "شماره همراه")]
         public override string PhoneNumber { get; set; }
 
-        [Display(Name = "تایید شماره همراه")]
-        public override bool PhoneNumberConfirmed { get; set; }
+        //[Display(Name = "تایید شماره همراه")]
+        //public override bool PhoneNumberConfirmed { get; set; }
 
         [Column(TypeName = "nvarchar(30)")]
         [Display(Name = "ایمیل")]
@@ -33,8 +33,8 @@ namespace SiliconAward.Models
         [Display(Name = "تایید ایمیل")]
         public override bool EmailConfirmed { get; set; }
 
-        [Display(Name = "کد تایید تلفن همراه")]
-        public string PhoneNumberVerifyCode { get; set; }
+        //[Display(Name = "کد تایید تلفن همراه")]
+        //public string PhoneNumberVerifyCode { get; set; }
 
         [Display(Name = " کد تایید ایمیل")]
         public string EmailVerifyCode { get; set; }
