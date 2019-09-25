@@ -74,35 +74,36 @@ namespace SiliconAward.Repository
 
             var emailUser = await userManager.FindByEmailAsync(registerUser.Email);
             var usernameUser = await userManager.FindByNameAsync(registerUser.Username);
+            var subResultStr = "";
 
             if (emailUser != null && usernameUser != null)
             {
                 if (emailUser.EmailConfirmed && usernameUser.EmailConfirmed)
                 {
-                    return "both exist";
+                    subResultStr = "both exist";
                 }
                 else if (!emailUser.EmailConfirmed && usernameUser.EmailConfirmed)
                 {
-                    return "verify email";
+                    subResultStr = "verify email";
                 }
                 else if (emailUser.EmailConfirmed && !usernameUser.EmailConfirmed)
                 {
-                    return "verify username";
+                    subResultStr = "verify username";
                 }
                 else
                 {
-                    return "verify email";
+                    subResultStr = "verify email";
                 }
             }
             else if (emailUser == null && usernameUser != null)
             {
                 if (usernameUser.EmailConfirmed)
                 {
-                    return "username exists";
+                    subResultStr = "username exists";
                 }
                 else
                 {
-                    return "verify username";
+                    subResultStr = "verify username";
                 }
 
             }
@@ -110,41 +111,66 @@ namespace SiliconAward.Repository
             {
                 if (emailUser.EmailConfirmed)
                 {
-                    return "email exists";
+                    subResultStr = "email exists";
                 }
                 else
                 {
-                    return "verify email";
+                    subResultStr = "verify email";
                 }
             }
 
-
-            string id = (Guid.NewGuid()).ToString();
-
-            User userToAdd = new User()
+            if (subResultStr == "")
             {
-                Id = id,
-                AccessFailedCount = 0,
-                IsActive = false,
-                IsDeleted = false,
-                EmailConfirmed = false,
-                EmailVerifyCode = Classes.CreateVerifyCode(),
-                CreateTime = DateTime.Now,
-                UserName = registerUser.Username,
-                Email = registerUser.Email
-            };
+
+                string id = (Guid.NewGuid()).ToString();
+
+                User userToAdd = new User()
+                {
+                    Id = id,
+                    AccessFailedCount = 0,
+                    IsActive = false,
+                    IsDeleted = false,
+                    EmailConfirmed = false,
+                    EmailVerifyCode = Classes.CreateVerifyCode(),
+                    CreateTime = DateTime.Now,
+                    UserName = registerUser.Username,
+                    Email = registerUser.Email
+                };
 
 
-            IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+                IdentityResult identityResult = await userManager.CreateAsync(userToAdd);
+                identityResult = await userManager.AddPasswordAsync(userToAdd, registerUser.Password);
+                identityResult = await userManager.AddToRoleAsync(userToAdd, participantType);
 
-            await userManager.AddToRoleAsync(userToAdd, participantType);
 
+                //_dbContext.Users.Add(userToAdd);
+                //_dbContext.SaveChangesAsync();
+                Classes.SendSmsAsync("09309242741", userToAdd.EmailVerifyCode, "10award");
 
-            //_dbContext.Users.Add(userToAdd);
-            //_dbContext.SaveChangesAsync();
-            Classes.SendSmsAsync("09309242741", userToAdd.EmailVerifyCode, "10award");
+                return "added";
+            }
+            else if (subResultStr.Contains("verify"))
+            {
+                var verifyCode = Classes.CreateVerifyCode();
 
-            return "added";
+                switch (subResultStr)
+                {
+                    case "verify email":
+                        emailUser.EmailVerifyCode = verifyCode;
+                        await userManager.UpdateAsync(emailUser);
+                        break;
+                    case "verify username":
+                        usernameUser.EmailVerifyCode = verifyCode;
+                        await userManager.UpdateAsync(usernameUser);
+                        break;
+                }
+
+                Classes.SendSmsAsync("09309242741", verifyCode, "10award");
+
+                return subResultStr;
+            }
+
+            return subResultStr;
         }
 
         public async Task<string> VerifyEmail(VerifyEmailViewModel verifyEmail, UserManager<Models.User> userManager)
@@ -213,7 +239,7 @@ namespace SiliconAward.Repository
             }
         }
 
-        public async Task<ProfileViewModel> GetProfile(string id, UserManager<Models.User> userManager)
+        public ProfileViewModel GetProfile(string id, UserManager<Models.User> userManager)
         {
             //var user = (from u in _dbContext.Users
             //            where u.Id == id

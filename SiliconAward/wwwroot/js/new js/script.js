@@ -35,4 +35,18 @@ function initInputEvents() {
             $(this).next('.code-entry-input').select()
         }
     });
+
+
+    $("#theForm").submit(function() {
+        var codeStr = $("#codeInput1").val() +
+                      $("#codeInput2").val() +
+                      $("#codeInput3").val() +
+                      $("#codeInput4").val() +
+                      $("#codeInput5").val() +
+                      $("#codeInput6").val();
+
+        $("#confirmHiddenField").val(codeStr);
+        return true;
+    });
+
 }

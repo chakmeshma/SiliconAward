@@ -88,6 +88,7 @@ namespace SiliconAward.Controllers
                     }
 
                     verifyEmailAddress.Email = register.Email;
+
                     return View("VerifyEmail", verifyEmailAddress);
                 }
                 else
@@ -118,6 +119,12 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel verifyEmail)
         {
+            //Models.User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            //if (user != null && user.EmailConfirmed)
+            //{
+            //    RedirectToAction("Login");
+            //}
             //var recaptcha = await _recaptcha.Validate(Request);
             //if (!recaptcha.success)
             //{
@@ -129,14 +136,14 @@ namespace SiliconAward.Controllers
             {
                 if (await _repository.VerifyEmail(verifyEmail, _userManager) == "success")
                 {
-                    return View("Success");
+                    return RedirectToAction("Success");
                 }
                 else
-                    ModelState.AddModelError(null, "Invalid Code");
+                    ModelState.AddModelError("VerifyCode", "Invalid Code");
 
-                return View();
+                return View(verifyEmail);
             }
-            return View();
+            return View(verifyEmail);
         }
 
         [HttpPost]
@@ -190,14 +197,14 @@ namespace SiliconAward.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
             var id = HttpContext.User.Identity.Name;
             if (id == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-            var user = await _repository.GetProfile(id, _userManager);
+            var user = _repository.GetProfile(id, _userManager);
             return View(user);
         }
 
@@ -325,6 +332,11 @@ namespace SiliconAward.Controllers
 
                     return RedirectToAction("Profile", "Account");
             }
+        }
+
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }

@@ -6,39 +6,27 @@
 
 @{
     ViewData["Title"] = "Register";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutBlurredBackground.cshtml";
 }
 
-<!doctype html>
-<html class="blurred-background">
-
-<head>
-    <meta charset="utf-8">
-    <title>@ViewData["Title"]</title>
-    <link href="~/css/new styles/style.css" rel="stylesheet" type="text/css">
-    <script src="~/js/new js/jquery.min.js"></script>
-    <script src="~/js/new js/script.js"></script>
-</head>
-
-<body onLoad="init()">
-    <div id="loginContainer" class="loginContainer">
-        <div class="loginContainerRightSide">
-            <div class="registerSideText">Hello!</div>
-            <div class="registerSidePic">
-                <img src="~/images/new images/Group 937.svg" alt="coffee" />
-            </div>
+<div id="loginContainer" class="loginContainer">
+    <div class="loginContainerRightSide">
+        <div class="registerSideText">Hello!</div>
+        <div class="registerSidePic">
+            <img src="~/images/new images/Group 937.svg" alt="coffee" />
         </div>
-        <form method="post" asp-action="Register" class="loginContainerLeftSide">
-            @Html.AntiForgeryToken()
-            <div class="leftSideLogo"></div>
-            <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
-            <input asp-for="Username" class="registerField" placeholder="Username" type="text" />
-            <input asp-for="Password" class="registerField" id="passwordField" placeholder="Password" type="password" />
-            <img onClick="togglePasswordView()" id="passwordEyeToggle" src="~/images/new images/password eye.svg" />
-            <input class="registerButton" value="Join now" type="button" />
-            <div class="registerLoginText">Already a member? <a href="971 [Converted].svg">Log in</a></div>
-        </form>
     </div>
-</body>
-
-</html>
+    <form method="post" asp-action="Register" class="loginContainerLeftSide">
+        @Html.AntiForgeryToken()
+        <div class="leftSideLogo"></div>
+        <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
+        <span asp-validation-for="Email" class="validationEmail"></span>
+        <input asp-for="Username" class="registerField registerFieldNotTop" placeholder="Username" type="text" />
+        <span asp-validation-for="Username" class="validationEmail"></span>
+        <input asp-for="Password" class="registerField registerFieldNotTop registerFieldPassword" id="passwordField" placeholder="Password" type="password" />
+        <img onClick="togglePasswordView()" id="passwordEyeToggle" src="~/images/new images/password eye.svg" />
+        <span asp-validation-for="Password" class="validationEmail validationEmailLast"></span>
+        <input class="registerButton pullup1" value="Join now" type="submit" />
+        <div class="registerLoginText pullup1">Already a member? <a href="971 [Converted].svg">Log in</a></div>
+    </form>
+</div>
