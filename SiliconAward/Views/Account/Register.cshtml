@@ -15,9 +15,9 @@
 <head>
     <meta charset="utf-8">
     <title>@ViewData["Title"]</title>
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/script.js"></script>
+    <link href="~/css/new styles/style.css" rel="stylesheet" type="text/css">
+    <script src="~/js/new js/jquery.min.js"></script>
+    <script src="~/js/new js/script.js"></script>
 </head>
 
 <body onLoad="init()">
@@ -25,7 +25,7 @@
         <div class="loginContainerRightSide">
             <div class="registerSideText">Hello!</div>
             <div class="registerSidePic">
-                <img src="images/Group 937.svg" alt="coffee" />
+                <img src="~/images/new images/Group 937.svg" alt="coffee" />
             </div>
         </div>
         <form method="post" asp-action="Register" class="loginContainerLeftSide">
@@ -34,7 +34,7 @@
             <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
             <input asp-for="Username" class="registerField" placeholder="Username" type="text" />
             <input asp-for="Password" class="registerField" id="passwordField" placeholder="Password" type="password" />
-            <img onClick="togglePasswordView()" id="passwordEyeToggle" src="images/password eye.svg" />
+            <img onClick="togglePasswordView()" id="passwordEyeToggle" src="~/images/new images/password eye.svg" />
             <input class="registerButton" value="Join now" type="button" />
             <div class="registerLoginText">Already a member? <a href="971 [Converted].svg">Log in</a></div>
         </form>

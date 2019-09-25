@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="154.918" height="128.022" viewBox="0 0 154.918 128.022">
+    <defs>
+        <style>
+            .cls-1{fill:url(#linear-gradient)}.cls-2{fill:url(#linear-gradient-2)}
+        </style>
+        <linearGradient id="linear-gradient" x1=".5" x2=".5" y2=".959" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ff0075"/>
+            <stop offset=".55" stop-color="#b20280"/>
+            <stop offset="1" stop-color="#2d0592"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#0b0455"/>
+            <stop offset="1" stop-color="#2d0592"/>
+        </linearGradient>
+    </defs>
+    <g id="Group_2978" data-name="Group 2978" transform="translate(-562.541 4.511)">
+        <g id="Group_945" data-name="Group 945" transform="translate(-3.459 -4.511)">
+            <path id="Rectangle_329" d="M0 0h154.918v79.022a49 49 0 0 1-49 49H49a49 49 0 0 1-49-49V0z" class="cls-1" data-name="Rectangle 329" transform="translate(566)"/>
+        </g>
+        <g id="Group_944" data-name="Group 944" transform="translate(2)">
+            <path id="Rectangle_329-2" d="M0 0h144v70a49 49 0 0 1-49 49H49A49 49 0 0 1 0 70V0z" class="cls-2" data-name="Rectangle 329" transform="translate(566)"/>
+        </g>
+    </g>
+</svg>

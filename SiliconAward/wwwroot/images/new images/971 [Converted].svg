@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="525" height="575" viewBox="0 0 525 575">
+    <defs>
+        <style>
+            .cls-1{fill:url(#radial-gradient)}
+        </style>
+        <radialGradient id="radial-gradient" cx="57.915" cy="-130.512" r="635.659" gradientTransform="matrix(1.095 0 0 1.603 -5.516 78.652)" gradientUnits="userSpaceOnUse">
+            <stop offset=".004" stop-color="#4c02f1"/>
+            <stop offset=".008" stop-color="#4b02ef"/>
+            <stop offset=".126" stop-color="#3903c4"/>
+            <stop offset=".249" stop-color="#29039e"/>
+            <stop offset=".377" stop-color="#1d0380"/>
+            <stop offset=".51" stop-color="#130468"/>
+            <stop offset=".651" stop-color="#0c0457"/>
+            <stop offset=".806" stop-color="#07044d"/>
+            <stop offset="1" stop-color="#06044a"/>
+        </radialGradient>
+    </defs>
+    <g id="_971_Converted_" data-name="971 [Converted]" transform="translate(-75)">
+        <path id="Rectangle_317" d="M0 0h509a16 16 0 0 1 16 16v543a16 16 0 0 1-16 16H0V0z" class="cls-1" data-name="Rectangle 317" transform="translate(75)"/>
+    </g>
+</svg>

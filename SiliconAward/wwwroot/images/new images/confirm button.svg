@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="393" height="68" viewBox="0 0 393 68">
+    <defs>
+        <style>
+            .cls-1{fill:url(#linear-gradient)}.cls-2{filter:url(#Rectangle_310)}
+        </style>
+        <linearGradient id="linear-gradient" x1=".468" x2=".472" y2="1.535" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ff0075"/>
+            <stop offset="1" stop-color="#2d0592"/>
+        </linearGradient>
+        <filter id="Rectangle_310" width="393" height="68" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-color="#2d0592" flood-opacity=".161"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g class="cls-2">
+        <rect id="Rectangle_310-2" width="375" height="50" class="cls-1" data-name="Rectangle 310" rx="25" transform="translate(9 6)"/>
+    </g>
+</svg>

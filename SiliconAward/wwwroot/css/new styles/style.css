@@ -1,0 +1,416 @@
+@font-face {
+    font-family: Cairo;
+    src: url("../../fonts/Cairo/Cairo-Light.ttf");
+}
+
+@font-face {
+    font-family: Cairo;
+    font-weight: bold;
+    src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+}
+
+@font-face {
+    font-family: AcuminPro;
+    src: url("../../fonts/Acumin-RPro.otf");
+}
+ 
+ body {
+     margin: 0px;
+ }
+ 
+ a {
+     text-decoration: none;
+ }
+ 
+ .blurred-background {
+     background: url("../../images/new images/Rectangle 321@3x.png") no-repeat center center fixed;
+     background-size: cover;
+ }
+
+.loginContainer {
+    width: 918px;
+    height: 593px;
+    object-fit: contain;
+    vertical-align: middle;
+    /*	background-color: #0B0455;*/
+    background-image: url("../../images/new images/Group 935.svg");
+    background-size: contain;
+    margin: auto;
+    /*	border-radius: 16px;*/
+    display: flex;
+    flex-direction: row-reverse;
+}
+ 
+ .loginContainerRightSide {
+     width: 525px;
+     background-image: url("../../images/new images/971 [Converted].svg");
+     margin-top: 6px;
+     margin-bottom: 12px;
+     margin-right: 9px;
+ }
+ 
+ .loginContainerLeftSide {
+     /*	width: 525px;*/
+     flex-grow: 1;
+     margin-top: 6px;
+     margin-bottom: 12px;
+     margin-left: 9px;
+ }
+ 
+ .registerSideText {
+     text-align: center;
+     height: 138px;
+     font-family: Cairo;
+     font-size: 74px;
+     font-weight: 300;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.86;
+     letter-spacing: normal;
+     color: #fcb645;
+     margin-top: 31px;
+ }
+ 
+ .registerSidePic {
+     background-image: url("../../images/new images/Group 2977.svg");
+     background-size: contain;
+     text-align: left;
+     height: 331.3px;
+     /*	width: 489.1px;*/
+     margin-left: 14.2px;
+     margin-right: 21.7px;
+ }
+ 
+ .registerSidePic>img {
+     position: relative;
+     top: -30.9px;
+     left: 87.1px;
+ }
+ 
+ .leftSideLogo {
+     background-image: url("../../images/new images/Group 723.svg");
+     height: 115.4px;
+     width: 175px;
+     background-size: cover;
+     margin-left: auto;
+     margin-right: auto;
+     margin-top: 29.9px;
+ }
+ 
+ input.registerField {
+     width: 253px;
+     height: 34px;
+     /*	opacity: 0.1;*/
+     background-color: #241c63;
+     border: none;
+     border-top-right-radius: 5px;
+     border-top-left-radius: 5px;
+     border-bottom: 1px solid white;
+     padding: 11px;
+     margin-left: auto;
+     margin-right: auto;
+     display: block;
+     font-family: Cairo;
+     font-size: 18px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.83;
+     letter-spacing: normal;
+     text-align: left;
+     color: #fcb645;
+     margin-top: 28.8px;
+ }
+ 
+ input.registerField::-webkit-input-placeholder {
+     /* Edge */
+     color: gray;
+ }
+ 
+ input.registerField:-ms-input-placeholder {
+     /* Internet Explorer 10-11 */
+     color: gray;
+ }
+ 
+ input.registerField::placeholder {
+     color: gray;
+ }
+ 
+ .registerButton {
+     display: block;
+     background: none;
+     background-image: url("../../images/new images/Rectangle 310@2x.png");
+     background-size: cover;
+     background-position: center;
+     margin-left: auto;
+     margin-right: auto;
+     margin-top: 19px;
+     padding: 0px;
+     width: 275px;
+     height: 50px;
+     border: none;
+     font-family: Cairo;
+     font-size: 24px;
+     font-weight: 600;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: normal;
+     text-align: center;
+     color: #ffffff;
+     cursor: pointer;
+ }
+ 
+ .registerLoginText {
+     margin-top: 32px;
+     font-family: AcuminPro;
+     font-size: 18px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.44;
+     letter-spacing: -0.36px;
+     text-align: center;
+     color: #ffffff;
+ }
+ 
+ .registerLoginText>a {
+     color: #fcb645;
+ }
+ 
+ #passwordEyeToggle {
+     display: block;
+     position: relative;
+     left: 285px;
+     top: -35px;
+     cursor: pointer;
+ }
+ 
+ .forgetLink {
+     display: block;
+     width: 155px;
+     height: 30px;
+     font-family: Cairo;
+     font-size: 16px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: normal;
+     text-align: left;
+     color: #fcb645;
+     margin-left: 50px;
+ }
+ 
+ .topBadgeBack {
+     width: 154.9px;
+     height: 123.5px;
+     background-image: url("../../images/new images/Group\ 2978.svg");
+     background-size: 100% 100%;
+     margin-left: auto;
+     margin-right: auto;
+ }
+ 
+ .topBadgeFront {
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+     width: 120px;
+     height: 79.1px;
+     padding-top: 24px;
+ }
+ 
+ .roadImagesContainer {
+     display: flex;
+     flex-direction: row;
+     height: 31px;
+     margin: 44.5px auto 0 auto;
+     /* width: 400px; */
+     justify-content: center;
+     align-items: center;
+ }
+ 
+ .roadLine {
+     background-image: url("../../images/new images/road\ line.svg");
+     width: 306px;
+     height: 2px;
+ }
+ 
+ .roadLine2 {
+     background-image: url("../../images/new images/road\ line 2.svg");
+     width: 306px;
+     height: 2px;
+ }
+ 
+ .roadCircleLeft {
+     height: 31px;
+     width: 31px;
+     margin-right: 12px;
+     background-image: url("../../images/new images/Ellipse\ 82.svg")
+ }
+ 
+ .roadCircleLeft>img {
+     margin-top: 6px;
+     margin-left: 6px;
+ }
+ 
+ .roadCircleRight2>img {
+     margin-top: 6px;
+     margin-left: 6px;
+ }
+ 
+ .roadCircleRight {
+     height: 31px;
+     width: 31px;
+     margin-left: 12px;
+     background-image: url("../../images/new images/circle\ right.svg")
+ }
+ 
+ .roadCircleRight2 {
+     height: 31px;
+     width: 31px;
+     margin-left: 12px;
+     background-image: url("../../images/new images/Ellipse 82.svg")
+ }
+ 
+ .roadCircleLeft>div,
+ .roadCircleRight>div,
+ .roadCircleRight2>div {
+     width: 150px;
+     height: 33px;
+     font-family: Cairo;
+     font-size: 18px;
+     font-weight: bold;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.83;
+     letter-spacing: 0.9px;
+     color: #2d0592;
+     width: 200px;
+     position: relative;
+ }
+ 
+ .roadCircleLeft>div {
+     top: 7px;
+     left: -58px;
+ }
+ 
+ .roadCircleRight>div {
+     top: 36px;
+     left: -10px;
+ }
+ 
+ .roadCircleRight2>div {
+     top: 7px;
+     left: -10px;
+ }
+ 
+ .Lets-confirm-your-email,
+ .welcome-misaq {
+     width: 549px;
+     height: 92px;
+     font-family: Cairo;
+     font-size: 49px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: 2.45px;
+     text-align: center;
+     color: #2d0592;
+     margin: 49.5px auto 0px auto;
+ }
+ 
+ .type-in-code,
+ .complete-your-profile {
+     width: 509px;
+     height: 45px;
+     font-family: Cairo;
+     font-size: 24px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: 0.43px;
+     text-align: center;
+     color: #2d0592;
+     margin: 0 auto 0 auto;
+     position: relative;
+     top: -16px;
+ }
+ 
+ .type-in-code>span {
+     color: black;
+ }
+ 
+ .code-entry {
+     display: flex;
+     margin: 15.5px auto 0 auto;
+     justify-content: center;
+ }
+ 
+ .code-entry-input {
+     border: none;
+     border-bottom: 3px solid lightgray;
+     width: 32px;
+     margin: 0 14px 0 14px;
+     text-align: center;
+     font-family: Cairo;
+     font-size: 24px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: 0.43px;
+     color: #2d0592;
+ }
+ 
+ .ConfirmButton {
+     background-image: url("../../images/new images/310/Rectangle\ 310@3x.png");
+     width: 375px;
+     height: 50px;
+     background-size: 100% 100%;
+     background-position: center;
+     font-family: Cairo;
+     font-size: 24px;
+     font-weight: 600;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.88;
+     letter-spacing: normal;
+     /* text-align: left; */
+     color: #ffffff;
+     margin-top: 74.5px;
+ }
+ 
+ .goToProfileButton {
+     margin-top: 30px;
+ }
+ 
+ .Didnt-receive-the-code {
+     width: 350px;
+     height: 33px;
+     font-family: Cairo;
+     font-size: 18px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: 1.83;
+     letter-spacing: normal;
+     text-align: center;
+     color: #2d0592;
+     margin: 10px auto 0 auto;
+     display: block;
+ }
+ 
+ input.profileCreationField {
+     width: 471px;
+     border-bottom: 1px solid #2d0592;
+     background-color: #e9e5f3;
+     color: #2d0592;
+     margin-top: 24px;
+ }
+ 
+ input.firstProfileCreationField {
+     margin-top: -1px;
+ }
