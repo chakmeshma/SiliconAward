@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <link href="~/css/new styles/style.css" rel="stylesheet" type="text/css">
+    <script src="~/js/new js/jquery.min.js"></script>
+    <script src="~/js/new js/script.js"></script>
+</head>
+
+<body onload="initInputEvents()">
+    <div class="topBadgeBack">
+        <img src="~/images/new images/Group 662.svg" class="topBadgeFront" />
+    </div>
+    <div class="roadImagesContainer">
+        <div class="roadCircleLeft">
+            <img src="~/images/new images/Ellipse 85.svg" />
+            <div>verification email</div>
+        </div>
+        <div class="roadLine2"></div>
+        <div class="roadCircleRight2">
+            <img src="~/images/new images/Ellipse 85.svg" />
+            <div>Profile</div>
+        </div>
+    </div>
+    @RenderBody()
+</body>
+
+</html>

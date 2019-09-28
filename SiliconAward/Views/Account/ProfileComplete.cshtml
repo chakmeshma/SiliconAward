@@ -1,0 +1,19 @@
+﻿@using SiliconAward.ViewModels
+
+@model ProfileCompleteViewModel
+
+@{
+    ViewData["Title"] = "Profile Complete";
+    Layout = "~/Views/Shared/_LayoutBadged.cshtml";
+}
+
+<div class="welcome-misaq">Welcome misagh008</div>
+<div class="complete-your-profile">Complete your profile to take on the challenges</div>
+<form method="post" asp-action="ProfileComplete">
+    @Html.AntiForgeryToken()
+    <input asp-for="id" type="hidden" />
+    <input asp-for="FullName" class="registerField profileCreationField firstProfileCreationField" type="text" placeholder="Full name" />
+    <input asp-for="PhoneNumber" class="registerField profileCreationField" type="text" placeholder="Phone number" />
+    <input asp-for="Location" class="registerField profileCreationField" type="text" placeholder="Location" />
+    <input class="registerButton ConfirmButton goToProfileButton" value="Go to profile" type="submit" />
+</form>

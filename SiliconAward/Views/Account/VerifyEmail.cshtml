@@ -5,52 +5,24 @@
 
 @{
     ViewData["Title"] = "Verify Email";
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutBadged.cshtml";
 }
 
-<!doctype html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>@ViewData["Title"]</title>
-    <link href="~/css/new styles/style.css" rel="stylesheet" type="text/css">
-    <script src="~/js/new js/jquery.min.js"></script>
-    <script src="~/js/new js/script.js"></script>
-</head>
-
-<body onload="initInputEvents()">
-    <div class="topBadgeBack">
-        <img src="~/images/new images/Group 662.svg" class="topBadgeFront" />
-    </div>
-    <div class="roadImagesContainer">
-        <div class="roadCircleLeft">
-            <img src="~/images/new images/Ellipse 85.svg" />
-            <div>verification email</div>
-        </div>
-        <div class="roadLine"></div>
-        <div class="roadCircleRight">
-            <div>Profile</div>
-        </div>
-    </div>
-    <div class="Lets-confirm-your-email">Let's confirm your email</div>
-    <div class="type-in-code">type in the code we sent to <span>@Model.Email</span></div>
-    <div class="code-entry">
-        <input class="code-entry-input" id="codeInput1" type="text" maxlength="1" />
-        <input class="code-entry-input" id="codeInput2" type="text" maxlength="1" />
-        <input class="code-entry-input" id="codeInput3" type="text" maxlength="1" />
-        <input class="code-entry-input" id="codeInput4" type="text" maxlength="1" />
-        <input class="code-entry-input" id="codeInput5" type="text" maxlength="1" />
-        <input class="code-entry-input" id="codeInput6" type="text" maxlength="1" />
-    </div>
-    <form id="theForm" asp-action="VerifyEmail" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" asp-for="VerifyCode" id="confirmHiddenField" />
-        <input type="hidden" asp-for="Email" />
-        <span asp-validation-for="VerifyCode" class="validationInvalidCode"></span>
-        <input class="registerButton ConfirmButton" value="Confirm" type="submit" />
-    </form>
-    <a class="Didnt-receive-the-code" href="resend">Didn't receive the code? Send again</a>
-</body>
-
-</html>
+<div class="Lets-confirm-your-email">Let's confirm your email</div>
+<div class="type-in-code">type in the code we sent to <span>@Model.Email</span></div>
+<div class="code-entry">
+    <input class="code-entry-input" id="codeInput1" type="text" maxlength="1" />
+    <input class="code-entry-input" id="codeInput2" type="text" maxlength="1" />
+    <input class="code-entry-input" id="codeInput3" type="text" maxlength="1" />
+    <input class="code-entry-input" id="codeInput4" type="text" maxlength="1" />
+    <input class="code-entry-input" id="codeInput5" type="text" maxlength="1" />
+    <input class="code-entry-input" id="codeInput6" type="text" maxlength="1" />
+</div>
+<form id="theForm" asp-action="VerifyEmail" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="VerifyCode" id="confirmHiddenField" />
+    <input type="hidden" asp-for="Email" />
+    <span asp-validation-for="VerifyCode" class="validationInvalidCode"></span>
+    <input class="registerButton ConfirmButton" value="Confirm" type="submit" />
+</form>
+<a class="Didnt-receive-the-code" href="resend">Didn't receive the code? Send again</a>

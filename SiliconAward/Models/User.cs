@@ -64,6 +64,8 @@ namespace SiliconAward.Models
         [Display(Name = "فعال")]
         public bool IsActive { get; set; }
 
+        public string Location { get; set; }
+
         public ICollection<Document> Documents { get; set; }
         public ICollection<Participant> Participants { get; set; }
         public ICollection<Ticket> Tickets { get; set; }

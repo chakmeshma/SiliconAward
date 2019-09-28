@@ -136,7 +136,9 @@ namespace SiliconAward.Controllers
             {
                 if (await _repository.VerifyEmail(verifyEmail, _userManager) == "success")
                 {
-                    return RedirectToAction("Success");
+                    //return RedirectToAction("ProfileComplete");
+                    string Id = (await _userManager.FindByEmailAsync(verifyEmail.Email)).Id;
+                    return View("ProfileComplete", new ProfileCompleteViewModel { id = Id });
                 }
                 else
                     ModelState.AddModelError("VerifyCode", "Invalid Code");
@@ -245,10 +247,6 @@ namespace SiliconAward.Controllers
             return View();
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
 
         public IActionResult ResetPassword()
         {
@@ -272,6 +270,11 @@ namespace SiliconAward.Controllers
                 return View();
             }
 
+        }
+
+        public IActionResult Login()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -332,6 +335,24 @@ namespace SiliconAward.Controllers
 
                     return RedirectToAction("Profile", "Account");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProfileComplete(ProfileCompleteViewModel profileCompleteViewModel)
+        {
+            Models.User user = await _userManager.FindByIdAsync(profileCompleteViewModel.id);
+
+            user.FullName = profileCompleteViewModel.FullName;
+            user.PhoneNumber = profileCompleteViewModel.PhoneNumber;
+            user.Location = profileCompleteViewModel.Location;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return RedirectToAction("Success");
+            else
+                return View();
         }
 
         public IActionResult Success()
