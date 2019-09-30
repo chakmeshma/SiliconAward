@@ -162,7 +162,7 @@ input.registerField {
 }
 
 .registerLoginText {
-    margin-top: 32px;
+    margin-top: 40px;
     font-family: AcuminPro;
     font-size: 18px;
     font-weight: normal;
@@ -200,6 +200,8 @@ input.registerField {
     text-align: left;
     color: #fcb645;
     margin-left: 50px;
+    position: relative;
+    top: -11px;
 }
 
 .topBadgeBack {
@@ -427,7 +429,6 @@ input.firstProfileCreationField {
     margin: 20px auto 20px auto;
     color: red;
     text-align: center;
-
 }
 
 .validationEmail {
@@ -451,7 +452,6 @@ input.registerFieldNotTop {
 }
 
 input.registerFieldPassword {
-
 }
 
 .validationEmailLast {
@@ -462,4 +462,8 @@ input.registerFieldPassword {
 .pullup1 {
     position: relative;
     top: -6px;
+}
+
+input.registerButtonLogin {
+    margin-top: 38px;
 }

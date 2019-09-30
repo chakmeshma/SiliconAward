@@ -288,53 +288,60 @@ namespace SiliconAward.Controllers
             //    return View(!ModelState.IsValid ? login : new LoginViewModel());
             //}
 
-            var result = await _repository.LoginAsync(login, _userManager, _signInManager);
-
-            switch (result.Message)
+            if (ModelState.IsValid)
             {
-                case "password":
-                    SetPasswordViewModel setPassword = new SetPasswordViewModel();
-                    setPassword.Phone = login.Email;
-                    return View("SetPassword", setPassword);
+                var result = await _repository.LoginAsync(login, _userManager, _signInManager);
 
-                case "confirm":
-                    VerifyEmailViewModel verifyEmail = new VerifyEmailViewModel();
-                    verifyEmail.Email = login.Email;
-                    return View("VerifyPhone", verifyEmail);
+                switch (result.Message)
+                {
+                    //case "password":
+                    //    SetPasswordViewModel setPassword = new SetPasswordViewModel();
+                    //    setPassword.Phone = login.Email;
+                    //    return View("SetPassword", setPassword);
 
-                case "fail":
-                    ViewData["Message"] = "نام کاربری یا کلمه عبور اشتباه است";
-                    return View();
+                    case "verify":
+                        VerifyEmailViewModel verifyEmail = new VerifyEmailViewModel();
+                        verifyEmail.Email = result.Email;
+                        await _repository.CreateVerifyCodeAndSend(await _userManager.FindByEmailAsync(result.Email), _userManager);
+                        return View("VerifyEmail", verifyEmail);
 
-                case "notexist":
-                    ViewData["Message"] = "نام کاربری یا کلمه عبور اشتباه است";
-                    return View();
+                    case "fail":
+                        //ViewData["Message"] = "نام کاربری یا کلمه عبور اشتباه است";
+                        ModelState.AddModelError("Password", "Invalid Password");
+                        return View();
 
-                default:
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, result.Id.ToString()),
-                        //new Claim(ClaimTypes.Role, result.Role),
-                        new Claim("fullname" , result.FullName),
-                        new Claim("avatar" , result.Avatar),
-                        new Claim("id" , result.Id.ToString())
-                    };
+                    case "notexist":
+                        //ViewData["Message"] = "نام کاربری یا کلمه عبور اشتباه است";
+                        ModelState.AddModelError("Password", "Invalid Password");
+                        return View();
+                    default:
+                        //var claims = new List<Claim>
+                        //{
+                        //    new Claim(ClaimTypes.Name, result.Id.ToString()),
+                        //    //new Claim(ClaimTypes.Role, result.Role),
+                        //    new Claim("fullname" , result.FullName),
+                        //    new Claim("avatar" , result.Avatar),
+                        //    new Claim("id" , result.Id.ToString())
+                        //};
 
-                    //var userIdentity = new ClaimsIdentity(claims, "login");
+                        //var userIdentity = new ClaimsIdentity(claims, "login");
 
-                    //ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                        //ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-                    Models.User user = await _userManager.FindByIdAsync(result.Id);
+                        //Models.User user = await _userManager.FindByIdAsync(result.Id);
 
-                    IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
-                    identityResult = await _userManager.AddToRoleAsync(user, result.Role);
+                        //IdentityResult identityResult = await _userManager.AddClaimsAsync(user, claims);
+                        //identityResult = await _userManager.AddToRoleAsync(user, result.Role);
 
-                    await _signInManager.SignInAsync(user, false);
+                        //await _signInManager.SignInAsync(user, false);
 
-                    //await HttpContext.SignInAsync(principal);
+                        //await HttpContext.SignInAsync(principal);
 
-                    return RedirectToAction("Profile", "Account");
+                        return RedirectToAction("Success", "Account");
+                }
             }
+            else
+                return View();
         }
 
         [HttpPost]

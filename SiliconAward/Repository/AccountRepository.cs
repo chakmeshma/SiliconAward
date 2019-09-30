@@ -151,26 +151,34 @@ namespace SiliconAward.Repository
             }
             else if (subResultStr.Contains("verify"))
             {
-                var verifyCode = Classes.CreateVerifyCode();
+                //var verifyCode = Classes.CreateVerifyCode();
+
+                Models.User theUser = null;
 
                 switch (subResultStr)
                 {
                     case "verify email":
-                        emailUser.EmailVerifyCode = verifyCode;
-                        await userManager.UpdateAsync(emailUser);
+                        theUser = emailUser;
                         break;
                     case "verify username":
-                        usernameUser.EmailVerifyCode = verifyCode;
-                        await userManager.UpdateAsync(usernameUser);
+                        theUser = usernameUser;
                         break;
                 }
 
-                Classes.SendSmsAsync("09309242741", verifyCode, "10award");
+                await CreateVerifyCodeAndSend(theUser, userManager);
 
                 return subResultStr;
             }
 
             return subResultStr;
+        }
+
+        public async Task CreateVerifyCodeAndSend(Models.User user, UserManager<Models.User> userManager)
+        {
+            string code = Classes.CreateVerifyCode();
+            user.EmailVerifyCode = code;
+            IdentityResult result = await userManager.UpdateAsync(user);
+            Classes.SendSmsAsync("09309242741", code, "10award");
         }
 
         public async Task<string> VerifyEmail(VerifyEmailViewModel verifyEmail, UserManager<Models.User> userManager)
@@ -358,38 +366,45 @@ namespace SiliconAward.Repository
             //var user = (from u in _dbContext.Users
             //            where u.PhoneNumber == login.Phone
             //            select u).FirstOrDefault();
-            var user = (from u in userManager.Users
-                        where u.PhoneNumber == login.Email
-                        select u).FirstOrDefault();
+
+            //var user = (from u in userManager.Users
+            //            where u.PhoneNumber == login.Email
+            //            select u).FirstOrDefault();
+            var user = await userManager.FindByEmailAsync(login.EmailOrUsername);
+            if (user == null)
+                user = await userManager.FindByNameAsync(login.EmailOrUsername);
+
             if (user != null)
             {
-                if (user.PhoneNumberConfirmed == true)
+                loginResult.Id = user.Id;
+                loginResult.Email = user.Email;
+
+                if (user.EmailConfirmed)
                 {
 
-                    if (user.PasswordHash == null)
-                    {
-                        loginResult.Message = "fail";
-                        return loginResult;
-                    }
-                    else if ((await signInManager.PasswordSignInAsync(user, login.Password, false, false)).Succeeded)
+                    //if (user.PasswordHash == null)
+                    //{
+                    //    loginResult.Message = "fail";
+                    //    return loginResult;
+                    //}
+                    if ((await signInManager.PasswordSignInAsync(user, login.Password, false, false)).Succeeded)
                     //else if (Classes.SimpleHash.VerifyHash(login.Password, "sha256", user.PasswordHash))
                     {
-                        loginResult.Id = user.Id;
-                        loginResult.Role = (await userManager.GetRolesAsync(user)).First() ?? "";
+                        //loginResult.Role = (await userManager.GetRolesAsync(user)).First() ?? "";
                         //loginResult.Role = user.Role;
 
-                        if (user.FullName == "" || user.FullName == null)
-                            loginResult.FullName = "نام و نام خانوادگی";
-                        else
-                            loginResult.FullName = user.FullName;
-                        if (user.Avatar == null)
-                        {
-                            loginResult.Avatar = "/dist/img/avatar5.png";
-                        }
-                        else
-                        {
-                            loginResult.Avatar = "/uploads/" + user.Id + "/" + user.Avatar;
-                        }
+                        //if (user.FullName == "" || user.FullName == null)
+                        //    loginResult.FullName = "نام و نام خانوادگی";
+                        //else
+                        //    loginResult.FullName = user.FullName;
+                        //if (user.Avatar == null)
+                        //{
+                        //    loginResult.Avatar = "/dist/img/avatar5.png";
+                        //}
+                        //else
+                        //{
+                        //    loginResult.Avatar = "/uploads/" + user.Id + "/" + user.Avatar;
+                        //}
 
                         loginResult.Message = "success";
                         return loginResult;
@@ -403,8 +418,16 @@ namespace SiliconAward.Repository
                 }
                 else
                 {
-                    loginResult.Message = "confirm";
-                    return loginResult;
+                    if (!(await signInManager.PasswordSignInAsync(user, login.Password, false, false)).Succeeded)
+                    {
+                        loginResult.Message = "fail";
+                        return loginResult;
+                    }
+                    else
+                    {
+                        loginResult.Message = "verify";
+                        return loginResult;
+                    }
                 }
 
             }

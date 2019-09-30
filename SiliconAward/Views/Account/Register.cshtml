@@ -9,24 +9,17 @@
     Layout = "~/Views/Shared/_LayoutBlurredBackground.cshtml";
 }
 
-<div id="loginContainer" class="loginContainer">
-    <div class="loginContainerRightSide">
-        <div class="registerSideText">Hello!</div>
-        <div class="registerSidePic">
-            <img src="~/images/new images/Group 937.svg" alt="coffee" />
-        </div>
-    </div>
-    <form method="post" asp-action="Register" class="loginContainerLeftSide">
-        @Html.AntiForgeryToken()
-        <div class="leftSideLogo"></div>
-        <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
-        <span asp-validation-for="Email" class="validationEmail"></span>
-        <input asp-for="Username" class="registerField registerFieldNotTop" placeholder="Username" type="text" />
-        <span asp-validation-for="Username" class="validationEmail"></span>
-        <input asp-for="Password" class="registerField registerFieldNotTop registerFieldPassword" id="passwordField" placeholder="Password" type="password" />
-        <img onClick="togglePasswordView()" id="passwordEyeToggle" src="~/images/new images/password eye.svg" />
-        <span asp-validation-for="Password" class="validationEmail validationEmailLast"></span>
-        <input class="registerButton pullup1" value="Join now" type="submit" />
-        <div class="registerLoginText pullup1">Already a member? <a href="971 [Converted].svg">Log in</a></div>
-    </form>
-</div>
+
+<form method="post" asp-action="Register" class="loginContainerLeftSide">
+    @Html.AntiForgeryToken()
+    <div class="leftSideLogo"></div>
+    <input asp-for="Email" class="registerField" placeholder="Email" type="text" />
+    <span asp-validation-for="Email" class="validationEmail"></span>
+    <input asp-for="Username" class="registerField registerFieldNotTop" placeholder="Username" type="text" />
+    <span asp-validation-for="Username" class="validationEmail"></span>
+    <input asp-for="Password" class="registerField registerFieldNotTop registerFieldPassword" id="passwordField" placeholder="Password" type="password" />
+    <img onClick="togglePasswordView()" id="passwordEyeToggle" src="~/images/new images/password eye.svg" />
+    <span asp-validation-for="Password" class="validationEmail validationEmailLast"></span>
+    <input class="registerButton pullup1" value="Join now" type="submit" onclick="this.disabled=true; this.form.submit();" />
+    <div class="registerLoginText pullup1">Already a member? <a href="Login">Log in</a></div>
+</form>
