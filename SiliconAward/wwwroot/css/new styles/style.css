@@ -10,6 +10,12 @@
 }
 
 @font-face {
+    font-family: Cairo;
+    font-weight: 600;
+    src: url("../../fonts/Cairo/Cairo-SemiBold.ttf")
+}
+
+@font-face {
     font-family: AcuminPro;
     src: url("../../fonts/Acumin-RPro.otf");
 }
@@ -81,11 +87,11 @@ a {
     margin-right: 21.7px;
 }
 
-    .registerSidePic > img {
-        position: relative;
-        top: -30.9px;
-        left: 87.1px;
-    }
+.registerSidePic>img {
+    position: relative;
+    top: -30.9px;
+    left: 87.1px;
+}
 
 .leftSideLogo {
     background-image: url("../../images/new images/Group 723.svg");
@@ -122,19 +128,19 @@ input.registerField {
     margin-top: 28.8px;
 }
 
-    input.registerField::-webkit-input-placeholder {
-        /* Edge */
-        color: gray;
-    }
+input.registerField::-webkit-input-placeholder {
+    /* Edge */
+    color: gray;
+}
 
-    input.registerField:-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: gray;
-    }
+input.registerField:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: gray;
+}
 
-    input.registerField::placeholder {
-        color: gray;
-    }
+input.registerField::placeholder {
+    color: gray;
+}
 
 .registerButton {
     display: block;
@@ -174,9 +180,9 @@ input.registerField {
     color: #ffffff;
 }
 
-    .registerLoginText > a {
-        color: #fcb645;
-    }
+.registerLoginText>a {
+    color: #fcb645;
+}
 
 #passwordEyeToggle {
     display: block;
@@ -252,12 +258,12 @@ input.registerField {
     background-image: url("../../images/new images/Ellipse\ 82.svg")
 }
 
-    .roadCircleLeft > img {
-        margin-top: 6px;
-        margin-left: 6px;
-    }
+.roadCircleLeft>img {
+    margin-top: 6px;
+    margin-left: 6px;
+}
 
-.roadCircleRight2 > img {
+.roadCircleRight2>img {
     margin-top: 6px;
     margin-left: 6px;
 }
@@ -276,34 +282,34 @@ input.registerField {
     background-image: url("../../images/new images/Ellipse 82.svg")
 }
 
-    .roadCircleLeft > div,
-    .roadCircleRight > div,
-    .roadCircleRight2 > div {
-        width: 150px;
-        height: 33px;
-        font-family: Cairo;
-        font-size: 18px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.83;
-        letter-spacing: 0.9px;
-        color: #2d0592;
-        width: 200px;
-        position: relative;
-    }
+.roadCircleLeft>div,
+.roadCircleRight>div,
+.roadCircleRight2>div {
+    width: 150px;
+    height: 33px;
+    font-family: Cairo;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: 0.9px;
+    color: #2d0592;
+    width: 200px;
+    position: relative;
+}
 
-.roadCircleLeft > div {
+.roadCircleLeft>div {
     top: 7px;
     left: -58px;
 }
 
-.roadCircleRight > div {
+.roadCircleRight>div {
     top: 36px;
     left: -10px;
 }
 
-.roadCircleRight2 > div {
+.roadCircleRight2>div {
     top: 7px;
     left: -10px;
 }
@@ -340,9 +346,9 @@ input.registerField {
     top: -16px;
 }
 
-    .type-in-code > span {
-        color: black;
-    }
+.type-in-code>span {
+    color: black;
+}
 
 .code-entry {
     display: flex;
@@ -451,9 +457,6 @@ input.registerFieldNotTop {
     margin-top: 3.8px;
 }
 
-input.registerFieldPassword {
-}
-
 .validationEmailLast {
     position: relative;
     top: -14px;
@@ -466,4 +469,234 @@ input.registerFieldPassword {
 
 input.registerButtonLogin {
     margin-top: 38px;
+}
+
+.dropdown-container-complete-profile {
+    display: block;
+    margin: 24px auto 0 auto;
+    width: 493px;
+}
+
+.dropdown-container-complete-profile * {
+    font-family: Cairo;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: normal;
+}
+
+.gradient-background {
+    width: 100%;
+    height: 324px;
+    background: url("../../images/new images/Rectangle 33.png") no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
+.top-link-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 1280px;
+    margin: 24px auto 0 auto;
+}
+
+.top-link-container>a {
+    display: block;
+    font-family: Cairo;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.88;
+    letter-spacing: 0.8px;
+    color: #f8dd82;
+    margin: 0 20px 0 20px;
+    text-align: center;
+}
+
+.small-profile-pic {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+.main-container {
+    display: flex;
+    width: 1280px;
+    min-height: 100px;
+    margin: 0 auto 0 auto;
+}
+
+.left-container {
+    width: 320px;
+    text-align: center;
+    position: relative;
+    top: -203px;
+}
+
+.right-container {
+    width: 960px;
+}
+
+.profile-pic {
+    background-image: url("../../images/profile pic.png");
+    width: 83px;
+    height: 83px;
+    background-size: cover;
+    margin: 0 auto 0 auto;
+}
+
+a.edit-profile-button {
+    display: block;
+    width: 100px;
+    height: 24px;
+    background-image: url("../../images/edit button background.svg");
+    margin: 0 auto 0 auto;
+    position: relative;
+    top: -20px;
+}
+
+.edit-profile-button>span {
+    width: 64px;
+    height: 24px;
+    font-family: Cairo;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.75;
+    letter-spacing: normal;
+    text-align: left;
+    color: #6b10e2;
+    vertical-align: middle;
+}
+
+.edit-profile-button-pic {
+    vertical-align: middle;
+}
+
+.profile-name {
+    font-family: Cairo;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: 0.9px;
+    /* text-align: left; */
+    color: #ffffff;
+    position: relative;
+    top: -23px;
+}
+
+.profile-location {
+    font-family: Cairo;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.86;
+    letter-spacing: normal;
+    color: #ffffff;
+    position: relative;
+    top: -30px;
+}
+
+.question-award-flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 250px;
+    margin: 0 auto 0 auto;
+    justify-content: space-around;
+    position:relative;
+    top: -27px;
+}
+
+.award-profile,
+.question-profile {
+    width: 100px;
+    height: 50px;
+    background-color: #b21989;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 1;
+    padding-top: 15px;
+}
+
+.award-profile>img,
+.question-profile>img {
+    vertical-align: middle;
+    height: 20px;
+}
+
+.award-profile>img {
+    width: 17.1px;
+}
+
+.question-profile>img {
+    width: 20px;
+}
+
+.profile-field-top-text {
+    font-family: Cairo;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    /* line-height: 1.88; */
+    letter-spacing: 0.8px;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+.profile-field-bottom-text {
+    font-family: Cairo;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    /* line-height: 1.86; */
+    letter-spacing: normal;
+    color: #fcb645;
+    vertical-align: middle;
+}
+
+.activity-profile,
+.report-profile,
+.suggestions-profile,
+.dummy-profile {
+    width: 100px;
+    height: 100px;
+    font-family: Cairo;
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    color: #6b10e2;
+    margin-top: 25px;
+}
+
+.dummy-profile {
+    visibility: hidden;
+}
+
+.activity-profile>img,
+.report-profile>img,
+.suggestions-profile>img {
+    margin-top: 23px;
+}
+
+.selected-profile-square {
+    background-image: url("../../images/selected profile square.png");
+    background-size: contain;
+    color: white;
 }

@@ -12,7 +12,7 @@ using SiliconAward.ViewModels;
 
 namespace SiliconAward.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -26,6 +26,11 @@ namespace SiliconAward.Controllers
 
             return View();
         }        
+
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
         //public IActionResult Contact()
         //{
         //    ViewData["Message"] = "Your contact page.";

@@ -10,7 +10,7 @@ var bindLoginContainerResizeHandler = function() {
     $(".loginContainer").css("marginTop", "" + topMargin + "px");
 };
 
-function init() {
+function initResize() {
     $(window).ready(bindLoginContainerResizeHandler);
     $(window).resize(bindLoginContainerResizeHandler);
 

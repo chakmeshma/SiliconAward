@@ -20,13 +20,16 @@ namespace SiliconAward.Controllers
         private IRecaptchaService _recaptcha;
         private UserManager<Models.User> _userManager;
         private SignInManager<Models.User> _signInManager;
+        private RoleManager<IdentityRole> _roleManager;
+        private Data.EFDataContext _context;
 
-        public AccountController(IRecaptchaService recaptcha, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager)
+        public AccountController(IRecaptchaService recaptcha, UserManager<Models.User> userManager, SignInManager<Models.User> signInManager, RoleManager<IdentityRole> roleManager, Data.EFDataContext context)
         {
             _recaptcha = recaptcha;
             _userManager = userManager;
             _signInManager = signInManager;
-
+            _roleManager = roleManager;
+            _context = context;
         }
 
         private readonly AccountRepository _repository = new AccountRepository();
@@ -271,9 +274,13 @@ namespace SiliconAward.Controllers
             }
 
         }
-
         public IActionResult Login()
         {
+            //await _roleManager.CreateAsync(new IdentityRole("Participant"));
+            //await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            //await _roleManager.CreateAsync(new IdentityRole("Expert"));
+            //await _roleManager.CreateAsync(new IdentityRole("Supporter"));
+
             return View();
         }
 
@@ -343,6 +350,13 @@ namespace SiliconAward.Controllers
             else
                 return View();
         }
+
+        //public JsonResult GetSkills()
+        //{
+        //    var fields = _context.Skills
+        //            .Select(c => new { SkillFieldId = c.Id, SkillName = c.Name }).ToList();
+        //    return Json(fields);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

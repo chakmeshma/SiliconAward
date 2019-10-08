@@ -40,7 +40,7 @@ namespace SiliconAward
         public static string CreateVerifyCode()
         {
             Random random = new Random();
-            int randomNumber = random.Next(1000, 9999);
+            int randomNumber = random.Next(1, 9);
             string verifyCode = randomNumber.ToString();
             return verifyCode;
         }        

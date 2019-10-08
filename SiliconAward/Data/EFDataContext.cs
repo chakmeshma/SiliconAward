@@ -30,6 +30,7 @@ namespace SiliconAward.Data
         public DbSet<CompetitionSubject> CompetitionSubjects { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        //public DbSet<Skill> Skills { get; set; }
         //public DbSet<User> Users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
