@@ -614,7 +614,7 @@ a.edit-profile-button {
     width: 250px;
     margin: 0 auto 0 auto;
     justify-content: space-around;
-    position:relative;
+    position: relative;
     top: -27px;
 }
 
@@ -699,4 +699,89 @@ a.edit-profile-button {
     background-image: url("../../images/selected profile square.png");
     background-size: contain;
     color: white;
+}
+
+.right-container {
+    background-color: grey;
+}
+
+.search-input {
+    /* width: 790px; */
+    height: 56px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: none;
+    background-color: lightblue;
+    font-family: Cairo;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: 0.9px;
+    text-align: left;
+    color: black;
+    padding: 0 40px 0 40px;
+}
+
+.search-background-image {
+    display: block;
+    position: relative;
+    top: -40px;
+    left: 10px;
+}
+
+.challenge-item {
+    padding-left: 24px;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-bottom: 1px solid #aaaaaa;
+    align-items: center;
+    padding-right: 75px;
+}
+
+.challenge-item-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-family: Cairo;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.86;
+    letter-spacing: 0.7px;
+    text-align: left;
+    color: #aaaaaa;
+    padding-right: 130px;
+}
+
+.challenge-item-item1,
+.challenge-item-item2,
+.challenge-item-item3 {
+    font-family: Cairo;
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.88;
+    letter-spacing: 0.8px;
+    text-align: left;
+    color: #000000;
+}
+
+.challenge-item-item1,
+.challenge-item-item3 {
+    width: 195px;
+}
+
+.challenge-item-item3 {
+    text-align: right;
+}
+
+.challenges-container {
+    width: ;
 }
