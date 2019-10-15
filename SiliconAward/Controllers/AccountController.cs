@@ -274,12 +274,12 @@ namespace SiliconAward.Controllers
             }
 
         }
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            //await _roleManager.CreateAsync(new IdentityRole("Participant"));
-            //await _roleManager.CreateAsync(new IdentityRole("Admin"));
-            //await _roleManager.CreateAsync(new IdentityRole("Expert"));
-            //await _roleManager.CreateAsync(new IdentityRole("Supporter"));
+            //await _roleManager.CreateAsync(new IdentityRole("participant"));
+            //await _roleManager.CreateAsync(new IdentityRole("admin"));
+            //await _roleManager.CreateAsync(new IdentityRole("expert"));
+            //await _roleManager.CreateAsync(new IdentityRole("supporter"));
 
             return View();
         }

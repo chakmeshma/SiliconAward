@@ -17,7 +17,7 @@ namespace SiliconAward.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("/Account/Profile");
+            return Redirect("/Home/Dashboard");
         }
 
         public IActionResult About()
