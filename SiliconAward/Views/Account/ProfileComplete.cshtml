@@ -15,7 +15,7 @@
     <input asp-for="FullName" class="registerField profileCreationField firstProfileCreationField" type="text" placeholder="Full name" />
     <input asp-for="PhoneNumber" class="registerField profileCreationField" type="text" placeholder="Phone number" />
     <input asp-for="Location" class="registerField profileCreationField" type="text" placeholder="Location" />
-    @*<div class="dropdown-container-complete-profile">
+    <div class="dropdown-container-complete-profile">
         @(Html.Kendo().DropDownListFor(m => m.SkillID)
             .HtmlAttributes(new { style = "width:100%" })
             .OptionLabel("Select Skill")
@@ -29,6 +29,6 @@
                 });
             })
         )
-    </div>*@
+    </div>
     <input class="registerButton ConfirmButton goToProfileButton" value="Go to profile" type="submit" />
 </form>

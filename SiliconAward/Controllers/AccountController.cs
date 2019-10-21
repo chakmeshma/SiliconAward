@@ -351,12 +351,12 @@ namespace SiliconAward.Controllers
                 return View();
         }
 
-        //public JsonResult GetSkills()
-        //{
-        //    var fields = _context.Skills
-        //            .Select(c => new { SkillFieldId = c.Id, SkillName = c.Name }).ToList();
-        //    return Json(fields);
-        //}
+        public JsonResult GetSkills()
+        {
+            var fields = _context.Skills
+                    .Select(c => new { SkillFieldId = c.Id, SkillName = c.Name }).ToList();
+            return Json(fields);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -367,6 +367,7 @@ namespace SiliconAward.Controllers
             user.FullName = profileCompleteViewModel.FullName;
             user.PhoneNumber = profileCompleteViewModel.PhoneNumber;
             user.Location = profileCompleteViewModel.Location;
+            user.SkillID = profileCompleteViewModel.SkillID;
 
             IdentityResult result = await _userManager.UpdateAsync(user);
 

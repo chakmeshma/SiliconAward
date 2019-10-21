@@ -66,6 +66,10 @@ namespace SiliconAward.Models
 
         public string Location { get; set; }
 
+        public Skill Skill { get; set; }
+
+        public int? SkillID { get; set; }
+
         public ICollection<Document> Documents { get; set; }
         public ICollection<Participant> Participants { get; set; }
         public ICollection<Ticket> Tickets { get; set; }

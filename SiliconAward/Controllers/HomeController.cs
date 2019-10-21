@@ -17,7 +17,7 @@ namespace SiliconAward.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("/Home/Dashboard");
+            return Redirect("/Account/Login");
         }
 
         public IActionResult About()
@@ -25,7 +25,7 @@ namespace SiliconAward.Controllers
             ViewData["Message"] = "Your application description page.";
 
             return View();
-        }        
+        }
 
         public IActionResult Dashboard()
         {

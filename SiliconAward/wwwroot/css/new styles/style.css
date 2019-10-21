@@ -397,6 +397,7 @@ input.registerField::placeholder {
 
 .goToProfileButton {
     margin-top: 30px;
+    margin-bottom: 100px;
 }
 
 .Didnt-receive-the-code {
@@ -839,4 +840,12 @@ a.edit-profile-button {
 
 .green-button-rounded {
     background-image: url("../../images/new images/Rectangle 2882@3 greenx.png");
+}
+
+.dropdown-container-complete-profile .k-dropdown .k-dropdown-wrap{
+    height: 56.5px;
+}
+
+.dropdown-container-complete-profile .k-dropdown-wrap>.k-input{
+    height: auto;
 }
