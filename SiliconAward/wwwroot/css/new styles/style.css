@@ -549,7 +549,7 @@ input.registerButtonLogin {
 .right-container {
     width: 960px;
     position: relative;
-    top: -203px;
+    top: -198px;
 }
 
 .profile-pic {
@@ -848,4 +848,45 @@ a.edit-profile-button {
 
 .dropdown-container-complete-profile .k-dropdown-wrap>.k-input{
     height: auto;
+}
+
+.challenge-select-container {
+    width: 1100px;
+    height: 200px;
+    position: relative;
+    top: -198px;
+    box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.25);
+    margin: 0 auto 0 auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: white;
+}
+
+.are-you-ready-text {
+    /* padding-top: 31px; */
+    font-family: Cairo;
+    font-size: 49px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.88;
+    letter-spacing: 2.45px;
+    text-align: center;
+    color: #2d0592;
+}
+
+.identify-your-skills-text {
+    width: 652px;
+    height: 97px;
+    padding-top: 14px;
+    font-family: Cairo;
+    font-size: 20px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #2d0592;
+    margin: 0 auto 0 auto;
 }
