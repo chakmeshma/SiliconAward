@@ -15,6 +15,11 @@ namespace SiliconAward.Controllers
     //[Authorize(Roles ="Admin")]
     public class HomeController : Controller
     {
+        private Data.EFDataContext _context;
+        public HomeController(Data.EFDataContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return Redirect("/Account/Login");
@@ -52,6 +57,20 @@ namespace SiliconAward.Controllers
         public IActionResult ChallengeSelect()
         {
             return View();
+        }
+
+        public JsonResult GetSkills()
+        {
+            var fields = _context.Skills
+                    .Select(c => new { SkillFieldId = c.Id, SkillName = c.Name }).ToList();
+            return Json(fields);
+        }
+
+        public JsonResult GetFields()
+        {
+            var fields = _context.Skills
+                    .Select(c => new { FieldId = c.Id, FieldName = c.Name }).ToList();
+            return Json(fields);
         }
     }
 }

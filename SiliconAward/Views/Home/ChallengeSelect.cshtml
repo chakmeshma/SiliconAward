@@ -1,4 +1,8 @@
-﻿@{
+﻿@using SiliconAward.ViewModels
+
+@model FieldSelectViewModel
+
+@{
     Layout = "~/Views/Shared/_LayoutProfileTop.cshtml";
     ViewData["Title"] = "Challenge Select";
 }
@@ -9,4 +13,19 @@
         Identify your skills to take part in the first challenge created.
         Tests are done online at specified hours and you will lose the challenge if you do not head online
     </div>
+    <form method="post" asp-action="ChallengeSelect">
+        @Html.AntiForgeryToken()
+        @(Html.Kendo().MultiSelectFor(m => m.SelectedFields)
+               .HtmlAttributes(new { style = "width:100%" })
+               .DataTextField("FieldName")
+               .DataValueField("FieldId")
+               .DataSource(source =>
+               {
+                   source.Read(read =>
+                   {
+                       read.Action("GetFields", "Home");
+                   });
+               })
+        )
+    </form>
 </div>

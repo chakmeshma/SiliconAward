@@ -351,13 +351,6 @@ namespace SiliconAward.Controllers
                 return View();
         }
 
-        public JsonResult GetSkills()
-        {
-            var fields = _context.Skills
-                    .Select(c => new { SkillFieldId = c.Id, SkillName = c.Name }).ToList();
-            return Json(fields);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProfileComplete(ProfileCompleteViewModel profileCompleteViewModel)
