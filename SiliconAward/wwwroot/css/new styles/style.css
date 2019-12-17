@@ -852,7 +852,6 @@ a.edit-profile-button {
 
 .challenge-select-container {
     width: 1100px;
-    height: 200px;
     position: relative;
     top: -198px;
     box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.25);
@@ -889,4 +888,59 @@ a.edit-profile-button {
     text-align: center;
     color: #2d0592;
     margin: 0 auto 0 auto;
+}
+
+
+
+.multiselect-container-challenge-select {
+    display: block;
+    margin: 51px auto 0 auto;
+    width: 493px;
+}
+
+.multiselect-container-challenge-select * {
+    font-family: Cairo;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: normal;
+}
+
+.multiselect-container-challenge-select .k-multiselect-wrap,
+.multiselect-container-challenge-select .k-multiselect-wrap:hover,
+.multiselect-container-challenge-select .k-state-focused
+{
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border: none;
+    border-bottom: 1px solid #300994;
+    background-color: #e9e5f4 !important;
+}
+
+.validationFields {
+    width: 493px;
+    height: 25px;
+    font-family: Cairo;
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.83;
+    letter-spacing: normal;
+    display: block;
+    margin: 0 auto 0 auto;
+    color: red;
+    text-align: left;
+}
+
+.challengeSelect-AcceptButton {
+    margin-top: 53px;
+    margin-bottom: 50px;
+}
+
+.ChallengeSelect-Form {
+    overflow: auto;
 }

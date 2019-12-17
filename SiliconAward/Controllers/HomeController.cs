@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SiliconAward.Models;
 using SiliconAward.ViewModels;
 
 namespace SiliconAward.Controllers
 {
-    //[Authorize(Roles ="Admin")]
+    [Authorize]
     public class HomeController : Controller
     {
         private Data.EFDataContext _context;
-        public HomeController(Data.EFDataContext context)
+        private UserManager<Models.User> _userManager;
+        public HomeController(Data.EFDataContext context, UserManager<Models.User> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
         public IActionResult Index()
@@ -54,11 +57,61 @@ namespace SiliconAward.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult ChallengeSelect()
+        private async Task<FieldSelectViewModel> GetCurrentFieldSelectViewModel()
         {
-            return View();
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var fields = _context.UserFields.Where(u => u.UserId == user.Id).ToList();
+
+            FieldSelectViewModel fieldSelectViewModel = new FieldSelectViewModel();
+            fieldSelectViewModel.SelectedFields = new List<int>();
+
+            foreach (var field in fields)
+            {
+                (fieldSelectViewModel.SelectedFields as List<int>).Add(field.FieldId);
+            }
+
+            return fieldSelectViewModel;
         }
 
+        public async Task<IActionResult> ChallengeSelect()
+        {
+
+            return View(await GetCurrentFieldSelectViewModel());
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChallengeSelect(FieldSelectViewModel fieldSelectViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(await GetCurrentFieldSelectViewModel());
+            }
+
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var userFieldsToDelete = _context.UserFields.Where(u => u.UserId == user.Id).ToList();
+
+            foreach(var userFieldToDelete in userFieldsToDelete)
+            {
+                _context.UserFields.Remove(userFieldToDelete);
+            }
+            
+            await _context.SaveChangesAsync();
+
+            foreach (var fieldID in fieldSelectViewModel.SelectedFields)
+            {
+                _context.UserFields.Add(new UserField { FieldId = fieldID, UserId = user.Id });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Dashboard", "Home");
+        }
+
+        [AllowAnonymous]
         public JsonResult GetSkills()
         {
             var fields = _context.Skills
@@ -68,7 +121,7 @@ namespace SiliconAward.Controllers
 
         public JsonResult GetFields()
         {
-            var fields = _context.Skills
+            var fields = _context.Fields
                     .Select(c => new { FieldId = c.Id, FieldName = c.Name }).ToList();
             return Json(fields);
         }

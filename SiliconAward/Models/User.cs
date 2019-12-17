@@ -73,5 +73,7 @@ namespace SiliconAward.Models
         public ICollection<Document> Documents { get; set; }
         public ICollection<Participant> Participants { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+
+        public IList<UserField> UserFields { get; set; }
     }
 }

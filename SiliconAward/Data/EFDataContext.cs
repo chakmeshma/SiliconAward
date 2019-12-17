@@ -31,6 +31,9 @@ namespace SiliconAward.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<Participant> Participants { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<UserField> UserFields { get; set; }
+        public DbSet<Field> Fields { get; set; }
+
         //public DbSet<User> Users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -38,14 +41,16 @@ namespace SiliconAward.Data
         //    optionsBuilder.UseSqlServer(@"data source=(local); initial catalog=myprogra_10award_db;persist security info=True;user id=ahm604dbuser;pwd=!s78c4xO");
         //}
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    //modelBuilder.Entity<Status>()
-        //    //    .HasMany<Participant>(g => g.Participants)
-        //    //    .WithOne(s => s.Status)
-        //    //    .HasForeignKey(s => s.StatusId)
-        //    //    .OnDelete(DeleteBehavior.SetNull);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserField>().HasKey(uf => new { uf.FieldId, uf.UserId });
+            //modelBuilder.Entity<Status>()
+            //    .HasMany<Participant>(g => g.Participants)
+            //    .WithOne(s => s.Status)
+            //    .HasForeignKey(s => s.StatusId)
+            //    .OnDelete(DeleteBehavior.SetNull);
+            base.OnModelCreating(modelBuilder);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

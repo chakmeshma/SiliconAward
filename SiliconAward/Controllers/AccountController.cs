@@ -141,7 +141,7 @@ namespace SiliconAward.Controllers
                 {
                     //return RedirectToAction("ProfileComplete");
                     string Id = (await _userManager.FindByEmailAsync(verifyEmail.Email)).Id;
-                    return View("ProfileComplete", new ProfileCompleteViewModel { id = Id });
+                    return View("ProfileComplete", new ProfileCompleteViewModel { Id = Id });
                 }
                 else
                     ModelState.AddModelError("VerifyCode", "Invalid Code");
@@ -355,7 +355,7 @@ namespace SiliconAward.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProfileComplete(ProfileCompleteViewModel profileCompleteViewModel)
         {
-            Models.User user = await _userManager.FindByIdAsync(profileCompleteViewModel.id);
+            Models.User user = await _userManager.FindByIdAsync(profileCompleteViewModel.Id);
 
             user.FullName = profileCompleteViewModel.FullName;
             user.PhoneNumber = profileCompleteViewModel.PhoneNumber;

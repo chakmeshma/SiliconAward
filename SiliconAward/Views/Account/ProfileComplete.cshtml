@@ -11,7 +11,7 @@
 <div class="complete-your-profile">Complete your profile to take on the challenges</div>
 <form method="post" asp-action="ProfileComplete">
     @Html.AntiForgeryToken()
-    <input asp-for="id" type="hidden" />
+    <input asp-for="Id" type="hidden" />
     <input asp-for="FullName" class="registerField profileCreationField firstProfileCreationField" type="text" placeholder="Full name" />
     <input asp-for="PhoneNumber" class="registerField profileCreationField" type="text" placeholder="Phone number" />
     <input asp-for="Location" class="registerField profileCreationField" type="text" placeholder="Location" />
