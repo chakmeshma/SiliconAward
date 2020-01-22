@@ -501,6 +501,15 @@ input.registerButtonLogin {
     overflow: auto;
 }
 
+.gradient-background-full {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../../images/new images/Rectangle 33.png") no-repeat;
+    background-size: 100% 100%;
+    overflow: auto;
+}
+
 .top-link-container {
     display: flex;
     flex-direction: row;
@@ -799,8 +808,7 @@ a.edit-profile-button {
     box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.25)
 }
 
-.couple-digits
-{
+.couple-digits {
     text-align: center;
     background-color: white;
     width: 28px;
@@ -816,13 +824,11 @@ a.edit-profile-button {
 .color-button-rounded {
     width: 170px;
     height: 60px;
-
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     position: relative;
     left: 10px;
-
     font-family: Cairo;
     font-size: 16px;
     font-weight: 600;
@@ -842,11 +848,11 @@ a.edit-profile-button {
     background-image: url("../../images/new images/Rectangle 2882@3 greenx.png");
 }
 
-.dropdown-container-complete-profile .k-dropdown .k-dropdown-wrap{
+.dropdown-container-complete-profile .k-dropdown .k-dropdown-wrap {
     height: 56.5px;
 }
 
-.dropdown-container-complete-profile .k-dropdown-wrap>.k-input{
+.dropdown-container-complete-profile .k-dropdown-wrap>.k-input {
     height: auto;
 }
 
@@ -890,8 +896,6 @@ a.edit-profile-button {
     margin: 0 auto 0 auto;
 }
 
-
-
 .multiselect-container-challenge-select {
     display: block;
     margin: 51px auto 0 auto;
@@ -910,8 +914,7 @@ a.edit-profile-button {
 
 .multiselect-container-challenge-select .k-multiselect-wrap,
 .multiselect-container-challenge-select .k-multiselect-wrap:hover,
-.multiselect-container-challenge-select .k-state-focused
-{
+.multiselect-container-challenge-select .k-state-focused {
     border-radius: 0;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -943,4 +946,57 @@ a.edit-profile-button {
 
 .ChallengeSelect-Form {
     overflow: auto;
+}
+
+.readiness-text {
+    width: 700px;
+    font-family: Cairo;
+    font-size: 26px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.54;
+    letter-spacing: 1.3px;
+    text-align: center;
+    color: #ffffff;
+    margin: 55px auto 0 auto;
+}
+
+.readiness-image-1 {
+    display: block;
+    width: 373px;
+    height: 364px;
+    margin: 37px auto 0 auto;
+}
+
+.readiness-image-2 {
+    display: block;
+    width: 485px;
+    height: 295px;
+    margin: 0 auto 0 auto;
+    position: relative;
+    top: -365px;
+    right: -14px;
+}
+
+.go-home-button {
+    background-image: url("../../images/new images/310/Rectangle\ 310@3x.png");
+    width: 375px;
+    height: 50px;
+    background-size: 100% 100%;
+    background-position: center;
+    font-family: Cairo;
+    font-size: 24px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.88;
+    letter-spacing: normal;
+    /* text-align: left; */
+    color: #ffffff;
+    position: relative;
+    top: -265px;
+    text-align: center;
+    margin: 0 auto 0 auto;
+    cursor: pointer;
 }

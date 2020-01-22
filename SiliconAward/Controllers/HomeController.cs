@@ -81,6 +81,11 @@ namespace SiliconAward.Controllers
 
         }
 
+        public IActionResult ReadinessCheck()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChallengeSelect(FieldSelectViewModel fieldSelectViewModel)
@@ -108,7 +113,7 @@ namespace SiliconAward.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Dashboard", "Home");
+            return RedirectToAction("ReadinessCheck", "Home");
         }
 
         [AllowAnonymous]

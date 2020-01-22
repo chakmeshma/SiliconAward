@@ -43,13 +43,14 @@ namespace SiliconAward.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<UserField>().HasKey(uf => new { uf.FieldId, uf.UserId });
             //modelBuilder.Entity<Status>()
             //    .HasMany<Participant>(g => g.Participants)
             //    .WithOne(s => s.Status)
             //    .HasForeignKey(s => s.StatusId)
             //    .OnDelete(DeleteBehavior.SetNull);
-            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
